@@ -2,11 +2,10 @@ import datetime
 
 ProjectStarTime = datetime.datetime(2020, 3, 22)
 
-
 class MACNode(object):
-    ID = None
-    usdt = 0
-    superiorID = None
+    Address = None
+    Balance = 0
+    superiorAddress = None
     attendRound = 0  # 默认加入时刻是0时刻加入
     level = 1  # 默认是第一级加入
     subNodeNum = 0  # 默认没有小弟
@@ -25,12 +24,12 @@ class MACNode(object):
     withdrawStatus = None  # // 是否提现
     withdrawMoney = None  # // 目前可以提现额度
 
-    def __init__(self, ID, usdt=0, superior=None, attendRound=None):
-        self.ID = ID
-        self.usdt = usdt
+    def __init__(self, Address, Balance=0, superior=None, attendRound=None):
+        self.Address = Address
+        self.Balance = Balance
 
         if superior is not None:
-            self.superiorID = superior.ID
+            self.superiorAddress = superior.Address
 
         if attendRound is None:
             self.attendRound = self.calRound()
@@ -46,6 +45,6 @@ class MACNode(object):
 
 
 if __name__ == "__main__":
-    ID = "111"
+    Address = "111"
 
     l1 = MACNode("222", 333)
