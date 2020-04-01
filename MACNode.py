@@ -1,70 +1,51 @@
-class Node(object):
-    def __init__(self):
-        self.val = None
-        self.next = None
+import datetime
+
+ProjectStarTime = datetime.datetime(2020, 3, 22)
 
 
-class Node_handle():
-    def __init__(self):
-        self.cur_node = None
+class MACNode(object):
+    ID = None
+    usdt = 0
+    superiorID = None
+    attendRound = 0  # 默认加入时刻是0时刻加入
+    level = 1  # 默认是第一级加入
+    subNodeNum = 0  # 默认没有小弟
 
-    # 查找
-    def find(self, node, num, a=0):
-        while node:
-            if a == num:
-                return node
-            a += 1
-            node = node.next
+    interestDate = None  # // interestIncome累计到哪一天
+    interestIncome = None  # // 已累计入账的收益，由开始收入 + 今天的全体收入构成
+    subNodeList = None  # // 下线
+    vipTagList = None  # // 是否vip, 每日更新
+    vipSuperior = None  # // VIP上线
+    vipSubList = None  # // 子节点是否是VIP
 
-    # 增加
-    def add(self, data):
-        node = Node()
-        node.val = data
-        node.next = self.cur_node
-        self.cur_node = node
-        return node
+    ruleStatus = None  # // 是否应用规则
+    staticIncome = None  # // 静态收益
+    subStaticIncome = None  # // 下级贡献的收益
+    dynamicIncome = None  # // 动态收益
+    withdrawStatus = None  # // 是否提现
+    withdrawMoney = None  # // 目前可以提现额度
 
-    # 打印
-    def printNode(self, node):
-        while node:
-            print('\nnode: ', node, ' value: ', node.val, ' next: ', node.next)
-            node = node.next
+    def __init__(self, ID, usdt=0, superior=None, attendRound=None):
+        self.ID = ID
+        self.usdt = usdt
 
-    # 删除
-    def delete(self, node, num, b=1):
-        if num == 0:
-            node = node.next
-            return node
-        while node and node.next:
-            if num == b:
-                node.next = node.next.next
-            b += 1
-            node = node.next
-        return node
+        if superior is not None:
+            self.superiorID = superior.ID
 
-    # 翻转
-    def reverse(self, nodelist):
-        list = []
-        while nodelist:
-            list.append(nodelist.val)
-            nodelist = nodelist.next
-        result = Node()
-        result_handle = Node_handle()
-        for i in list:
-            result = result_handle.add(i)
-        return result
+        if attendRound is None:
+            self.attendRound = self.calRound()
+        else:
+            self.attendRound = attendRound
+
+    def calRound(self):
+        today = datetime.datetime.now()
+        Round = (today - ProjectStarTime).days
+
+        print(f"Node attend this project at Round {Round}")
+        return Round
 
 
 if __name__ == "__main__":
-    l1 = Node()
-    ListNode_1 = Node_handle()
-    l1_list = [1, 8, 3]
-    for i in l1_list:
-        l1 = ListNode_1.add(i)
-    ListNode_1.printNode(l1)
-    l1 = ListNode_1.delete(l1, 0)
-    ListNode_1.printNode(l1)
-    l1 = ListNode_1.reverse(l1)
-    ListNode_1.printNode(l1)
-    l1 = ListNode_1.find(l1, 1)
-    ListNode_1.printNode(l1)
+    ID = "111"
+
+    l1 = MACNode("222", 333)
