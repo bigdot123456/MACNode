@@ -26,5 +26,5 @@ news = Tab2(name="Fast Go")
 mySession.add(news)
 mySession.commit()
 #修改
-mySession.query(Tab2).filter(Tab2.nid==3).update({"name":"修改之后的标题"})
+mySession.query(Tab2).filter(Tab2.nid==3).update({"name":"fastroot"})
 mySession.commit()
