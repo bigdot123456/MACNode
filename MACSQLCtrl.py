@@ -1,6 +1,8 @@
 from sqlalchemy import create_engine
-from MACNodeSQL import Tab2
 from sqlalchemy.orm import sessionmaker
+
+from MACNodeSQL import Tab2
+
 # 连接本地test数据库
 engine = create_engine("mysql+pymysql://fastroot:test123456@111.229.168.108/fastroot?charset=utf8")
 # 创建会话
@@ -10,21 +12,28 @@ mySession = session()
 result = mySession.query(Tab2).all()
 print(result[0])
 result = mySession.query(Tab2).first()
-print(result.name) #打印对象属性
+print(result.name)  # 打印对象属性
 result = mySession.query(Tab2).filter_by(nid=1).first()
 print(result.nid)
-result = mySession.query(Tab2).filter(Tab2.nid==3).first()
+result = mySession.query(Tab2).filter(Tab2.nid == 3).first()
 print(result.nid)
 # 分页查询 0,2
-result = mySession.query(Tab2).filter(Tab2.nid>1).limit(2).offset(0).all()
+result = mySession.query(Tab2).filter(Tab2.nid > 1).limit(2).offset(0).all()
 print(result)
 # 自定义过滤条件
 result = mySession.query(Tab2).get(3)
 print(result.name)
 # 新增
-news = Tab2(name="Fast Go")
+news = Tab2(name="Fast G1o")
 mySession.add(news)
 mySession.commit()
-#修改
-mySession.query(Tab2).filter(Tab2.nid==3).update({"name":"fastroot"})
+news = Tab2(name="Fast do")
+mySession.add(news)
 mySession.commit()
+# 修改
+mySession.query(Tab2).filter(Tab2.nid == 3).update({"name": "fastroot"})
+mySession.commit()
+
+result = mySession.query(Tab2).all()
+for x in (result):
+    print(x.name)
