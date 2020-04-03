@@ -9,6 +9,7 @@ from sqlalchemy.sql import text
 
 import random
 import time
+import array
 
 # 连接本地test数据库
 # engine = create_engine("mysql+pymysql://fastroot:test123456@111.229.168.108/fastroot?charset=utf8",echo=True)
@@ -73,6 +74,60 @@ for stop in stoplist:
         s.add(node)
         if i%1000 ==0:
             s.flush()
+
+    level = level + 1
+    start = stop
+
+## batch mode for speed
+try:
+    # result = s.query(Stdmacnode).filter(Stdmacnode.ID == node.ID).all()
+    # if (result is None):
+    #     s.add(node)
+    # else:
+    #     # 不能整体替代，只能每个值替换
+    #     # s.query(Stdmacnode).filter(Stdmacnode.ID == node.ID).update(node)
+    #     s.query(Stdmacnode).filter(Stdmacnode.ID == node.ID).delete()
+    #     s.add(node)
+
+    s.commit()
+    print(f'New Node {node} {i}')
+except pymysql.err.IntegrityError:
+    s.rollback()
+    print(f'Duplicate Node {node} {i}')
+except sqlalchemy.orm.exc.FlushError:
+    s.rollback()
+    print(f'FlushError Node {node} {i}')
+except Exception as result:
+    s.rollback()
+    print(f'Node take error {node} {i} {result}!')
+
+print( f"SQLAlchemy ORM add(): Total time for {stop} records {(time.time() - t0)}  secs")
+
+## don't use bulksave, since it is very slow in internet!
+t0 = time.time()
+start = 1
+level = 1
+stoplist = [10, 100, 500, 2000, 5000, 10000, 20000]
+
+# arr=array.array(Stdmacnode,stoplist[-1])
+
+for stop in stoplist:
+    s.query(Stdmacnode).filter(Stdmacnode.ID < stop , Stdmacnode.ID  >=start).delete()
+    # range(start, stop[, step])
+    for i in range(start, stop):
+        node = Stdmacnode()
+        node.ID = i
+        node.Address = f'MAN.{level}000{i}'
+        node.Balance = 3000 + 10 * random.randint(1, 10000)
+        node.parentID = random.randint(0, start - 1)
+        node.parentAddress = None
+        node.name = f"mac{level}{i}"
+        node.tel = f'{i * 10 + 1380013800}'
+        node.email = None
+
+        if i%1000 ==0:
+            print(f"insert {i}")
+        s.bulk_save_objects([node])
 
     level = level + 1
     start = stop
