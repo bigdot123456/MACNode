@@ -15,10 +15,10 @@ engine = create_engine("mysql+pymysql://fastroot:test123456@111.229.168.108/fast
 session = sessionmaker(engine)
 s = session()
 # 查询结果集, 对象模式，需要取出具体数据
-# result = s.query(Stdmacnode).all()
+# result = s.query(Mymacnode).all()
 
 ## Create root node，which is not used for calculate VIP
-node = mymacnode()
+node = Mymacnode()
 node.ID = 0
 node.Address = f'MAN.8888888888'
 node.Balance = 10000
@@ -29,13 +29,13 @@ node.tel = f'{13900139000}'
 node.email = f"macroot123@gmail.com"
 
 try:
-    result = s.query(Stdmacnode).filter(Stdmacnode.ID == node.ID).all()
+    result = s.query(Mymacnode).filter(Mymacnode.ID == node.ID).all()
     if (result is None):
         s.add(node)
     else:
         # 不能整体替代，只能每个值替换
-        # s.query(Stdmacnode).filter(Stdmacnode.ID == node.ID).update(node)
-        s.query(Stdmacnode).filter(Stdmacnode.ID == node.ID).delete()
+        # s.query(Mymacnode).filter(Mymacnode.ID == node.ID).update(node)
+        s.query(Mymacnode).filter(Mymacnode.ID == node.ID).delete()
         s.add(node)
 
     s.commit()
@@ -60,7 +60,7 @@ print(f'delete {stoplist[-1]} ')
 for stop in stoplist:
     # range(start, stop[, step])
     for i in range(start, stop):
-        node = Stdmacnode()
+        node = Mymacnode()
         node.ID = i #(stop - i) + start
         node.Address = f'MAN.{level}000{i}'
         node.Balance = random.randint(1, 7000)
@@ -80,13 +80,13 @@ for stop in stoplist:
 
 ## batch mode for speed
 try:
-    # result = s.query(Stdmacnode).filter(Stdmacnode.ID == node.ID).all()
+    # result = s.query(Mymacnode).filter(Mymacnode.ID == node.ID).all()
     # if (result is None):
     #     s.add(node)
     # else:
     #     # 不能整体替代，只能每个值替换
-    #     # s.query(Stdmacnode).filter(Stdmacnode.ID == node.ID).update(node)
-    #     s.query(Stdmacnode).filter(Stdmacnode.ID == node.ID).delete()
+    #     # s.query(Mymacnode).filter(Mymacnode.ID == node.ID).update(node)
+    #     s.query(Mymacnode).filter(Mymacnode.ID == node.ID).delete()
     #     s.add(node)
 
     s.commit()
