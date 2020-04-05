@@ -16,13 +16,15 @@ session = sessionmaker(engine)
 s = session()
 # 查询结果集, 对象模式，需要取出具体数据
 # result = s.query(Mymacnode).all()
+engine.execute(f"delete from Mymacnode where ID >1; ")
+print(f'delete All record in table')
 
 ## Create root node，which is not used for calculate VIP
 node = Mymacnode()
-node.ID = 0
+node.ID = 1
 node.Address = f'MAN.8888888888'
 node.Balance = 10000
-node.parentID = 0
+node.parentID = 1
 node.parentAddress = None
 node.name = f"MACROOT"
 node.tel = f'{13900139000}'
@@ -30,16 +32,16 @@ node.email = f"macroot123@gmail.com"
 
 try:
     result = s.query(Mymacnode).filter(Mymacnode.ID == node.ID).all()
-    if (result is None):
-        s.add(node)
-    else:
+    if result:
         # 不能整体替代，只能每个值替换
         # s.query(Mymacnode).filter(Mymacnode.ID == node.ID).update(node)
         s.query(Mymacnode).filter(Mymacnode.ID == node.ID).delete()
         s.add(node)
+    else:
+        s.add(node)
 
     s.commit()
-    print(f'New Node {node}')
+    print(f'New Node {node} with ID={node.ID}')
 except pymysql.err.IntegrityError:
     s.rollback()
     print(f'Duplicate Node {node}')
@@ -51,12 +53,13 @@ except Exception as result:
     print(f'Node take error {node} {result}!')
 
 t0 = time.time()
-start = 1
+start = 2 ## mysql primekey must start with 1, not 0
 level = 1
 stoplist = [10, 100, 500, 2000, 5000, 10000, 20000]
-s.query(mymacnode).filter(mymacnode.ID <= stoplist[-1], mymacnode.ID >= start).delete()
-s.commit()
-print(f'delete {stoplist[-1]} ')
+#s.query(Mymacnode).filter(Mymacnode.ID <= stoplist[-1], Mymacnode.ID >= start).delete()
+#        self.engine.execute(f"CREATE  TABLE IF NOT EXISTS {dbnewName} (LIKE {dboldName} ); ")
+#s.commit()
+
 for stop in stoplist:
     # range(start, stop[, step])
     for i in range(start, stop):
@@ -64,8 +67,8 @@ for stop in stoplist:
         node.ID = i #(stop - i) + start
         node.Address = f'MAN.{level}000{i}'
         node.Balance = random.randint(1, 7000)
-        node.parentID = random.randint(0, start-1) ## we can change it to i for more strictly test case!
-        #node.parentID = random.randint(0, node.ID-1) ## we can change it to i for more strictly test case!
+        node.parentID = random.randint(1, start-1) ## we can change it to i for more strictly test case!
+        #node.parentID = random.randint(1, node.ID-1) ## we can change it to i for more strictly test case!
         node.parentAddress = None
         node.name = f"mac{level}{i}"
         node.tel = f'{i * 10 + 1380013800}'
@@ -81,12 +84,12 @@ for stop in stoplist:
 ## batch mode for speed
 try:
     # result = s.query(Mymacnode).filter(Mymacnode.ID == node.ID).all()
-    # if (result is None):
-    #     s.add(node)
-    # else:
+    # if result:
     #     # 不能整体替代，只能每个值替换
     #     # s.query(Mymacnode).filter(Mymacnode.ID == node.ID).update(node)
     #     s.query(Mymacnode).filter(Mymacnode.ID == node.ID).delete()
+    #     s.add(node)
+    # else:
     #     s.add(node)
 
     s.commit()

@@ -1,5 +1,5 @@
 # coding: utf-8
-from sqlalchemy import Column, String, text
+from sqlalchemy import Column, Float, String, text
 from sqlalchemy.dialects.mysql import INTEGER
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -28,17 +28,17 @@ class Mymacnode(Base):
     email = Column(String(64))
     attendRound = Column(INTEGER(11))
     NodeLevel = Column(INTEGER(11))
-    TreeBalance = Column(INTEGER(11))
-    vipTreeBalance = Column(INTEGER(11))
+    TreeBalance = Column(Float)
+    vipTreeBalance = Column(Float)
     vipTag = Column(INTEGER(11))
     vipLevel = Column(INTEGER(11))
-    usedBalance = Column(INTEGER(11))
-    minerProductive = Column(INTEGER(11))
-    staticIncome = Column(INTEGER(11))
-    staticIncomeTree = Column(INTEGER(11))
-    MinerAward = Column(INTEGER(11))
-    RecommendAward = Column(INTEGER(11))
-    TotalAward = Column(INTEGER(11))
+    usedBalance = Column(Float)
+    minerProductive = Column(Float)
+    staticIncome = Column(Float)
+    staticIncomeTree = Column(Float)
+    MinerAward = Column(Float)
+    RecommendAward = Column(Float)
+    TotalAward = Column(Float)
     withdrawStatus = Column(INTEGER(11))
 
 
@@ -55,17 +55,17 @@ class Mymacnoderesult(Base):
     email = Column(String(64))
     attendRound = Column(INTEGER(11))
     NodeLevel = Column(INTEGER(11))
-    TreeBalance = Column(INTEGER(11))
-    vipTreeBalance = Column(INTEGER(11))
+    TreeBalance = Column(Float)
+    vipTreeBalance = Column(Float)
     vipTag = Column(INTEGER(11))
     vipLevel = Column(INTEGER(11))
-    usedBalance = Column(INTEGER(11))
-    minerProductive = Column(INTEGER(11))
-    staticIncome = Column(INTEGER(11))
-    staticIncomeTree = Column(INTEGER(11))
-    MinerAward = Column(INTEGER(11))
-    RecommendAward = Column(INTEGER(11))
-    TotalAward = Column(INTEGER(11))
+    usedBalance = Column(Float)
+    minerProductive = Column(Float)
+    staticIncome = Column(Float)
+    staticIncomeTree = Column(Float)
+    MinerAward = Column(Float)
+    RecommendAward = Column(Float)
+    TotalAward = Column(Float)
     withdrawStatus = Column(INTEGER(11))
 
 

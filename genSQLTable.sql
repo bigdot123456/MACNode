@@ -11,19 +11,19 @@ CREATE TABLE `MyMACNode` (
 `attendRound` int,
 
 `NodeLevel` int,
-`TreeBalance` int,
+`TreeBalance` float,
 
-`vipTreeBalance` int,
+`vipTreeBalance` float,
 `vipTag` int,
 `vipLevel` int,
-`usedBalance` int,
-`minerProductive` int,
-`staticIncome` int,
-`staticIncomeTree` int,
-`MinerAward` int,
-`RecommendAward` int,
+`usedBalance` float,
+`minerProductive` float,
+`staticIncome` float,
+`staticIncomeTree` float,
+`MinerAward` float,
+`RecommendAward` float,
 
-`TotalAward` int,
+`TotalAward` float,
                                                   
 `withdrawStatus`  int , -- = None  # // 是否提现      
     
@@ -31,4 +31,5 @@ PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE  TABLE IF NOT EXISTS MyMACNodeResult (LIKE MyMACNode);
+select * from MyMACNode;
 select * from MyMACNodeResult;

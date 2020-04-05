@@ -170,11 +170,17 @@ class macnode:
     def genIndexbyparentAddress(self):
         self.indexOfparentAddress = []
         for x in self.nodeList:
-            debugX = self.IDAddressdict[x.parentID]
+            try:
+                debugX = self.IDAddressdict[x.parentID]
+            except:
+                print("x.parentID is not exists")
+                debugX=0
+
             self.indexOfparentAddress.append(debugX)
 
     def getNodeLevelbyID(self, ID):
-        if ID == 0:
+        # prime key should start with 1
+        if ID == 1:
             return 0
         else:
             return 1 + self.getNodeLevelbyID(self.IDparentIDdict[ID])
@@ -396,7 +402,7 @@ class macnode:
             staticIncomeTree = self.getstaticIncomeTreebyID(x)
             staticIncomeTreeSum = staticIncomeTree * self.getMinerCoeffbyvipLevel(self.IDvipLeveldict[x])
             self.indexOfstaticIncomeTree.append(staticIncomeTreeSum)
-            self.IDstaticIncomedict[x] = staticIncomeTreeSum
+            self.IDstaticIncomeTreedict[x] = staticIncomeTreeSum
 
     def getMinerAwardbyID(self, ID):
         vipLevel = self.IDvipLeveldict[ID]
@@ -487,7 +493,7 @@ class macnode:
         self.IDTotalAwarddict = {}
         for x in self.indexOfID:
             TotalAward = self.getTotalAwardbyID(x)
-            self.indexOfMinerAward.append(TotalAward)
+            self.indexOfTotalAward.append(TotalAward)
             self.IDTotalAwarddict[x] = TotalAward
 
     def genIndexbyMinerAward(self):
@@ -574,8 +580,10 @@ class macnode:
         self.genIndexbyvipTreeBalance()
         self.genIndexbyvipLevel()
         self.genIndexbystaticIncome()
+        self.genIndexbystaticIncomeTree()
         self.genIndexbyRecommendAward()
         self.genIndexbyMinerAward()
+        self.genIndexbyTotalAward()
         print("Finish genAllIndex test")
 
     def newdateTable(self):
