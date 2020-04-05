@@ -1,6 +1,6 @@
 CREATE TABLE `MyMACNode` (
-`ID`      int NOT NULL auto_increment, 
-`Address` varchar(32) NOT NULL Default "MAN.11111111111",
+`ID`      int NOT NULL,
+`Address` varchar(32) NOT NULL Default "MAN.11111111111s",
 `Balance` int default 0,
 `parentID` int,
 `parentAddress` varchar(32) ,

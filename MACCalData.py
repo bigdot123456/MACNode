@@ -22,7 +22,9 @@ Nums = Constants(
     rateSon=0.5,
     rateGrandSon=0.2,
     withdrawlRate=0.7,
-    sameLevelRate=0.15
+    sameLevelRate=0.15,
+    RootID=1,
+    MaxRecords=20000
 )
 
 
@@ -115,11 +117,11 @@ class macnode:
         # self.nodeList = self.s.query(Mymacnode).filter(text("ID < :value ")).params(value=1000).order_by(
         #     Mymacnode.Balance.desc())
 
-        self.nodeList = self.s.query(Mymacnode).filter(text("ID < :value ")).params(value=1000).order_by(
+        self.nodeList = self.s.query(Mymacnode).filter(text("ID < :value ")).params(value=Nums.MaxRecords).order_by(
             Mymacnode.Balance.desc())
         ## for test aim, we reshuffle it! desc() means order reverse
         ## self.NodeList = self.NodeList[::2]+self.NodeList[1::2] ## error! since query object is not a list
-        print(f"SQLAlchemy ORM query(): Total time for 100 records {(time.time() - t0)}  secs")
+        print(f"SQLAlchemy ORM query(): Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
 
         # self.nodeList = self.s.query(Mymacnode).all()
         # print(f"SQLAlchemy ORM query(): Total time for {len(self.nodeList)} records {(time.time() - t0)}  secs")
@@ -173,17 +175,24 @@ class macnode:
             try:
                 debugX = self.IDAddressdict[x.parentID]
             except:
-                print("x.parentID is not exists")
-                debugX=0
+                print(f"{x.parentID} is not exists")
+                debugX=Nums.RootID
 
             self.indexOfparentAddress.append(debugX)
 
     def getNodeLevelbyID(self, ID):
         # prime key should start with 1
-        if ID == 1:
+        if ID == Nums.RootID:
             return 0
         else:
-            return 1 + self.getNodeLevelbyID(self.IDparentIDdict[ID])
+            #parentID=self.IDparentIDdict[ID]
+            parentID = self.IDparentIDdict.get(ID)
+
+            if(parentID==ID or parentID is None):
+                print(f"Find new Node with {ID}")
+                return 0
+            else:
+                return 1 + self.getNodeLevelbyID(parentID)
 
     def genIndexbyNodeLevel(self):
         self.indexOfNodeLevel = []
@@ -207,7 +216,7 @@ class macnode:
 
     def getNodebyID(self, ID):
         # IDPos=self.indexOfID.index(ID)
-        # IDPos = self.IDindexDict[ID]
+        # IDPos = self.IDindexDict.get(ID)
         IDPos = self.IDindexDict.get(ID)  ## can avoid exception.
         return self.nodeList[IDPos]
 
@@ -224,7 +233,7 @@ class macnode:
         # subNodeIndex = self.indexOfparentID.index(ID)
 
         subNodeIndex = self.getMultiIndex(self.indexOfparentID, ID)
-        x = self.IDindexDict[ID]
+        x = self.IDindexDict.get(ID)
         if x in subNodeIndex:
             subNodeIndex.remove(x)
 
@@ -250,7 +259,7 @@ class macnode:
         vipBalance = 0
         subvipBalanceList = []
         subNodeIndex = self.getMultiIndex(self.indexOfparentID, ID)
-        x = self.IDindexDict[ID]
+        x = self.IDindexDict.get(ID)
 
         if x in subNodeIndex:
             subNodeIndex.remove(x)
@@ -282,7 +291,7 @@ class macnode:
     def getvipLevelbyID(self, ID):
         subvipLevelList = []
         subNodeIndex = self.getMultiIndex(self.indexOfparentID, ID)
-        x = self.IDindexDict[ID]
+        x = self.IDindexDict.get(ID)
         vipbase = self.indexOfvipTag[x] + 0
 
         if x in subNodeIndex:
@@ -359,7 +368,7 @@ class macnode:
     def getstaticIncomeTreebyID(self, ID):
         subNodeIndex = self.getMultiIndex(self.indexOfparentID, ID)
         staticIncomeTree = 0
-        x = self.IDindexDict[ID]
+        x = self.IDindexDict.get(ID)
 
         if x in subNodeIndex:
             subNodeIndex.remove(x)
@@ -412,7 +421,7 @@ class macnode:
         minerCoeff = self.getMinerCoeffbyvipLevel(vipLevel)
 
         subNodeIndex = self.getMultiIndex(self.indexOfparentID, ID)
-        x = self.IDindexDict[ID]
+        x = self.IDindexDict.get(ID)
         if x in subNodeIndex:
             subNodeIndex.remove(x)
 
@@ -484,7 +493,7 @@ class macnode:
 
     def getTotalAwardbyID(self, ID):
 
-        x = self.IDindexDict[ID]
+        x = self.IDindexDict.get(ID)
         TotalAward = self.indexOfRecommendAward[x] + self.indexOfstaticIncome[x] + self.indexOfMinerAward[x]
         return TotalAward
 
@@ -515,7 +524,7 @@ class macnode:
     def getRecommendAwardbyID(self, ID):
 
         subNodeIndex = self.getMultiIndex(self.indexOfparentID, ID)
-        x = self.IDindexDict[ID]
+        x = self.IDindexDict.get(ID)
         if x in subNodeIndex:
             subNodeIndex.remove(x)
 
@@ -547,7 +556,7 @@ class macnode:
                 recommendAward = recommendAward + min(minerProductiveY, minerProductiveX) * min(BalanceY,
                                                                                                 BalanceX) * Nums.rateSon
 
-                subNodeIndexY = self.getMultiIndex(self.indexOfparentID, self.IDindexDict[y])
+                subNodeIndexY = self.getMultiIndex(self.indexOfparentID, self.IDindexDict.get(y))
                 if y in subNodeIndexY:
                     subNodeIndexY.remove(y)
 
@@ -564,26 +573,42 @@ class macnode:
         return recommendAward
 
     def genAllIndex(self):
+        t0=time.time()
         self.initDB()
         self.LoadSQLData()
         self.closDB()
         self.genIndexbyID()
         self.genIndexbyAddress()
         self.genIndexbyBalance()
+        print(f"genIndexbyBalance: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIDparentIDdict()
+        print(f"genIDparentIDdict: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIDAddressdict()
+        print(f"genIDAddressdict: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIDBalancedict()
+        print(f"genIDBalancedict: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIndexbyparentID()
+        print(f"genIndexbyparentID: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIndexbyparentAddress()
+        print(f"genIndexbyparentAddress: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIndexbyNodeLevel()
+        print(f"genIndexbyNodeLevel: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIndexbyTreeBalance()
+        print(f"genIndexbyTreeBalance: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIndexbyvipTreeBalance()
+        print(f"genIndexbyvipTreeBalance: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIndexbyvipLevel()
+        print(f"genIndexbyvipLevel: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIndexbystaticIncome()
+        print(f"genIndexbystaticIncome: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIndexbystaticIncomeTree()
+        print(f"genIndexbystaticIncomeTree: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIndexbyRecommendAward()
+        print(f"genIndexbyRecommendAward: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIndexbyMinerAward()
+        print(f"genIndexbyMinerAward: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIndexbyTotalAward()
+        print(f"genIndexbyTotalAward: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         print("Finish genAllIndex test")
 
     def newdateTable(self):
