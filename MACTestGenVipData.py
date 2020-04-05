@@ -18,7 +18,7 @@ s = session()
 # result = s.query(Stdmacnode).all()
 
 ## Create root node，which is not used for calculate VIP
-node = Stdmacnode()
+node = mymacnode()
 node.ID = 0
 node.Address = f'MAN.8888888888'
 node.Balance = 10000
@@ -54,7 +54,7 @@ t0 = time.time()
 start = 1
 level = 1
 stoplist = [10, 100, 500, 2000, 5000, 10000, 20000]
-s.query(Stdmacnode).filter(Stdmacnode.ID <= stoplist[-1], Stdmacnode.ID >= start).delete()
+s.query(mymacnode).filter(mymacnode.ID <= stoplist[-1], mymacnode.ID >= start).delete()
 s.commit()
 print(f'delete {stoplist[-1]} ')
 for stop in stoplist:
@@ -63,7 +63,7 @@ for stop in stoplist:
         node = Stdmacnode()
         node.ID = i #(stop - i) + start
         node.Address = f'MAN.{level}000{i}'
-        node.Balance = random.randint(1, 5000)
+        node.Balance = random.randint(1, 7000)
         node.parentID = random.randint(0, start-1) ## we can change it to i for more strictly test case!
         #node.parentID = random.randint(0, node.ID-1) ## we can change it to i for more strictly test case!
         node.parentAddress = None
