@@ -1,3 +1,4 @@
+use fastroot;
 CREATE TABLE `asset_base` (
   `phone` varchar(32) NOT NULL COMMENT 'account phone',
   `ethaddress` varchar(42) DEFAULT NULL COMMENT 'eth address',

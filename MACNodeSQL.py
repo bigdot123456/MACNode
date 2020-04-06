@@ -2,12 +2,10 @@
 import sqlalchemy
 from sqlalchemy import Column, Float, String, text
 from sqlalchemy.dialects.mysql import BIGINT, INTEGER, TINYINT
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.declarative import declarative_base, as_declarative
 
 Base = declarative_base()
 metadata = Base.metadata
-
-from sqlalchemy.ext.declarative import as_declarative
 
 @as_declarative()
 class Base:
@@ -80,6 +78,17 @@ class AssetCheckresultpython(Base):
     attribute = Column(String(1024), comment='矿机属性')
     production = Column(Float(20, True), server_default=text("'0.0000'"))
     updatetime = Column(BIGINT(20), server_default=text("'0'"))
+    vipTreeBalance = Column(Float, server_default=text("'0'"), comment='vip计算的领主金额')
+    vipTag = Column(INTEGER(11), server_default=text("'0'"), comment='vip标志')
+    vipLevel = Column(INTEGER(11), server_default=text("'0'"), comment='vip等级')
+    usedBalance = Column(Float, server_default=text("'0'"), comment='用户用于真实计算的金额')
+    minerProductive = Column(Float, server_default=text("'0'"), comment='矿机系数')
+    staticIncome = Column(Float)
+    staticIncomeTree = Column(Float)
+    MinerAward = Column(Float)
+    RecommendAward = Column(Float)
+    DynamicAward = Column(Float)
+    TotalAward = Column(Float)
 
 
 class AssetFund(Base):
