@@ -7,4 +7,4 @@ engine = create_engine("mysql+pymysql://fastroot:test123456@111.229.168.108/fast
 session = sessionmaker(engine)
 mySession = session()
 # 查询结果集
-result = mySession.query(Stdmacnode).all()
+result = mySession.query(AssetLoadsqldatum).all()

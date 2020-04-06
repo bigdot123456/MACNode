@@ -1,21 +1,2 @@
 
-zpython:S116"WRename this field "subStaticIncome" to match the regular expression ^[_a-z][_a-z0-9]*$.(΅Ύ¶Πύÿÿÿÿ8Ρυª“.
-upython:S116"RRename this field "subNodeNum" to match the regular expression ^[_a-z][_a-z0-9]*$.(—ΰΦΟύÿÿÿÿ8Ρυª“.
-ppython:S116	"RRename this field "superiorID" to match the regular expression ^[_a-z][_a-z0-9]*$.(¤ω…8Ρυª“.
-rpython:S100("ORename method "calRound" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(΅ϋΩ•ϊÿÿÿÿ8Ρυª“.
-upython:S117"WRename this parameter "attendRound" to match the regular expression ^[_a-z][a-z0-9_]*$.(Κωΐ8Ρυª“.
-spython:S117*"VRename this local variable "Round" to match the regular expression ^[_a-z][a-z0-9_]*$.(²Ζεc8 ΐΌª“.
-upython:S116"RRename this field "vipTagList" to match the regular expression ^[_a-z][_a-z0-9]*$.(‹Òάύÿÿÿÿ8Ρυª“.
-wpython:S116"TRename this field "staticIncome" to match the regular expression ^[_a-z][_a-z0-9]*$.(Ώς…ύÿÿÿÿ8Ρυª“.
-wpython:S116"TRename this field "interestDate" to match the regular expression ^[_a-z][_a-z0-9]*$.(ΥΩάΚϊÿÿÿÿ8Ρυª“.
-upython:S116"RRename this field "ruleStatus" to match the regular expression ^[_a-z][_a-z0-9]*$.(«Ξ¬‘ÿÿÿÿÿ8Ρυª“.
-qpython:S116
-"SRename this field "attendRound" to match the regular expression ^[_a-z][_a-z0-9]*$.(³ƒι¶8Ρυª“.
-lpython:S117"NRename this parameter "ID" to match the regular expression ^[_a-z][a-z0-9_]*$.(Κωΐ8Ρυª“.
-tpython:S116"VRename this field "interestIncome" to match the regular expression ^[_a-z][_a-z0-9]*$.(©Δ±8Ρυª“.
-ppython:S116"RRename this field "vipSubList" to match the regular expression ^[_a-z][_a-z0-9]*$.(ΔΛμλ8Ρυª“.
-spython:S116"URename this field "withdrawMoney" to match the regular expression ^[_a-z][_a-z0-9]*$.(ύς‹8Ρυª“.
-vpython:S116"SRename this field "vipSuperior" to match the regular expression ^[_a-z][_a-z0-9]*$.(ιΎΒƒωÿÿÿÿ8Ρυª“.
-xpython:S116"URename this field "dynamicIncome" to match the regular expression ^[_a-z][_a-z0-9]*$.(ΨΚ…±ϋÿÿÿÿ8Ρυª“.
-vpython:S116"SRename this field "subNodeList" to match the regular expression ^[_a-z][_a-z0-9]*$.(ν—α’ωÿÿÿÿ8Ρυª“.
-ypython:S116"VRename this field "withdrawStatus" to match the regular expression ^[_a-z][_a-z0-9]*$.(υ§λΦÿÿÿÿÿ8Ρυª“.
+rpython:S1002"ORename method "calRound" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(΅ϋΩ•ϊÿÿÿÿ8Ρυª“.

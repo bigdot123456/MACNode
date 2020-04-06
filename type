@@ -1,0 +1,15 @@
+Field,Type,Null,Key,Default,Extra
+id,int(8),NO,PRI,NULL,auto_increment
+fund,double,YES,,0,
+static,double,YES,,0,
+dynamic,double,YES,,0,
+status,tinyint(1),YES,,0,
+fundtype,int(4),YES,,0,
+userid,varchar(32),NO,,NULL,
+starttime,bigint(20),NO,,NULL,
+stoptime,bigint(20),YES,,0,
+lastdayinterest,double,YES,,0,
+gas,double,YES,,0,
+attribute,varchar(1024),YES,,NULL,
+production,"double(20,4)",YES,,0.0000,
+updatetime,bigint(20),YES,,0,

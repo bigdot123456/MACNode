@@ -1,5 +1,6 @@
 import datetime
 import heapq
+import json
 import sys
 import time
 
@@ -9,9 +10,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from MACNodeSQL import *
-from const import *
 
 sys.setrecursionlimit(10000)
+
+from const import *
 
 Nums = Constants(
     VipStdBalance=30000,
@@ -138,6 +140,26 @@ class macnode:
             self.indexOfID.append(x.ID)
             self.IDindexDict[x.ID] = pos
             pos = pos + 1
+
+    def genfastIndexbyID(self):
+        self.indexOfID = []
+        self.IDindexDict = {}
+        pos = 0
+        for x in self.nodeList:
+            self.indexOfID.append(x.ID)
+            self.IDindexDict[x.ID] = pos
+            pos = pos + 1
+    # def db2json(self):
+    #     #result = common.util.to_json_list(self.nodeList)
+    #     self.nodejson=[]
+    #     #result=json.dumps(self.nodeList,cls=new_alchemy_encoder(),check_circular=flase)
+    #     for x in self.nodeList:
+    #         self.nodejson.append(x.json)
+
+    def db2json(self):
+        x=self.nodeList.to_namedict()
+        print(x)
+
 
     def genIndexbyAddress(self):
         self.indexOfAddress = []
@@ -578,6 +600,8 @@ class macnode:
         self.LoadSQLData()
         self.closDB()
         print(f"LoadSQLData: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
+        self.db2json()
+        print(f"db2json: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIndexbyID()
         print(f"genIndexbyID: Total time for {Nums.MaxRecords} records {(time.time() - t0)}  secs")
         self.genIndexbyAddress()
