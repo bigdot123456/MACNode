@@ -6,6 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base, as_declarative
 
 Base = declarative_base()
 metadata = Base.metadata
+
 @as_declarative()
 class Base:
     def _asdict(self):
@@ -17,7 +18,7 @@ class Admin(Base):
 
     name = Column(String(32))
     id = Column(BIGINT(20), primary_key=True)
-    password = Column(INTEGER(11))
+    password = Column(String(40), nullable=False)
     right = Column(INTEGER(11))
 
 
@@ -63,8 +64,6 @@ class AssetCheckresultpython(Base):
     email = Column(String(32), comment='email address')
     password = Column(String(64), comment='md5 of password')
     code = Column(String(10), comment='invitation code')
-    mycode = Column(String(10), comment='my invitation code')
-    fund = Column(Float(asdecimal=True), server_default=text("'0'"), comment='本金')
     status = Column(TINYINT(1), server_default=text("'0'"), comment='0、未激活 1、运行、2淘汰')
     fundtype = Column(INTEGER(4), server_default=text("'0'"), comment='基金类型')
     userid = Column(String(32), nullable=False, comment='用户id')
@@ -76,6 +75,8 @@ class AssetCheckresultpython(Base):
     production = Column(Float(20, True), server_default=text("'0.0000'"))
     updatetime = Column(BIGINT(20), server_default=text("'0'"))
     mycodeID = Column(INTEGER(11), nullable=False, comment='mycode 排序索引')
+    mycode = Column(String(10), comment='my invitation code')
+    fund = Column(Float(asdecimal=True), server_default=text("'0'"), comment='本金')
     mycodeIDSubListIndex = Column(String(1024), comment='mycode 直接下属的排序索引,通过逗号分割')
     mycodeIDGrandSonListIndex = Column(String(1024), comment='mycode 二级直接下属的排序索引,通过逗号分割')
     mycodeIDsubNodevipLevelIndex = Column(String(32), comment='VIP下属层级编号')
@@ -88,10 +89,13 @@ class AssetCheckresultpython(Base):
     staticIncomeTree = Column(Float)
     MinerAward = Column(Float)
     RecommendAward = Column(Float)
+    Recommend1Award = Column(Float)
+    Recommend2Award = Column(Float)
     DynamicAward = Column(Float)
     TotalAward = Column(Float)
     static = Column(Float(asdecimal=True), server_default=text("'0'"), comment='静态利息')
     dynamic = Column(Float(asdecimal=True), server_default=text("'0'"), comment='动态利息')
+    decription = Column(String(1024), comment='用于说明计算过程')
 
 
 class AssetFund(Base):
@@ -164,6 +168,8 @@ class BillCoin(Base):
     txhash = Column(String(66))
     userid = Column(String(32))
     status = Column(TINYINT(1), server_default=text("'0'"))
+    checkedtime = Column(BIGINT(20))
+    sendtime = Column(BIGINT(20))
 
 
 class BillFund(Base):
@@ -279,6 +285,19 @@ class Mymacnoderesult(Base):
     RecommendAward = Column(Float)
     TotalAward = Column(Float)
     withdrawStatus = Column(INTEGER(11))
+
+
+class News(Base):
+    __tablename__ = 'news'
+
+    id = Column(INTEGER(11), primary_key=True)
+    title = Column(String(64))
+    content = Column(String(2048))
+    url = Column(String(256))
+    picurl = Column(String(256))
+    order = Column(TINYINT(2))
+    timestamp = Column(BIGINT(20))
+    status = Column(TINYINT(2))
 
 
 class Notice(Base):

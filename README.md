@@ -243,6 +243,8 @@ class Base:
                 for c in sqlalchemy.inspection.inspect(self).mapper.column_attrs}
 
 ```
+然后自动导入对应的sqlalchemy库和as_declarative，即可。
+
 ## 单独检查的过程
 ### second generate test vector
 ```bash

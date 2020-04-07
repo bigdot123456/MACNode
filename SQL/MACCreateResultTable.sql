@@ -58,9 +58,6 @@ CREATE TABLE `asset_checkresultPython`
     `email`                        varchar(32)          DEFAULT NULL COMMENT 'email address',
     `password`                     varchar(64)          DEFAULT NULL COMMENT 'md5 of password',
     `code`                         varchar(10)          DEFAULT NULL COMMENT 'invitation code',
-    `mycode`                       varchar(10)          DEFAULT NULL COMMENT 'my invitation code',
-
-    `fund`                         double               DEFAULT '0' COMMENT '本金',
     `status`                       tinyint(1)           DEFAULT '0' COMMENT '0、未激活 1、运行、2淘汰',
     `fundtype`                     int(4)               DEFAULT '0' COMMENT '基金类型',
     `userid`                       varchar(32) NOT NULL COMMENT '用户id',
@@ -73,6 +70,9 @@ CREATE TABLE `asset_checkresultPython`
     `updatetime`                   bigint(20)           DEFAULT '0',
 
     `mycodeID`                     int(11)     NOT NULL COMMENT 'mycode 排序索引',
+    `mycode`                       varchar(10)          DEFAULT NULL COMMENT 'my invitation code',
+
+    `fund`                         double               DEFAULT '0' COMMENT '本金',
     `mycodeIDSubListIndex`         varchar(1024) COMMENT 'mycode 直接下属的排序索引,通过逗号分割',
     `mycodeIDGrandSonListIndex`    varchar(1024) COMMENT 'mycode 二级直接下属的排序索引,通过逗号分割',
     `mycodeIDsubNodevipLevelIndex` varchar(32)          DEFAULT NULL COMMENT 'VIP下属层级编号',
@@ -86,13 +86,15 @@ CREATE TABLE `asset_checkresultPython`
     `staticIncomeTree`             float,
     `MinerAward`                   float,
     `RecommendAward`               float,
+    `Recommend1Award`              float,
+    `Recommend2Award`              float,
     `DynamicAward`                 float,
 
     `TotalAward`                   float,
 
     `static`                       double               DEFAULT '0' COMMENT '静态利息',
     `dynamic`                      double               DEFAULT '0' COMMENT '动态利息',
-
+    `decription`                   varchar(1024) COMMENT '用于说明计算过程',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

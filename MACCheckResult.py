@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from MACNodeSQL import *
-from const import *
+from include.const import *
 
 Nums = Constants(
     VipStdBalance=30000,
@@ -131,9 +131,13 @@ class CheckSQLData():
             node.staticIncomeTree = self.indexOfstaticIncomeTree[Index]
             node.MinerAward = self.indexOfMinerAward[Index]
             node.RecommendAward = self.indexOfRecommendAward[Index]
+            node.Recommend1Award = self.indexOfRecommend1Award[Index]
+            node.Recommend2Award = self.indexOfRecommend2Award[Index]
             node.DynamicAward = self.indexOfDynamicAward[Index]
             node.TotalAward = self.indexOfTotalAward[Index]
 
+
+            node.decription=self.getDescriptionByIndex(x,Index)
             i = i + 1
             self.s.add(node)
             if i % 1000 == 0:
@@ -163,6 +167,19 @@ class CheckSQLData():
             print(f'Node take error {i} {result}!')
 
         print(f"SQLAlchemy ORM add(): Total time for all records {(time.time() - self.t0)}  secs")
+
+    def getDescriptionByIndex(self,Node,Index):
+        desc=f"{Index}:{Node['name']}:v{self.indexOfvipLevel[Index]}\n:"
+        for i in self.indexOfsubNodeListIndex[Index]:
+            desc.join(f"{i}:{self.sortedMycodeListdict[i]['mycode']}:{self.sortedMycodeListdict[i]['fund']}:v{self.indexOfvipLevel[i]}\n")
+        desc.join("$")
+        for i in self.indexOfGrandSonNodeListIndex[Index]:
+            desc.join(
+                f"{i}:{self.sortedMycodeListdict[i]['mycode']}:{self.sortedMycodeListdict[i]['fund']}:v{self.indexOfvipLevel[i]}\n")
+        desc.join("$")
+        desc.join(f"{self.indexOfTreeBalance}:{self.indexOfvipTreeBalance}:{self.indexOfRecommend1Award[Index]}:{self.indexOfRecommendAward[Index]}:{self.indexOfMinerAward[Index]}:{self.indexOfTotalAward[Index]}")
+
+        return desc
 
     def getsubNodeListIndexbyNodeIndex(self, NodeIndex):
 
@@ -333,7 +350,7 @@ class CheckSQLData():
                 assert ("Failure")
 
         try:
-            TreeBalance=self.indexOfusedBalance[Index] + subTreeBalance
+            TreeBalance = self.indexOfusedBalance[Index] + subTreeBalance
         except:
             print("should exec get static income function genIndexbystaticIncome() to get ub of indexOfusedBalance ")
             assert ("Failure")
@@ -388,7 +405,6 @@ class CheckSQLData():
                 subBalance = self.indexOfTreeBalance[y]
                 subvipBalanceList.append(subBalance)
 
-
             vipBalance = sum(subvipBalanceList) - max(subvipBalanceList)
         else:
             vipBalance = 0
@@ -399,7 +415,7 @@ class CheckSQLData():
         subvipLevelList = []
         subNodeIndex = self.indexOfsubNodeListIndex[i]
 
-        vipbase = self.indexOfvipTag[i] # + 0  # use it to convert boolean to int
+        vipbase = self.indexOfvipTag[i]  # + 0  # use it to convert boolean to int
 
         if subNodeIndex:
             # subNodeList = self.getListHit(self.indexOfID, subNodeIndex)
@@ -589,12 +605,13 @@ class CheckSQLData():
     def getRecommendAwardbyIndex(self, Index):
 
         subNodeIndex = self.indexOfsubNodeListIndex[Index]
-
+        r1 = 0
+        r2 = 0
         RecommmendLevel = len(subNodeIndex)
         if RecommmendLevel == 0:
-            return 0
+            r1=0
         elif (RecommmendLevel < 3):
-            recommendAward = 0
+
             minerProductiveX = self.indexOfminerProductive[Index]
             BalanceX = self.indexOfusedBalance[Index]
 
@@ -602,35 +619,28 @@ class CheckSQLData():
             for y in subNodeIndex:
                 minerProductiveY = self.indexOfminerProductive[y]
                 BalanceY = self.indexOfusedBalance[y]
-                recommendAward = recommendAward + min(minerProductiveY, minerProductiveX) * min(BalanceY,
-                                                                                                BalanceX) * Nums.rateSon
+                r1 = r1 + min(minerProductiveY, minerProductiveX) * min(BalanceY,
+                                                                        BalanceX) * Nums.rateSon
         else:
             recommendAward = 0
             minerProductiveX = self.indexOfminerProductive[Index]
             BalanceX = self.indexOfusedBalance[Index]
 
-            grandsonNodeIndex = []
-
             # subNodeList = self.getListHit(self.indexOfID, subNodeIndex)
             for y in subNodeIndex:
                 minerProductiveY = self.indexOfminerProductive[y]
                 BalanceY = self.indexOfusedBalance[y]
-                recommendAward = recommendAward + min(minerProductiveY, minerProductiveX) * min(BalanceY,
-                                                                                                BalanceX) * Nums.rateSon
+                r1 = r1 + min(minerProductiveY, minerProductiveX) * min(BalanceY,
+                                                                        BalanceX) * Nums.rateSon
 
-                subNodeIndexY = self.indexOfsubNodeListIndex[y]
-
-                if subNodeIndexY:
-                    grandsonNodeIndex.extend(subNodeIndexY)
-
-            subNodeIndex = grandsonNodeIndex
+            subNodeIndex = self.indexOfGrandSonNodeListIndex[Index]
             for y in subNodeIndex:
                 minerProductiveY = self.indexOfminerProductive[y]
                 BalanceY = self.indexOfusedBalance[y]
-                recommendAward = recommendAward + min(minerProductiveY, minerProductiveX) * min(BalanceY,
-                                                                                                BalanceX) * Nums.rateGrandSon
+                r2 = r2 + min(minerProductiveY, minerProductiveX) * min(BalanceY,
+                                                                        BalanceX) * Nums.rateGrandSon
 
-        return recommendAward
+        return r1,r2,(r1+r2)
 
     def getTotalAwardbyIndex(self, Index):
 
@@ -662,11 +672,15 @@ class CheckSQLData():
 
     def genIndexbyRecommendAward(self):
         self.indexOfRecommendAward = []
+        self.indexOfRecommend1Award = []
+        self.indexOfRecommend2Award = []
         self.IDRecommendAwarddict = {}
         for x in range(self.ListLen):
-            RecommendAward = self.getRecommendAwardbyIndex(x)
-            self.indexOfRecommendAward.append(RecommendAward)
-            self.IDRecommendAwarddict[self.sortedMycodeListdict[x]['mycode']] = RecommendAward
+            r1,r2,r = self.getRecommendAwardbyIndex(x)
+            self.indexOfRecommendAward.append(r)
+            self.indexOfRecommend1Award.append(r1)
+            self.indexOfRecommend2Award.append(r2)
+            self.IDRecommendAwarddict[self.sortedMycodeListdict[x]['mycode']] = r
         print(f"genIndexbyRecommendAward: Total time for all records {(time.time() - self.t0)}  secs")
 
     def genAllIndex(self):
