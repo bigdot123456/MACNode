@@ -6,7 +6,6 @@ from sqlalchemy.ext.declarative import declarative_base, as_declarative
 
 Base = declarative_base()
 metadata = Base.metadata
-
 @as_declarative()
 class Base:
     def _asdict(self):
@@ -66,8 +65,6 @@ class AssetCheckresultpython(Base):
     code = Column(String(10), comment='invitation code')
     mycode = Column(String(10), comment='my invitation code')
     fund = Column(Float(asdecimal=True), server_default=text("'0'"), comment='本金')
-    static = Column(Float(asdecimal=True), server_default=text("'0'"), comment='静态利息')
-    dynamic = Column(Float(asdecimal=True), server_default=text("'0'"), comment='动态利息')
     status = Column(TINYINT(1), server_default=text("'0'"), comment='0、未激活 1、运行、2淘汰')
     fundtype = Column(INTEGER(4), server_default=text("'0'"), comment='基金类型')
     userid = Column(String(32), nullable=False, comment='用户id')
@@ -78,6 +75,10 @@ class AssetCheckresultpython(Base):
     attribute = Column(String(1024), comment='矿机属性')
     production = Column(Float(20, True), server_default=text("'0.0000'"))
     updatetime = Column(BIGINT(20), server_default=text("'0'"))
+    mycodeID = Column(INTEGER(11), nullable=False, comment='mycode 排序索引')
+    mycodeIDSubListIndex = Column(String(1024), comment='mycode 直接下属的排序索引,通过逗号分割')
+    mycodeIDGrandSonListIndex = Column(String(1024), comment='mycode 二级直接下属的排序索引,通过逗号分割')
+    mycodeIDsubNodevipLevelIndex = Column(String(32), comment='VIP下属层级编号')
     vipTreeBalance = Column(Float, server_default=text("'0'"), comment='vip计算的领主金额')
     vipTag = Column(INTEGER(11), server_default=text("'0'"), comment='vip标志')
     vipLevel = Column(INTEGER(11), server_default=text("'0'"), comment='vip等级')
@@ -89,6 +90,8 @@ class AssetCheckresultpython(Base):
     RecommendAward = Column(Float)
     DynamicAward = Column(Float)
     TotalAward = Column(Float)
+    static = Column(Float(asdecimal=True), server_default=text("'0'"), comment='静态利息')
+    dynamic = Column(Float(asdecimal=True), server_default=text("'0'"), comment='动态利息')
 
 
 class AssetFund(Base):

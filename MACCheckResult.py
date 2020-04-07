@@ -112,6 +112,11 @@ class CheckSQLData():
 
             z = self.indexOfMycode.get(node.mycode)
             Index = z['index']
+            node.mycodeID = Index
+            node.mycodeIDSubListIndex = ' '.join(str(i) for i in self.indexOfsubNodeListIndex[Index])
+            node.mycodeIDGrandSonListIndex = ','.join(str(i) for i in self.indexOfGrandSonNodeListIndex[Index])
+            node.mycodeIDsubNodevipLevelIndex = ','.join(str(i) for i in self.indexOfsubNodevipLevelIndex[Index])
+
             node.NodeLevel = self.indexOfNodeLevel[Index]
             node.TreeBalance = self.indexOfTreeBalance[Index]
 
@@ -180,6 +185,37 @@ class CheckSQLData():
             self.indexOfsubNodeListIndex.append(y)
         print(f"genIndexbysubNodeListIndex: Total time for all records {(time.time() - self.t0)}  secs")
 
+    def genIndexbyGrandSonNodeListIndex(self):
+        self.indexOfGrandSonNodeListIndex = []
+        # 创建空list的方法：
+        # features = [[] for _ in range(6)]
+        for x in range(self.ListLen):
+            y = self.indexOfsubNodeListIndex[x]
+            u = []  # u is the grandson list
+            if y:
+                for z in y:
+                    v = self.indexOfsubNodeListIndex[z]
+                    u.extend(v)
+
+            self.indexOfGrandSonNodeListIndex.append(u)
+
+        print(f"genIndexbyGrandSonNodeListIndex: Total time for all records {(time.time() - self.t0)}  secs")
+
+    def genIndexbysubNodevipLevelIndex(self):
+        self.indexOfsubNodevipLevelIndex = []
+        for x in range(self.ListLen):
+            y = self.indexOfsubNodeListIndex[x]
+            u = []  # u is the subnode vipLevel list
+            if y:
+
+                for z in y:
+                    v = self.indexOfvipLevel[z]
+                    u.append(v)
+
+            self.indexOfsubNodevipLevelIndex.append(u)
+
+        print(f"genIndexbysubNodevipLevelIndex: Total time for all records {(time.time() - self.t0)}  secs")
+
     def getsubNodeListbyNode(self, Node):
 
         subNodeList = []
@@ -215,7 +251,7 @@ class CheckSQLData():
                 return 1 + self.getNodeLevelbyMycode(parentID)
         else:
             return 0
-        
+
     def genIndexbyNodeLevel(self):
         self.indexOfNodeLevel = []
         self.IDNodeLeveldict = {}
@@ -281,15 +317,50 @@ class CheckSQLData():
 
         return TreeBalance + Node['fund']
 
+    def getTreeBalancebyIndex(self, Index):
+        subNodeIndex = self.indexOfsubNodeListIndex[Index]
+        subTreeBalance = 0
+
+        if subNodeIndex:
+            for y in subNodeIndex:
+                subTreeBalance = subTreeBalance + self.getTreeBalancebyIndex(y)
+        else:
+            try:
+                subTreeBalance = 0
+            except:
+                print(
+                    "should exec get static income function genIndexbystaticIncome() to get ub of indexOfusedBalance ")
+                assert ("Failure")
+
+        try:
+            TreeBalance=self.indexOfusedBalance[Index] + subTreeBalance
+        except:
+            print("should exec get static income function genIndexbystaticIncome() to get ub of indexOfusedBalance ")
+            assert ("Failure")
+
+        return TreeBalance
+
+    # def genIndexbyTreeBalanceOld(self):
+    #     self.indexOfTreeBalance = []
+    #
+    #     self.IDTreeBalancedict = {}
+    #     for x in self.sortedMycodeListdict:
+    #         # TreeBalance = self.getTreeBalancebyMycode(x)
+    #         TreeBalance = self.getTreeBalancebyNode(x)
+    #         self.indexOfTreeBalance.append(TreeBalance)
+    #         self.IDTreeBalancedict[x['mycode']] = TreeBalance
+    #
+    #     print(f"genIndexbyTreeBalance: Total time for all records {(time.time() - self.t0)}  secs")
+
     def genIndexbyTreeBalance(self):
         self.indexOfTreeBalance = []
 
         self.IDTreeBalancedict = {}
-        for x in self.sortedMycodeListdict:
+        for x in range(self.ListLen):
             # TreeBalance = self.getTreeBalancebyMycode(x)
-            TreeBalance = self.getTreeBalancebyNode(x)
+            TreeBalance = self.getTreeBalancebyIndex(x)
             self.indexOfTreeBalance.append(TreeBalance)
-            self.IDTreeBalancedict[x['mycode']] = TreeBalance
+            self.IDTreeBalancedict[self.sortedMycodeListdict[x]['mycode']] = TreeBalance
 
         print(f"genIndexbyTreeBalance: Total time for all records {(time.time() - self.t0)}  secs")
 
@@ -300,7 +371,7 @@ class CheckSQLData():
 
         for x in range(self.ListLen):
             vipBalance = self.getvipTreeBalancebyIndex(x)
-            vipTag = vipBalance >= Nums.VipStdBalance
+            vipTag = 1 if vipBalance >= Nums.VipStdBalance else 0
             self.indexOfvipTreeBalance.append(vipBalance)
             self.IDvipTreeBalancedict[self.sortedMycodeListdict[x]['mycode']] = vipBalance
             self.indexOfvipTag.append(vipTag)
@@ -317,7 +388,8 @@ class CheckSQLData():
                 subBalance = self.indexOfTreeBalance[y]
                 subvipBalanceList.append(subBalance)
 
-                vipBalance = sum(subvipBalanceList) - max(subvipBalanceList)
+
+            vipBalance = sum(subvipBalanceList) - max(subvipBalanceList)
         else:
             vipBalance = 0
 
@@ -327,7 +399,7 @@ class CheckSQLData():
         subvipLevelList = []
         subNodeIndex = self.indexOfsubNodeListIndex[i]
 
-        vipbase = self.indexOfvipTag[i] + 0  # use it to convert boolean to int
+        vipbase = self.indexOfvipTag[i] # + 0  # use it to convert boolean to int
 
         if subNodeIndex:
             # subNodeList = self.getListHit(self.indexOfID, subNodeIndex)
@@ -337,8 +409,12 @@ class CheckSQLData():
                 subvipLevelList.append(subvipLevel)
 
             subvipTop2 = heapq.nlargest(2, subvipLevelList)
+
             subvipLevel = min(subvipTop2)
-            vipLevel = max(subvipLevel, vipbase)
+            if (subvipLevel == 0):
+                vipLevel = vipbase
+            else:
+                vipLevel = subvipLevel + 1
         else:
             vipLevel = 0
 
@@ -444,11 +520,12 @@ class CheckSQLData():
             return 0
 
         minerCoeff = self.getMinerCoeffbyvipLevel(vipLevel)
-
-        subNodeIndex = self.indexOfsubNodeListIndex[Index]
-
         grandsonNodeList = []
         MinerAward = 0
+
+        # list should use copy method
+        # subNodeIndex = self.indexOfsubNodeListIndex[Index]
+        subNodeIndex = self.indexOfsubNodeListIndex[Index].copy()
         # can use zip function and depth to optimize code size
         if subNodeIndex:
             # subNodeList = self.getListHit(self.indexOfID, subNodeIndex)
@@ -463,10 +540,12 @@ class CheckSQLData():
                     if revenue < 0:
                         revenue = 0
 
-                    grandsonNodeList = self.indexOfsubNodeListIndex[y]
+                    # grandsonNodeList = self.indexOfsubNodeListIndex[y]
+                    # should use copy method
+                    vipgrandsonNodeList = self.indexOfsubNodeListIndex[y].copy()
 
-                    if grandsonNodeList:
-                        grandsonNodeList.extend(grandsonNodeList)
+                    if vipgrandsonNodeList:
+                        grandsonNodeList.extend(vipgrandsonNodeList)
 
                 elif vipLevel == subvipLevel:
                     revenue = self.getMinerAwardbyIndex(y) * Nums.sameLevelRate
@@ -475,8 +554,9 @@ class CheckSQLData():
 
                 MinerAward = MinerAward + revenue
 
-            subNodeList = grandsonNodeList
-            while subNodeList:
+            subNodeIndex = grandsonNodeList.copy()
+            vipsub3NodeList = []
+            while subNodeIndex:
                 y = subNodeIndex[-1]
                 subNodeIndex.pop()
                 subvipLevel = self.indexOfvipLevel[y]
@@ -488,10 +568,10 @@ class CheckSQLData():
                         revenue = 0
                         raise Exception("error for calculate revenue")
 
-                    grandsonNodeList = self.indexOfsubNodeListIndex[y]
+                    vipsub2NodeList = self.indexOfsubNodeListIndex[y].copy()
 
-                    if grandsonNodeList:
-                        grandsonNodeList.extend(grandsonNodeList)
+                    if vipsub2NodeList:
+                        vipsub3NodeList.extend(vipsub2NodeList)
 
                 elif vipLevel == subvipLevel:
                     revenue = 0
@@ -591,18 +671,22 @@ class CheckSQLData():
 
     def genAllIndex(self):
         self.genIndexbysubNodeListIndex()
+        self.genIndexbyGrandSonNodeListIndex()
         self.genIndexbyNodeLevel()
+        self.genIndexbystaticIncome()
+
         self.genIndexbyTreeBalance()
 
         self.genIndexbyvipTreeBalance()
         self.genIndexbyvipLevel()
+        self.genIndexbysubNodevipLevelIndex()
 
-        self.genIndexbystaticIncome()
         self.genIndexbystaticIncomeTree()
 
         self.genIndexbyMinerAward()
         self.genIndexbyRecommendAward()
         self.genIndexbyTotalAward()
+
 
 if __name__ == "__main__":
     t = CheckSQLData()
