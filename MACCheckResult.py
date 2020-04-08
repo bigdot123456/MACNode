@@ -1,6 +1,8 @@
 import heapq
+import os
 import time
 
+import pandas as pd
 import pymysql
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -9,7 +11,7 @@ from MACNodeSQL import *
 from include.const import *
 
 Nums = Constants(
-    VipStdBalance=30000,
+    VipStdBalance=3000,
     moneyInput=[300, 1000, 2000, 4000],
     dayLimited=[0.01, 0.011, 0.013, 0.015],
     totalUSDT=[600, 2500, 6000, 14000],
@@ -29,6 +31,17 @@ class CheckSQLData():
     ListLen = 0
 
     def __init__(self):
+        self.IsMinerAwardCached = []
+        self.MinerAwardCachedValue = []
+
+        self.IsTreeBalanceCached = []
+        self.TreeBalanceCachedValue = []
+
+        self.IsstaticIncomeTreeCached = []
+        self.staticIncomeTreeCachedValue = []
+
+        self.IsvipLevelCached = []
+        self.vipLevelCachedValue =[]
 
         print('Load SQL Data from MySQL....')
 
@@ -62,13 +75,48 @@ class CheckSQLData():
         self.indexOfMycode = self.build_dict(self.sortedMycodeListdict, key="mycode")
         # 考虑到层级关系，还需要建立mycode的字典，方便查找上下级关系，所以 mycode 是关键index
         self.ListLen = len(self.sortedMycodeListdict)
+
+        self.IsMinerAwardCached = [False] * self.ListLen
+        self.MinerAwardCachedValue = [0] * self.ListLen
+
+        self.IsTreeBalanceCached = [False] * self.ListLen
+        self.TreeBalanceCachedValue = [0] * self.ListLen
+
+        self.IsstaticIncomeTreeCached = [False] * self.ListLen
+        self.staticIncomeTreeCachedValue = [0] * self.ListLen
+
+        self.IsvipLevelCached = [False] * self.ListLen
+        self.vipLevelCachedValue = [0] * self.ListLen
+
         print(f"sorted: Total time for {Nums.MaxRecords} records {(time.time() - self.t0)}  secs")
         # print(f"SQLAlchemy ORM query(): Total time for {len(self.nodeList)} records {(time.time() - self.t0)}  secs")
 
     def build_dict(self, seq, key):
         return dict((d[key], dict(d, index=i)) for (i, d) in enumerate(seq))
 
+    def saveData2excel(self):
+        path = os.path.dirname(os.path.abspath(__file__))
+        output_file = os.path.join(path, 'CheckData.xlsx')
+
+        writer = pd.ExcelWriter(output_file)
+        df = pd.DataFrame(self.sortedMycodeListdict)
+        df['TotalAward'] = self.indexOfTotalAward
+        df['vipLevel'] = self.indexOfvipLevel
+        df['RecommendAward'] = self.indexOfRecommend1Award
+        df['staticIncome'] = self.indexOfstaticIncome
+
+        df.to_excel(writer, sheet_name="origin data")
+        writer.close()
+
     def saveData(self):
+        path = os.path.dirname(os.path.abspath(__file__))
+        output_file = os.path.join(path, 'fullresult.xlsx')
+        writer = pd.ExcelWriter(output_file)
+
+        node = AssetCheckresultpython()
+        # nodedict = node._asdict()
+        nodedict = node.__dict__
+        df = pd.DataFrame(nodedict, pd.Index(range(1)))
 
         # copy data from fund, and integrate userlist
         # FundNum = len(self.sortedMycodeListdict)
@@ -136,8 +184,17 @@ class CheckSQLData():
             node.DynamicAward = self.indexOfDynamicAward[Index]
             node.TotalAward = self.indexOfTotalAward[Index]
 
+            d = self.getDescriptionByIndex(x, Index)
+            if int(node.TotalAward) == int(node.static + node.dynamic):
+                node.decription = f"OK:={d}"
+            else:
+                node.decription = f"ERR:={d}"
 
-            node.decription=self.getDescriptionByIndex(x,Index)
+            # if i==1:
+            # df = pd.DataFrame({'id': 1, 'name': 'Alice'}, pd.Index(range(1)))
+            df = df.append(node.__dict__, ignore_index=True)
+            # df = df.append(node.__dict__, pd.Index(range(1)))
+
             i = i + 1
             self.s.add(node)
             if i % 1000 == 0:
@@ -166,18 +223,22 @@ class CheckSQLData():
             self.s.rollback()
             print(f'Node take error {i} {result}!')
 
+        df.to_excel(writer, sheet_name="origin data")
+        writer.close()
+
         print(f"SQLAlchemy ORM add(): Total time for all records {(time.time() - self.t0)}  secs")
 
-    def getDescriptionByIndex(self,Node,Index):
-        desc=f"{Index}:{Node['name']}:v{self.indexOfvipLevel[Index]}\n:"
+    def getDescriptionByIndex(self, Node, Index):
+        desc = ""f"ID{Index}:{Node['name']}:v{self.indexOfvipTreeBalance[Index]}:v{self.indexOfvipLevel[Index]}:\n"
+        desc = desc + f"L1:"
         for i in self.indexOfsubNodeListIndex[Index]:
-            desc.join(f"{i}:{self.sortedMycodeListdict[i]['mycode']}:{self.sortedMycodeListdict[i]['fund']}:v{self.indexOfvipLevel[i]}\n")
-        desc.join("$")
+            desc = desc + (
+                f"ID{i}:{self.sortedMycodeListdict[i]['phone']}{self.sortedMycodeListdict[i]['mycode']}:{int(self.sortedMycodeListdict[i]['fund'])}:t{int(self.indexOfTreeBalance[i])}:v{self.indexOfvipLevel[i]}\n")
+        desc = desc + f"L2:"
         for i in self.indexOfGrandSonNodeListIndex[Index]:
-            desc.join(
-                f"{i}:{self.sortedMycodeListdict[i]['mycode']}:{self.sortedMycodeListdict[i]['fund']}:v{self.indexOfvipLevel[i]}\n")
-        desc.join("$")
-        desc.join(f"{self.indexOfTreeBalance}:{self.indexOfvipTreeBalance}:{self.indexOfRecommend1Award[Index]}:{self.indexOfRecommendAward[Index]}:{self.indexOfMinerAward[Index]}:{self.indexOfTotalAward[Index]}")
+            desc = desc + (
+                f"ID{i}:{self.sortedMycodeListdict[i]['phone']}{self.sortedMycodeListdict[i]['mycode']}:{int(self.sortedMycodeListdict[i]['fund'])}:t{int(self.indexOfTreeBalance[i])}:v{self.indexOfvipLevel[i]}\n")
+        desc = desc + f"@:{int(self.indexOfTreeBalance[Index])}:{int(self.indexOfstaticIncomeTreevip[Index])}:{self.indexOfRecommend1Award[Index]}:{self.indexOfRecommendAward[Index]}:{self.indexOfMinerAward[Index]}:{self.indexOfTotalAward[Index]}"
 
         return desc
 
@@ -335,6 +396,10 @@ class CheckSQLData():
         return TreeBalance + Node['fund']
 
     def getTreeBalancebyIndex(self, Index):
+
+        if self.IsTreeBalanceCached[Index]:
+            return self.TreeBalanceCachedValue[Index]
+
         subNodeIndex = self.indexOfsubNodeListIndex[Index]
         subTreeBalance = 0
 
@@ -351,6 +416,9 @@ class CheckSQLData():
 
         try:
             TreeBalance = self.indexOfusedBalance[Index] + subTreeBalance
+            self.TreeBalanceCachedValue[Index] = TreeBalance
+            self.IsTreeBalanceCached[Index] = True
+
         except:
             print("should exec get static income function genIndexbystaticIncome() to get ub of indexOfusedBalance ")
             assert ("Failure")
@@ -412,6 +480,9 @@ class CheckSQLData():
         return vipBalance
 
     def getvipLevelbyIndex(self, i):
+        if self.IsvipLevelCached[i]:
+            return self.vipLevelCachedValue[i]
+
         subvipLevelList = []
         subNodeIndex = self.indexOfsubNodeListIndex[i]
 
@@ -433,6 +504,9 @@ class CheckSQLData():
                 vipLevel = subvipLevel + 1
         else:
             vipLevel = 0
+
+        self.vipLevelCachedValue[i] = vipLevel
+        self.IsvipLevelCached[i]=True
 
         return vipLevel
 
@@ -488,17 +562,21 @@ class CheckSQLData():
         print(f"genIndexbystaticIncome: Total time for all records {(time.time() - self.t0)}  secs")
 
     def getstaticIncomeTreebyIndex(self, Index):
-        subNodeIndex = self.indexOfsubNodeListIndex[Index]
-        staticIncomeTree = 0
 
+        if self.IsstaticIncomeTreeCached[Index]:
+            return self.staticIncomeTreeCachedValue[Index]
+
+        subNodeIndex = self.indexOfsubNodeListIndex[Index]
+        staticIncome = self.indexOfstaticIncome[Index]
+        substaticIncomeTree = 0
         if subNodeIndex:
             for y in subNodeIndex:
-                staticIncomeTree = staticIncomeTree + self.getstaticIncomeTreebyIndex(y)
-        else:
+                substaticIncomeTree = substaticIncomeTree + self.getstaticIncomeTreebyIndex(y)
 
-            # staticIncomeTree=self.IDstaticIncomedict[ID]
-            staticIncomeTree = self.indexOfstaticIncome[Index]
+        staticIncomeTree = staticIncome + substaticIncomeTree
 
+        self.staticIncomeTreeCachedValue[Index] = staticIncomeTree
+        self.IsstaticIncomeTreeCached[Index]=True
         return staticIncomeTree
 
     def getMinerCoeffbyvipLevel(self, vipLevel):
@@ -525,15 +603,26 @@ class CheckSQLData():
         self.IDstaticIncomeTreedict = {}
         for x in range(self.ListLen):
             staticIncomeTree = self.getstaticIncomeTreebyIndex(x)
-            staticIncomeTreeSum = staticIncomeTree * self.getMinerCoeffbyvipLevel(self.indexOfvipLevel[x])
-            self.indexOfstaticIncomeTree.append(staticIncomeTreeSum)
-            self.IDstaticIncomeTreedict[self.sortedMycodeListdict[x]['mycode']] = staticIncomeTreeSum
+            self.indexOfstaticIncomeTree.append(staticIncomeTree)
+            self.IDstaticIncomeTreedict[self.sortedMycodeListdict[x]['mycode']] = staticIncomeTree
         print(f"genIndexbystaticIncomeTree: Total time for all records {(time.time() - self.t0)}  secs")
 
+    def genIndexbystaticIncomeTreevip(self):
+        self.indexOfstaticIncomeTreevip = []
+        for x in range(self.ListLen):
+            staticIncomeTreevip = self.indexOfstaticIncomeTree[x] * self.getMinerCoeffbyvipLevel(
+                self.indexOfvipLevel[x])
+            self.indexOfstaticIncomeTreevip.append(staticIncomeTreevip)
+        print(f"genIndexbystaticIncomeTreevip: Total time for all records {(time.time() - self.t0)}  secs")
+
     def getMinerAwardbyIndex(self, Index):
+
         vipLevel = self.indexOfvipLevel[Index]
         if vipLevel == 0:
             return 0
+
+        if self.IsMinerAwardCached[Index]:
+            return self.MinerAwardCachedValue[Index]
 
         minerCoeff = self.getMinerCoeffbyvipLevel(vipLevel)
         grandsonNodeList = []
@@ -551,15 +640,20 @@ class CheckSQLData():
                 subvipLevel = self.indexOfvipLevel[y]
 
                 if vipLevel > subvipLevel:
-                    # caculate normal static revenue
-                    revenue = self.indexOfvipLevel[y] * minerCoeff - self.getMinerAwardbyIndex(y)
-                    if revenue < 0:
-                        revenue = 0
+                    # caculate normal static revenue,can't use indexOfstaticIncomeTreevip, since it should change by vip Level
+                    # revenue = self.indexOfstaticIncomeTreevip[y]  - self.getMinerAwardbyIndex(y)
+                    # also it should not be indexOfstaticIncomeTree, since the case V1-V0-v3. Only way we do is that caculate contribute v0 itself. then it's subnode
+                    # 计算从子节点拿到的收益，并扣除该节点的矿圈收益。 仅计算该子节点，不能计算下属全部节点，因为下属如果有一个巨大的高级节点，实际是错误收益
+                    # 典型例子 v1 - v0 - v3，此时计算V1收益，必然会是 v0.staticIncome* minercoeff，而不是 (V0+V3)*staticIncome* minercoeff -MinerAward(V0)-MinerAward(V3)
+                    # 后者会出现负值
+                    # 所以变为：仅计算本地节点
+                    revenue = self.indexOfstaticIncome[y] * minerCoeff -  self.getMinerAwardbyIndex(y)
 
-                    # grandsonNodeList = self.indexOfsubNodeListIndex[y]
+                     # grandsonNodeList = self.indexOfsubNodeListIndex[y]
                     # should use copy method
                     vipgrandsonNodeList = self.indexOfsubNodeListIndex[y].copy()
 
+                    # 添加子节点的子节点，即孙子节点到计算列表
                     if vipgrandsonNodeList:
                         grandsonNodeList.extend(vipgrandsonNodeList)
 
@@ -571,34 +665,40 @@ class CheckSQLData():
                 MinerAward = MinerAward + revenue
 
             subNodeIndex = grandsonNodeList.copy()
-            vipsub3NodeList = []
+
             while subNodeIndex:
                 y = subNodeIndex[-1]
                 subNodeIndex.pop()
                 subvipLevel = self.indexOfvipLevel[y]
 
                 if vipLevel > subvipLevel:
-                    # caculate normal static revenue
-                    revenue = self.indexOfvipLevel[y] * minerCoeff - self.getMinerAwardbyIndex(y)
-                    if revenue < 0:
-                        revenue = 0
-                        raise Exception("error for calculate revenue")
+                    # caculate normal static revenue, every node is iterated!
+                    #revenue = self.indexOfTreeBalance[y] * minerCoeff - self.getMinerAwardbyIndex(y)
+                    #revenue = self.indexOfstaticIncome[y] * (minerCoeff-self.getMinerCoeffbyvipLevel(subvipLevel))
+                    revenue = self.indexOfstaticIncome[y] * minerCoeff - self.getMinerAwardbyIndex(y)
+
+                    # if revenue < 0:
+                    #     revenue = 0
+                    #     raise Exception("error for calculate revenue")
 
                     vipsub2NodeList = self.indexOfsubNodeListIndex[y].copy()
 
-                    if vipsub2NodeList:
-                        vipsub3NodeList.extend(vipsub2NodeList)
+                    if vipsub2NodeList:  # use to continue loop, add it subNodeIndex. DFS search
+                        subNodeIndex.extend(vipsub2NodeList)
 
-                elif vipLevel == subvipLevel:
+                elif vipLevel == subvipLevel:  # no add new node if same level
                     revenue = 0
                 else:
-                    revenue = 0
+                    revenue = 0  # if higher, don't think about the subnode
 
                 MinerAward = MinerAward + revenue
 
         else:
             MinerAward = 0
             raise Exception("error for calculat revenue since subnodelist is empty")
+
+        self.MinerAwardCachedValue[Index] = MinerAward
+        self.IsMinerAwardCached[Index]=True
 
         return MinerAward
 
@@ -609,7 +709,7 @@ class CheckSQLData():
         r2 = 0
         RecommmendLevel = len(subNodeIndex)
         if RecommmendLevel == 0:
-            r1=0
+            r1 = 0
         elif (RecommmendLevel < 3):
 
             minerProductiveX = self.indexOfminerProductive[Index]
@@ -640,7 +740,7 @@ class CheckSQLData():
                 r2 = r2 + min(minerProductiveY, minerProductiveX) * min(BalanceY,
                                                                         BalanceX) * Nums.rateGrandSon
 
-        return r1,r2,(r1+r2)
+        return r1, r2, (r1 + r2)
 
     def getTotalAwardbyIndex(self, Index):
 
@@ -676,7 +776,7 @@ class CheckSQLData():
         self.indexOfRecommend2Award = []
         self.IDRecommendAwarddict = {}
         for x in range(self.ListLen):
-            r1,r2,r = self.getRecommendAwardbyIndex(x)
+            r1, r2, r = self.getRecommendAwardbyIndex(x)
             self.indexOfRecommendAward.append(r)
             self.indexOfRecommend1Award.append(r1)
             self.indexOfRecommend2Award.append(r2)
@@ -690,12 +790,12 @@ class CheckSQLData():
         self.genIndexbystaticIncome()
 
         self.genIndexbyTreeBalance()
-
         self.genIndexbyvipTreeBalance()
         self.genIndexbyvipLevel()
         self.genIndexbysubNodevipLevelIndex()
 
         self.genIndexbystaticIncomeTree()
+        self.genIndexbystaticIncomeTreevip()
 
         self.genIndexbyMinerAward()
         self.genIndexbyRecommendAward()
@@ -707,6 +807,7 @@ if __name__ == "__main__":
     print("start test ...")
     t.initDB()
     t.LoadSQLData()
-    t.closDB()
     t.genAllIndex()
     t.saveData()
+    t.saveData2excel()
+    t.closDB()

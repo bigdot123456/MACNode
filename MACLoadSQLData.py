@@ -1,5 +1,7 @@
 
 import time
+import pandas as pd
+import numpy as np
 
 import pymysql
 
@@ -11,7 +13,7 @@ from MACNodeSQL import *
 from include.const import *
 
 Nums = Constants(
-    VipStdBalance=30000,
+    VipStdBalance=3000,
     moneyInput=[300, 1000, 2000, 4000],
     dayLimited=[0.01, 0.011, 0.013, 0.015],
     totalUSDT=[600, 2500, 6000, 14000],
@@ -38,7 +40,7 @@ class LoadSQLData():
         self.s = session()
         # 查询结果集, 对象模式，需要取出具体数据
         # result = s.query(AssetLoadsqldatum).all()
-        self.engine.execute(f"delete from asset_loadsqldata where ID >1; ")
+        self.engine.execute(f"delete from asset_loadsqldata where ID >0; ")
         print(f'delete All record in table')
 
     def closDB(self):
@@ -92,6 +94,7 @@ class LoadSQLData():
 
     def build_dict(self,seq, key):
         return dict((d[key], dict(d, index=i)) for (i, d) in enumerate(seq))
+
 
     def saveData(self):
 
@@ -174,7 +177,7 @@ if __name__ == "__main__":
     print("start test ...")
     t.initDB()
     t.LoadSQLData()
-    t.closDB()
     t.saveData()
+    t.closDB()
 
 
