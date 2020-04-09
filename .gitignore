@@ -130,3 +130,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+!/oklist.txt
+!/errorlist.txt
+!/.ipynb_checkpoints/
+/.idea/
+/errorlist.txt
+/oklist.txt

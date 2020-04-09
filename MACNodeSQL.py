@@ -6,12 +6,12 @@ from sqlalchemy.ext.declarative import declarative_base, as_declarative
 
 Base = declarative_base()
 metadata = Base.metadata
-
 @as_declarative()
 class Base:
     def _asdict(self):
         return {c.key: getattr(self, c.key)
                 for c in sqlalchemy.inspection.inspect(self).mapper.column_attrs}
+
 
 class Admin(Base):
     __tablename__ = 'admin'
@@ -95,7 +95,7 @@ class AssetCheckresultpython(Base):
     TotalAward = Column(Float)
     static = Column(Float(asdecimal=True), server_default=text("'0'"), comment='静态利息')
     dynamic = Column(Float(asdecimal=True), server_default=text("'0'"), comment='动态利息')
-    decription = Column(String(1024), comment='用于说明计算过程')
+    decription = Column(String(4096), comment='用于说明计算过程')
 
 
 class AssetFund(Base):

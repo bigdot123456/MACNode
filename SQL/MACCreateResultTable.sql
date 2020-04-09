@@ -94,7 +94,7 @@ CREATE TABLE `asset_checkresultPython`
 
     `static`                       double               DEFAULT '0' COMMENT '静态利息',
     `dynamic`                      double               DEFAULT '0' COMMENT '动态利息',
-    `decription`                   varchar(1024) COMMENT '用于说明计算过程',
+    `decription`                   varchar(4096) COMMENT '用于说明计算过程',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

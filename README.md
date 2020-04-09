@@ -286,3 +286,55 @@ for stop in stoplist:
 select * from mymacnode;
 select * from mymacnoderesult;
 ```
+
+## 如何采集数据
+### 通过 SQL简表，获得各自的表单内容
+
+```python
+
+ node.name                 = x['name             ']
+ node.phone                = x['phone            ']
+ node.email                = x['email            ']
+ node.password             = x['password         ']
+ node.code                 = x['code             ']
+ node.mycode               = x['mycode           ']
+ node.id                   = x['id               ']
+ node.paypassword          = x['paypassword      ']
+ node.status               = x['status           ']
+ node.registertime         = x['registertime     ']
+ node.countryCode          = x['countryCode      ']
+ node.signtime             = x['signtime         ']
+                                                        
+                                                        
+ node.id                   = y['id               ']
+ node.fund                 = y['fund             ']
+ node.static               = y['static           ']
+ node.dynamic              = y['dynamic          ']
+ node.status               = y['status           ']
+ node.fundtype             = y['fundtype         ']
+ node.userid               = y['userid           ']
+ node.starttime            = y['starttime        ']
+ node.stoptime             = y['stoptime         ']
+ node.lastdayinterest      = y['lastdayinterest  ']
+ node.gas                  = y['gas              ']
+ node.attribute            = y['attribute        ']
+ node.production           = y['production       ']
+ node.updatetime           = y['updatetime       ']
+ 
+           
+ node.phone                = z['phone            ']
+ node.ethaddress           = z['ethaddress       ']
+ node.tokenbalance         = z['tokenbalance     ']
+ node.usdtbalance          = z['usdtbalance      ']
+ node.lockbalance          = z['lockbalance      ']
+ node.tokenaddress         = z['tokenaddress     ']
+ node.macbalance           = z['macbalance       ']
+```
+通过正则表达式，替换空格
+```regexp
+ [ ]*\'
+```
+然后加入异常处理，例如数据不存在，最终结果如下：
+```bash
+
+```
