@@ -80,6 +80,8 @@ class AssetCheckresultpython(Base):
     mycodeIDSubListIndex = Column(String(1024), comment='mycode 直接下属的排序索引,通过逗号分割')
     mycodeIDGrandSonListIndex = Column(String(1024), comment='mycode 二级直接下属的排序索引,通过逗号分割')
     mycodeIDsubNodevipLevelIndex = Column(String(32), comment='VIP下属层级编号')
+    recommend = Column(Float(asdecimal=True), server_default=text("'0'"))
+    circle = Column(Float(asdecimal=True))
     vipTreeBalance = Column(Float, server_default=text("'0'"), comment='vip计算的领主金额')
     vipTag = Column(INTEGER(11), server_default=text("'0'"), comment='vip标志')
     vipLevel = Column(INTEGER(11), server_default=text("'0'"), comment='vip等级')
@@ -104,6 +106,8 @@ class AssetFund(Base):
     id = Column(INTEGER(8), primary_key=True)
     fund = Column(Float(asdecimal=True), server_default=text("'0'"), comment='本金')
     static = Column(Float(asdecimal=True), server_default=text("'0'"), comment='静态利息')
+    recommend = Column(Float(asdecimal=True), server_default=text("'0'"))
+    circle = Column(Float(asdecimal=True))
     dynamic = Column(Float(asdecimal=True), server_default=text("'0'"), comment='动态利息')
     status = Column(TINYINT(1), server_default=text("'0'"), comment='0、未激活 1、运行、2淘汰')
     fundtype = Column(INTEGER(4), server_default=text("'0'"), comment='基金类型')
@@ -137,6 +141,8 @@ class AssetLoadsqldatum(Base):
     password = Column(String(64), comment='md5 of password')
     code = Column(String(10), comment='invitation code')
     mycode = Column(String(10), comment='my invitation code')
+    recommend = Column(Float(asdecimal=True), server_default=text("'0'"))
+    circle = Column(Float(asdecimal=True))
     fund = Column(Float(asdecimal=True), server_default=text("'0'"), comment='本金')
     static = Column(Float(asdecimal=True), server_default=text("'0'"), comment='静态利息')
     dynamic = Column(Float(asdecimal=True), server_default=text("'0'"), comment='动态利息')
@@ -167,7 +173,7 @@ class BillCoin(Base):
     toaccount = Column(String(42))
     txhash = Column(String(66))
     userid = Column(String(32))
-    status = Column(TINYINT(1), server_default=text("'0'"))
+    status = Column(TINYINT(1), comment='0待审核，1已审核，2已转账，3取消')
     checkedtime = Column(BIGINT(20))
     sendtime = Column(BIGINT(20))
 
@@ -318,6 +324,15 @@ class Principal(Base):
     userid = Column(String(32))
 
 
+class Scanblock(Base):
+    __tablename__ = 'scanblock'
+
+    id = Column(BIGINT(20), primary_key=True)
+    startblock = Column(BIGINT(20))
+    endblock = Column(BIGINT(20))
+    timestamp = Column(BIGINT(20), server_default=text("'0'"))
+
+
 class TxsCoin(Base):
     __tablename__ = 'txs_coin'
 
@@ -347,6 +362,7 @@ class User(Base):
     registertime = Column(BIGINT(20), comment='register time')
     countryCode = Column(String(8))
     signtime = Column(BIGINT(20))
+    locked = Column(TINYINT(4), server_default=text("'0'"), comment='用户是否被锁定，锁定用户无法提现及转让')
 
 
 class Verification(Base):

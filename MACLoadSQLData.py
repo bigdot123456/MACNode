@@ -200,97 +200,14 @@ class LoadSQLData():
             node.registertime = x['registertime']
             node.countryCode = x['countryCode']
             node.signtime = x['signtime']
-
             y = self.IndexOfFund.get(node.phone)  ## it will contain a dict, y[-1] contains index in node.user.id
             if y:
                 node.fund = y['fund']
                 node.static = y['static']
                 node.dynamic = y['dynamic']
                 node.status = y['status']
-                node.fundtype = y['fundtype']
-                # node.userid = y['userid']
-                node.starttime = y['starttime']
-                node.stoptime = y['stoptime']
-                node.lastdayinterest = y['lastdayinterest']
-                node.gas = y['gas']
-                node.attribute = y['attribute']
-                node.production = y['production']
-                node.updatetime = y['updatetime']
-            else:
-                node.fund = 0
-                node.starttime = time.time()
-
-            z = self.IndexOfBase.get(node.phone)
-            if z:
-                # node.phone = z['phone']
-                node.ethaddress = z['ethaddress']
-                node.tokenbalance = z['tokenbalance']
-                node.usdtbalance = z['usdtbalance']
-                node.lockbalance = z['lockbalance']
-                node.tokenaddress = z['tokenaddress']
-                node.macbalance = z['macbalance']
-
-            i = i + 1
-            self.s.add(node)
-            if i % 1000 == 0:
-                self.s.flush()
-
-            ## batch mode for speed, if debug table it, then get data every item
-        try:
-            # result = s.query(AssetLoadsqldatum).filter(AssetLoadsqldatum.ID == node.ID).all()
-            # if (result is None):
-            #     s.add(node)
-            # else:
-            #     # 不能整体替代，只能每个值替换
-            #     # s.query(AssetLoadsqldatum).filter(AssetLoadsqldatum.ID == node.ID).update(node)
-            #     s.query(AssetLoadsqldatum).filter(AssetLoadsqldatum.ID == node.ID).delete()
-            #     s.add(node)
-
-            self.s.commit()
-            print(f'New Node  {i}')
-        except pymysql.err.IntegrityError:
-            self.s.rollback()
-            print(f'Duplicate Node  {i}')
-        except sqlalchemy.orm.exc.FlushError:
-            self.s.rollback()
-            print(f'FlushError Node  {i}')
-        except Exception as result:
-            self.s.rollback()
-            print(f'Node take error {i} {result}!')
-
-        print(f"SQLAlchemy ORM add(): Total time for all records {(time.time() - self.t0)}  secs")
-
-
-    def saveUserData(self):
-
-        # copy data from fund, and integrate userlist
-        FundNum = len(self.sortedUserListdict)
-        print(f"sorted: Total time for FundNum:{FundNum} records {(time.time() - self.t0)}  secs")
-        i = 1
-        for x in self.sortedUserListdict:
-            node = AssetLoadsqldatum()  # should in loop, otherwise it will overlap all record and only 1 in database
-
-            node.name = x['name']
-            node.phone = x['phone']
-            node.userid = x['phone']
-
-            node.email = x['email']
-            node.password = x['password']
-            node.code = x['code']
-            node.mycode = x['mycode']
-            node.id = x['id']
-            node.paypassword = x['paypassword']
-            node.status = x['status']
-            node.registertime = x['registertime']
-            node.countryCode = x['countryCode']
-            node.signtime = x['signtime']
-
-            y = self.IndexOfFund.get(node.phone)  ## it will contain a dict, y[-1] contains index in node.user.id
-            if y:
-                node.fund = y['fund']
-                node.static = y['static']
-                node.dynamic = y['dynamic']
-                node.status = y['status']
+                node.circle = y['circle']
+                node.recommend = y['recommend']
                 node.fundtype = y['fundtype']
                 # node.userid = y['userid']
                 node.starttime = y['starttime']

@@ -76,6 +76,8 @@ CREATE TABLE `asset_checkresultPython`
     `mycodeIDSubListIndex`         varchar(1024) COMMENT 'mycode 直接下属的排序索引,通过逗号分割',
     `mycodeIDGrandSonListIndex`    varchar(1024) COMMENT 'mycode 二级直接下属的排序索引,通过逗号分割',
     `mycodeIDsubNodevipLevelIndex` varchar(32)          DEFAULT NULL COMMENT 'VIP下属层级编号',
+    `recommend`                    double               DEFAULT '0',
+    `circle`                       double               DEFAULT NULL,
 
     `vipTreeBalance`               float                DEFAULT '0' COMMENT 'vip计算的领主金额',
     `vipTag`                       int                  DEFAULT '0' COMMENT 'vip标志',
