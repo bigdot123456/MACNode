@@ -78,3 +78,19 @@ B
 SQL/cmp.sql,c/0/c02b3139a6f1191c85557421df7b9de96fbe8d68
 L
 SQL/MACCreateResultTable.sql,a/1/a17f2fd5a193d1457bb0a11e8205eae7b7cf01f5
+D
+SQL/fund_sql0409.sql,a/0/a0601dcffe89348493afc423f3d0891659cb2d3d
+=
+errorlist.txt,2/0/20af2fe3363b5be6d0ce28a24153b594f8c6c10f
+@
+MACCheckMySQL.py,e/5/e5e9a13fc569ade2411cdd60c4e1de0be10fa6ae
+:
+
+oklist.txt,7/f/7f8fdd5a877323eaa698ea90843eb36dc23f44fc
+<
+js/tools3.js,6/8/68b5d09ce405d9e31246bf183dc3c51380704543
+;
+js/mysql.js,6/c/6cd0ff86b4407360c0888eb77cb1aaa68dff18de
+:
+
+checkit.sh,9/b/9bee8ee0e445c5d614240c95957902e910ebb979

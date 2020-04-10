@@ -9,7 +9,7 @@ from MACNodeSQL import *
 from include.const import *
 
 Nums = Constants(
-    VipStdBalance=3000,
+    VipStdBalance=30000,
     moneyInput=[300, 1000, 2000, 4000],
     dayLimited=[0.01, 0.011, 0.013, 0.015],
     totalUSDT=[600, 2500, 6000, 14000],

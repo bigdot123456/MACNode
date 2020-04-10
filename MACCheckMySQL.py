@@ -9,9 +9,10 @@ from sqlalchemy.orm import sessionmaker
 
 from MACNodeSQL import *
 from include.const import *
+from functools import reduce
 
 Nums = Constants(
-    VipStdBalance=3000,
+    VipStdBalance=30000,
     moneyInput=[300, 1000, 2000, 4000],
     dayLimited=[0.01, 0.011, 0.013, 0.015],
     totalUSDT=[600, 2500, 6000, 14000],
@@ -28,7 +29,9 @@ Nums = Constants(
 class CheckSQLData():
     t0 = time.time()
     indexOfsubNodeListIndex = []
+    sortedMycodeListdict=[]
     ListLen = 0
+    savetime=0
 
     def __init__(self):
         self.IsMinerAwardCached = []
@@ -42,7 +45,7 @@ class CheckSQLData():
 
         self.IsvipLevelCached = []
         self.vipLevelCachedValue = []
-
+        self.savetime=time.time()
         print('Load SQL Data from MySQL....')
 
     def initDB(self):
@@ -61,6 +64,13 @@ class CheckSQLData():
     def object_as_dict(obj):
         return {c.key: getattr(obj, c.key)
                 for c in sqlalchemy.inspection.inspect(obj).mapper.column_attrs}
+
+    def list_dict_duplicate_removal(self, list_dict_data):
+        run_function = lambda x, y: x if y in x else x + [y]
+        return reduce(run_function, [[], ] + list_dict_data)
+
+    def build_dict(self, seq, key):
+        return dict((d[key], dict(d, index=i)) for (i, d) in enumerate(seq))
     
     def LoadSQLData(self):
 
@@ -92,6 +102,8 @@ class CheckSQLData():
         # paypassword = Column(String(64), comment='pay password')
         #
 
+        # 字典反转的例子 {v: k for k, v in m.items()}
+
         UserList = self.s.query(User.phone,User.mycode,User.code).all()
 
         ## only useful column is selected
@@ -104,13 +116,50 @@ class CheckSQLData():
         # userid = Column(String(32), nullable=False, comment='用户id')
         # starttime = Column(BIGINT(20), nullable=False, comment='购买矿机时间')
 
-
-        FundList = self.s.query(AssetFund.userid, AssetFund.fund, AssetFund.static, AssetFund.dynamic,
+        emptyFundItem = {"userid":"","fund":0,"static":0,"dynamic":0,"circle":0,"recommand":0,"starttime":time.time()}
+        FundList = self.s.query(AssetFund.userid, AssetFund.fund, AssetFund.static, AssetFund.dynamic, AssetFund.circle, AssetFund.recommend,
                                 AssetFund.starttime).all()
 
-        # 合并列表
-        sortList=[ *x for x in UserList]
+        BaseList = self.s.query(AssetBase).all()
 
+        FundListdict1 = [u._asdict() for u in FundList]
+        UserListdict1 = [u._asdict() for u in UserList]
+        BaseListdict1 = [u._asdict() for u in BaseList]
+
+        # FundListdict2 = sorted(FundListdict1, key=lambda k: k['userid'])  ## total 54
+        # UserListdict2 = sorted(UserListdict1, key=lambda k: k['phone'])  ## total 135
+        # BaseListdict2 = sorted(BaseListdict1, key=lambda k: k['phone'])  ## total 136
+
+        self.sortedFundListdict = self.list_dict_duplicate_removal(FundListdict1)
+        self.sortedUserListdict = self.list_dict_duplicate_removal(UserListdict1)
+        self.sortedBaseListdict = self.list_dict_duplicate_removal(BaseListdict1)
+
+        # 根据 userid/phone/phone建立字典，方便快速查找
+
+        self.IndexOfFund = self.build_dict(self.sortedFundListdict, key="userid")
+        self.IndexOfUser = self.build_dict(self.sortedUserListdict, key="phone")
+        self.IndexOfBase = self.build_dict(self.sortedBaseListdict, key="phone")
+
+        # 生成空列表：
+        # emptyFundItem={v: k for k, v in m.items()}
+
+        # 得到sortedMycodeListdict即可
+        # self.sortedMycodeListdict = sorted(FundListdict1, key=lambda k: k['mycode'])  ## total 54
+
+        for x in self.IndexOfUser: # it convert to a list, list item is a dict, and contain index, x ='8613008104208'
+            y=self.IndexOfFund.get(x,emptyFundItem)
+            # dict combines, it equal
+            # dictMerged1 = dict( dict1.items() + dict2.items() )
+            # dictMerged2 = dict1.copy()
+            # dictMerged2.update(dict2)
+            z = dict(self.IndexOfUser[x], **y)
+
+            self.sortedMycodeListdict.append(z)
+
+        # 根据 userid/phone/phone建立字典，方便快速查找
+        self.indexOfMycode = self.build_dict(self.sortedMycodeListdict, key="mycode")
+        # 考虑到层级关系，还需要建立mycode的字典，方便查找上下级关系，所以 mycode 是关键index
+        self.ListLen = len(self.sortedMycodeListdict)
 
     def InitCacheList(self):
         CacheLen = self.ListLen
@@ -136,7 +185,7 @@ class CheckSQLData():
         self.IsNodeInfoCached = [False] * CacheLen
         self.NodeInfoCachedValue = [""] * CacheLen
         
-    def LoadSQLData(self):
+    def LoadSQLData1(self):
 
         FundList = self.s.query(AssetLoadsqldatum).all()
 
@@ -176,6 +225,7 @@ class CheckSQLData():
         df.to_excel(writer, sheet_name="origin data")
         writer.close()
 
+
     def saveData(self):
         path = os.path.dirname(os.path.abspath(__file__))
         output_file = os.path.join(path, 'fullresult.xlsx')
@@ -192,46 +242,55 @@ class CheckSQLData():
         i = 1
         for x in self.sortedMycodeListdict:
             node = AssetCheckresultpython()  # should in loop, otherwise it will overlap all record and only 1 in database
-            node.fund = x['fund']
-            node.static = x['static']
-            node.dynamic = x['dynamic']
-            node.status = x['status']
-            node.fundtype = x['fundtype']
-            node.userid = x['userid']
-            node.starttime = x['starttime']
-            node.stoptime = x['stoptime']
-            node.lastdayinterest = x['lastdayinterest']
-            node.gas = x['gas']
-            node.attribute = x['attribute']
-            node.production = x['production']
-            node.updatetime = x['updatetime']
+            node.fund = x.get('fund',0)
+            node.static = x.get('static',0)
+            node.dynamic = x.get('dynamic',0)
+            node.status = x.get('status',0)
+            node.fundtype = x.get('fundtype',0)
+            node.userid = x.get('userid',0)
+            node.starttime = x.get('starttime',0)
+            node.stoptime = x.get('stoptime',0)
+            node.lastdayinterest = x.get('lastdayinterest',0)
+            node.gas = x.get('gas',0)
+            node.attribute = x.get('attribute',0)
+            node.production = x.get('production',0)
+            node.updatetime = x.get('updatetime',0)
 
-            node.name = x['name']
-            node.phone = x['phone']
-            node.email = x['email']
-            node.password = x['password']
-            node.code = x['code']
-            node.mycode = x['mycode']
+            node.name = x.get('name',0)
+            node.phone = x.get('phone',0)
+            node.email = x.get('email',0)
+            node.password = x.get('password',0)
+            node.code = x.get('code',0)
+            node.mycode = x.get('mycode',0)
 
-            node.paypassword = x['paypassword']
-            node.status = x['status']
-            node.registertime = x['registertime']
-            node.countryCode = x['countryCode']
-            node.signtime = x['signtime']
+            node.paypassword = x.get('paypassword',0)
+            node.status = x.get('status',0)
+            node.registertime = x.get('registertime',0)
+            node.countryCode = x.get('countryCode',0)
+            node.signtime = x.get('signtime',0)
 
-            node.ethaddress = x['ethaddress']
-            node.tokenbalance = x['tokenbalance']
-            node.usdtbalance = x['usdtbalance']
-            node.lockbalance = x['lockbalance']
-            node.tokenaddress = x['tokenaddress']
-            node.macbalance = x['macbalance']
+            node.ethaddress = x.get('ethaddress',0)
+            node.tokenbalance = x.get('tokenbalance',0)
+            node.usdtbalance = x.get('usdtbalance',0)
+            node.lockbalance = x.get('lockbalance',0)
+            node.tokenaddress = x.get('tokenaddress',0)
+            node.macbalance = x.get('macbalance',0)
+            node.circle=x.get('circle',0) if x.get('circle',0) else 0
+            node.recommend=x.get('recommend',0) if x.get('recommend',0) else 0
 
             z = self.indexOfMycode.get(node.mycode)
             Index = z['index']
             node.mycodeID = Index
-            node.mycodeIDSubListIndex = ' '.join(str(i) for i in self.indexOfsubNodeListIndex[Index])
-            node.mycodeIDGrandSonListIndex = ','.join(str(i) for i in self.indexOfGrandSonNodeListIndex[Index])
-            node.mycodeIDsubNodevipLevelIndex = ','.join(str(i) for i in self.indexOfsubNodevipLevelIndex[Index])
+            # node.mycodeIDSubListIndex = ' '.join(str(i) for i in self.indexOfsubNodeListIndex[Index])
+            # node.mycodeIDGrandSonListIndex = ','.join(str(i) for i in self.indexOfGrandSonNodeListIndex[Index])
+            # node.mycodeIDsubNodevipLevelIndex = ','.join(str(i) for i in self.indexOfsubNodevipLevelIndex[Index])
+
+            d= ' '.join(str(i) for i in self.indexOfsubNodeListIndex[Index])
+            node.mycodeIDSubListIndex=d if len(d) < 1024 else d[0:1023]
+            d= ','.join(str(i) for i in self.indexOfGrandSonNodeListIndex[Index])
+            node.mycodeIDGrandSonListIndex = d if len(d) < 1024 else d[0:1023]
+            d=','.join(str(i) for i in self.indexOfsubNodevipLevelIndex[Index])
+            node.mycodeIDsubNodevipLevelIndex = d if len(d) < 32 else d[0:32]
 
             node.NodeLevel = self.indexOfNodeLevel[Index]
             node.TreeBalance = self.indexOfTreeBalance[Index]
@@ -253,38 +312,33 @@ class CheckSQLData():
             node.TotalAward = self.indexOfTotalAward[Index]
 
             d = self.getNodeTreeInfobyIndex(Index)
-            if len(d) > 4090:
-                d1 = d[0:4089]
-            else:
-                d1 = d
-            if int(node.TotalAward) == int(node.static + node.dynamic):
+            d1=d if len(d)<4096 else d[0:4095]
+            node.decription=d1
 
-                node.decription = f"OK:={d1}"
-                with open('./oklist.txt', 'a') as w:
-                    w.write(f"\n\n=====================  流水单 {Index}：{node.phone} ====================================")
-                    w.write(f"\n{time.asctime()}\n")
-                    w.write(f"method1(yhw):静态:{node.static:8.2f} 动态:{node.dynamic:8.2f}\n")
+            with open(f'./oklist{self.savetime}.txt', 'a') as w0,open(f'./errorlist{self.savetime}.txt', 'a') as w1:
+                if int(node.TotalAward) == int(node.static + node.dynamic):
+                    w=w0
                     w.write(
-                        f"method2(lqh):静态:{node.staticIncome} 矿圈:{node.MinerAward} 推荐:{node.RecommendAward} 新矿圈：{self.FastMinerAwardCachedValue[Index]}\n")
-                    # desc = f"{i}\t{Node['phone']}\t{int(Node['fund'])}\tvip{self.indexOfvipLevel[i]}\tL{self.indexOfNodeLevel[i]}\t${self.indexOfvipTreeBalance[i]}\t${int(self.indexOfTreeBalance[i])}\t{Node['name']}\n"
-                    #w.write(f"\n总子节点数量\t累加和\t累加和1：子节点列表及详细信息\n")
-                    w.write(f"\n内部序号\t\t注册名\t\t余额\tVIP等级\t节点层级\tvip累计\t总业绩\t静态\t矿圈1\t总推荐\t二代推荐\t老袁动态\t老袁静态\t推荐码\n")
-                    w.write("\n详情如下:\n--------------------------------------------------------------\n")
-                    w.write(d)
+                        f"\n\n=====================  流水单 {Index}：{node.phone} ====================================")
 
-            else:
-                node.decription = f"ERR:={d1}"
-                with open('./errorlist.txt', 'a') as w:
-                    w.write(f"\n\n=====================  流水单 {Index}：{node.phone} ====================================")
-                    w.write(f"\n{time.asctime()}\n")
-                    w.write(f"method1(yhw):静态:{node.static:8.2f} 动态:{node.dynamic:8.2f}\n")
+                else:
+                    w=w1
                     w.write(
-                        f"method2(lqh):静态:{node.staticIncome} 矿圈:{node.MinerAward} 推荐:{node.RecommendAward} 新矿圈：{self.FastMinerAwardCachedValue[Index]}\n")
-                    # desc = f"{i}\t{Node['phone']}\t{int(Node['fund'])}\tvip{self.indexOfvipLevel[i]}\tL{self.indexOfNodeLevel[i]}\t${self.indexOfvipTreeBalance[i]}\t${int(self.indexOfTreeBalance[i])}\t{Node['name']}\n"
-                    #w.write(f"\n总子节点数量\t累加和\t累加和1：子节点列表及详细信息\n")
-                    w.write(f"\n内部序号\t\t注册名\t\t余额\tVIP等级\t节点层级\tvip累计\t总业绩\t矿圈1\t总推荐\t二代推荐\t动态\t老袁动态\t静态\t老袁静态\t推荐码\n")
-                    w.write("\n详情如下:\n--------------------------------------------------------------\n")
-                    w.write(d)
+                        f"\n\n=====================  错误流水单 {Index}：{node.phone} ====================================")
+
+                w.write(f"\n{time.asctime()}\n")
+                w.write(
+                    f"method1(yhw):静态:{node.static:5.1f} 矿圈:{node.circle if node.circle else 0} 推荐:{node.recommend:5.1f} 动态:{node.dynamic:5.1f}\n")
+                w.write(
+                    f"method2(lqh):静态:{node.staticIncome} 矿圈:{node.MinerAward} 推荐:{node.RecommendAward} 动态:{node.DynamicAward:5.1f}新矿圈：{self.FastMinerAwardCachedValue[Index]}\n")
+                msg = f"理论最大矿圈收益:v1:{(node.staticIncomeTree - node.staticIncome) * 0.1}\tv2:{(node.staticIncomeTree - node.staticIncome) * 0.15}\tv3:{(node.staticIncomeTree - node.staticIncome) * 0.2}"
+                w.write(msg)
+                # desc = f"{i}\t{Node['phone']}\t{int(Node['fund'])}\tvip{self.indexOfvipLevel[i]}\tL{self.indexOfNodeLevel[i]}\t${self.indexOfvipTreeBalance[i]}\t${int(self.indexOfTreeBalance[i])}\t{Node['name']}\n"
+                # w.write(f"\n总子节点数量\t累加和\t累加和1：子节点列表及详细信息\n")
+                w.write(
+                    f"\n内部序号\t注册名\t\t余额\tVIP等级\t节点层级\tvip累计\t总业绩\t矿圈1\t老袁矿圈\t总推荐\t老袁推荐\t动态\t老袁动态\t静态\t老袁静态\t二代推荐\t推荐码\n")
+                w.write("\n详情如下:\n--------------------------------------------------------------\n")
+                w.write(d)
 
             # if i==1:
             # df = pd.DataFrame({'id': 1, 'name': 'Alice'}, pd.Index(range(1)))
@@ -380,7 +434,7 @@ class CheckSQLData():
         d = d + "\t" + f"{Node['dynamic']:4.1f}"
         d = d + "\t" + f"{self.indexOfstaticIncome[i]:4.1f}"
         d = d + "\t" + f"{Node['static']:4.1f}"
-        d = d + "\t" + f"{Node['name']}"
+        d = d + "\t" + f"{Node['code']}"
         d = d + "\n"
 
         # desc = f"{i}\t{Node['phone']}\t{int(Node['fund'])}\tvip{self.indexOfvipLevel[i]}\tL{self.indexOfNodeLevel[i]}\t{self.indexOfvipTreeBalance[i]}\t{int(self.indexOfTreeBalance[i])}\t{self.FastMinerAwardCachedValue[i]}\t{Node['name']}\n"
@@ -1021,6 +1075,7 @@ class CheckSQLData():
         print(f"genIndexbyRecommendAward: Total time for all records {(time.time() - self.t0)}  secs")
 
     def genAllIndex(self):
+        self.InitCacheList()
         self.genIndexbysubNodeListIndex()
         self.genIndexbyGrandSonNodeListIndex()
         self.genIndexbyNodeLevel()

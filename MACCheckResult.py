@@ -11,7 +11,7 @@ from MACNodeSQL import *
 from include.const import *
 
 Nums = Constants(
-    VipStdBalance=3000,
+    VipStdBalance=30000,
     moneyInput=[300, 1000, 2000, 4000],
     dayLimited=[0.01, 0.011, 0.013, 0.015],
     totalUSDT=[600, 2500, 6000, 14000],
@@ -29,8 +29,10 @@ class CheckSQLData():
     t0 = time.time()
     indexOfsubNodeListIndex = []
     ListLen = 0
+    savetime = 0
 
     def __init__(self):
+        self.savetime = time.time()
         self.IsMinerAwardCached = []
         self.MinerAwardCachedValue = []
 
@@ -178,9 +180,16 @@ class CheckSQLData():
             z = self.indexOfMycode.get(node.mycode)
             Index = z['index']
             node.mycodeID = Index
-            node.mycodeIDSubListIndex = ' '.join(str(i) for i in self.indexOfsubNodeListIndex[Index])
-            node.mycodeIDGrandSonListIndex = ','.join(str(i) for i in self.indexOfGrandSonNodeListIndex[Index])
-            node.mycodeIDsubNodevipLevelIndex = ','.join(str(i) for i in self.indexOfsubNodevipLevelIndex[Index])
+            # node.mycodeIDSubListIndex = ' '.join(str(i) for i in self.indexOfsubNodeListIndex[Index])
+            # node.mycodeIDGrandSonListIndex = ','.join(str(i) for i in self.indexOfGrandSonNodeListIndex[Index])
+            # node.mycodeIDsubNodevipLevelIndex = ','.join(str(i) for i in self.indexOfsubNodevipLevelIndex[Index])
+
+            d= ' '.join(str(i) for i in self.indexOfsubNodeListIndex[Index])
+            node.mycodeIDSubListIndex=d if len(d) < 1024 else d[0:1023]
+            d= ','.join(str(i) for i in self.indexOfGrandSonNodeListIndex[Index])
+            node.mycodeIDGrandSonListIndex = d if len(d) < 1024 else d[0:1023]
+            d=','.join(str(i) for i in self.indexOfsubNodevipLevelIndex[Index])
+            node.mycodeIDsubNodevipLevelIndex = d if len(d) < 32 else d[0:32]
 
             node.NodeLevel = self.indexOfNodeLevel[Index]
             node.TreeBalance = self.indexOfTreeBalance[Index]
@@ -202,40 +211,33 @@ class CheckSQLData():
             node.TotalAward = self.indexOfTotalAward[Index]
 
             d = self.getNodeTreeInfobyIndex(Index)
-            if len(d) > 4090:
-                d1 = d[0:4089]
-            else:
-                d1 = d
-            if int(node.TotalAward) == int(node.static + node.dynamic):
+            d1=d if len(d)<4096 else d[0:4095]
+            node.decription=d1
 
-                node.decription = f"OK:={d1}"
-                with open('./oklist.txt', 'a') as w:
-                    w.write(f"\n\n=====================  流水单 {Index}：{node.phone} ====================================")
-                    w.write(f"\n{time.asctime()}\n")
-                    w.write(f"method1(yhw):静态:{node.static:8.2f} 动态:{node.dynamic:8.2f}\n")
+            with open(f'./oklist{self.savetime}.txt', 'a') as w0,open(f'./errorlist{self.savetime}.txt', 'a') as w1:
+                if int(node.TotalAward) == int(node.static + node.dynamic):
+                    w=w0
                     w.write(
-                        f"method2(lqh):静态:{node.staticIncome} 矿圈:{node.MinerAward} 推荐:{node.RecommendAward} 新矿圈：{self.FastMinerAwardCachedValue[Index]}\n")
-                    # desc = f"{i}\t{Node['phone']}\t{int(Node['fund'])}\tvip{self.indexOfvipLevel[i]}\tL{self.indexOfNodeLevel[i]}\t${self.indexOfvipTreeBalance[i]}\t${int(self.indexOfTreeBalance[i])}\t{Node['name']}\n"
-                    #w.write(f"\n总子节点数量\t累加和\t累加和1：子节点列表及详细信息\n")
-                    w.write(f"\n内部序号\t\t注册名\t\t余额\tVIP等级\t节点层级\tvip累计\t总业绩\t矿圈1\t老袁矿圈\t总推荐\t二代推荐\t老袁推荐\t动态\t老袁动态\t静态\t老袁静态\t推荐码\n")
-                    w.write("\n详情如下:\n--------------------------------------------------------------\n")
-                    w.write(d)
+                        f"\n\n=====================  流水单 {Index}：{node.phone} ====================================")
 
-            else:
-                node.decription = f"ERR:={d1}"
-                with open('./errorlist.txt', 'a') as w:
-                    w.write(f"\n\n=====================  错误流水单 {Index}：{node.phone} ====================================")
-                    w.write(f"\n{time.asctime()}\n")
-                    w.write(f"method1(yhw):静态:{node.static:5.1f} 矿圈:{node.circle if node.circle else 0} 推荐:{node.dynamic:5.1f} 动态:{node.dynamic:5.1f}\n")
+                else:
+                    w=w1
                     w.write(
-                        f"method2(lqh):静态:{node.staticIncome} 矿圈:{node.MinerAward} 推荐:{node.RecommendAward} 动态:{node.DynamicAward:5.1f}新矿圈：{self.FastMinerAwardCachedValue[Index]}\n")
-                    msg=f"理论最大矿圈收益:v1:{(node.staticIncomeTree-node.staticIncome)*0.1}\tv2:{(node.staticIncomeTree-node.staticIncome)*0.15}\tv3:{(node.staticIncomeTree-node.staticIncome)*0.2}"
-                    w.write(msg)
-                    # desc = f"{i}\t{Node['phone']}\t{int(Node['fund'])}\tvip{self.indexOfvipLevel[i]}\tL{self.indexOfNodeLevel[i]}\t${self.indexOfvipTreeBalance[i]}\t${int(self.indexOfTreeBalance[i])}\t{Node['name']}\n"
-                    #w.write(f"\n总子节点数量\t累加和\t累加和1：子节点列表及详细信息\n")
-                    w.write(f"\n内部序号\t注册名\t\t余额\tVIP等级\t节点层级\tvip累计\t总业绩\t矿圈1\t老袁矿圈\t总推荐\t老袁推荐\t动态\t老袁动态\t静态\t老袁静态\t二代推荐\t推荐码\n")
-                    w.write("\n详情如下:\n--------------------------------------------------------------\n")
-                    w.write(d)
+                        f"\n\n=====================  错误流水单 {Index}：{node.phone} ====================================")
+
+                w.write(f"\n{time.asctime()}\n")
+                w.write(
+                    f"method1(yhw):静态:{node.static:5.1f} 矿圈:{node.circle if node.circle else 0} 推荐:{node.recommend:5.1f} 动态:{node.dynamic:5.1f}\n")
+                w.write(
+                    f"method2(lqh):静态:{node.staticIncome} 矿圈:{node.MinerAward} 推荐:{node.RecommendAward} 动态:{node.DynamicAward:5.1f}新矿圈：{self.FastMinerAwardCachedValue[Index]}\n")
+                msg = f"理论最大矿圈收益:v1:{(node.staticIncomeTree - node.staticIncome) * 0.1}\tv2:{(node.staticIncomeTree - node.staticIncome) * 0.15}\tv3:{(node.staticIncomeTree - node.staticIncome) * 0.2}"
+                w.write(msg)
+                # desc = f"{i}\t{Node['phone']}\t{int(Node['fund'])}\tvip{self.indexOfvipLevel[i]}\tL{self.indexOfNodeLevel[i]}\t${self.indexOfvipTreeBalance[i]}\t${int(self.indexOfTreeBalance[i])}\t{Node['name']}\n"
+                # w.write(f"\n总子节点数量\t累加和\t累加和1：子节点列表及详细信息\n")
+                w.write(
+                    f"\n内部序号\t注册名\t\t余额\tVIP等级\t节点层级\tvip累计\t总业绩\t矿圈1\t老袁矿圈\t总推荐\t老袁推荐\t动态\t老袁动态\t静态\t老袁静态\t二代推荐\t推荐码\n")
+                w.write("\n详情如下:\n--------------------------------------------------------------\n")
+                w.write(d)
 
             # if i==1:
             # df = pd.DataFrame({'id': 1, 'name': 'Alice'}, pd.Index(range(1)))
