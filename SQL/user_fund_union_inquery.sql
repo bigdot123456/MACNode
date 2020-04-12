@@ -1,0 +1,1 @@
+SELECT user.mycode, user.code ,user.phone,IFNULL(asset_fund.fund,0),asset_fund.starttime FROM  user left join asset_fund on (asset_fund.userid=user.phone);

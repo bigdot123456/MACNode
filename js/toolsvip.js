@@ -97,11 +97,21 @@ async function getSingleNodeInfo(mycode) {
 
     let NodeInfo = {}
     // NodeInfo.fundinfo = []
-    NodeInfo.mycode = mycode
-    let fundinfo = await mysql.ROW("select * from asset_fund where userid= '" + mycode + "' ;");
+    //let fundinfo = await mysql.ROW("select * from asset_fund where userid= '" + phone + "' ;");
+    // valid sql as following:
+    // select asset_fund.* ,user.mycode, user.code from asset_fund right join user on (asset_fund.userid=user.phone);
+    let fundinfo = await mysql.ROW("select asset_fund.*  ,user.mycode, user.code from asset_fund right join user on (asset_fund.userid=user.phone) where mycode= '" + mycode + "' ;");
+    //SELECT user.mycode, user.code ,user.phone,IFNULL(asset_fund.fund,0),
+    // asset_fund.starttime FROM  user left join asset_fund on (asset_fund.userid=user.phone)
+    // where mycode="OHU357136";
+
+    // SELECT user.*,IFNULL(asset_fund.fund,0),asset_fund.starttime FROM  user left join asset_fund on (asset_fund.userid=user.phone);
+    //"SELECT user.mycode, user.code ,user.phone,IFNULL(asset_fund.fund,0),asset_fund.starttime FROM  user left join asset_fund on (asset_fund.userid=user.phone);"
 
     NodeInfo.fundinfo = fundinfo
     NodeInfo.mymill = 0
+    NodeInfo.mycode=fundinfo.mycode
+    NodeInfo.phone =fundinfo.phone
 
     let mymill = 0
     let subfund = 0
@@ -132,7 +142,7 @@ function sumFn() {
     } else {
         for (var i = 0; i < arg.length; i++) {
             if (isNaN(arg[i]) || arg[i] == '' || arg[i] == ' ') {
-                sum = sum;
+                continue//sum = sum;
             } else {
                 sum += arg[i];
             }
@@ -201,14 +211,14 @@ async function getSubNodeInfoList(mycode) {
             let subNodeL1Info = await getSingleNodeInfo(mycodesubNodeL1)
             SubNodeInfoList.subNodeL1Info.push(subNodeL1Info)
 
-            if (subNodeL1Info.fund > 0) {
+            if (subNodeL1Info.rootfund > 0) {
                 // r1 += getRecommendValue(SubNodeInfoList.rootInfo.fund, subNodeL1Info.fund)
-                r1 += getRecommendValue(SubNodeInfoList.fund, subNodeL1Info.fund)
+                r1 += getRecommendValue(SubNodeInfoList.rootfund, subNodeL1Info.rootfund)
                 validsubNodeL1Num++
             }
 
-            SubNodeInfoList.subNodeL1mill += (subNodeL1Info.mill)
-            SubNodeInfoList.subNodeL1Fund += (subNodeL1Info.fund)
+            SubNodeInfoList.subNodeL1mill += (subNodeL1Info.rootmill)
+            SubNodeInfoList.subNodeL1Fund += (subNodeL1Info.rootfund)
         }
         // only use for recommend award
         if (validsubNodeL1Num >= 3) {
@@ -221,9 +231,9 @@ async function getSubNodeInfoList(mycode) {
 
                         let subNodeL2Info = getSingleNodeInfo(mycodeSubL2)
 
-                        if (subNodeL2Info.fund > 0) {
+                        if (subNodeL2Info.rootfund > 0) {
                             // r2 += getRecommendValue(SubNodeInfoList.rootInfo.fund, infoL2.fund)
-                            r2 += getRecommendValue(SubNodeInfoList.fund, subNodeL2Info.fund)
+                            r2 += getRecommendValue(SubNodeInfoList.rootfund, subNodeL2Info.rootfund)
                         }
                     }
                 }
