@@ -140,7 +140,7 @@ async function getMyDynamic(mycode,fund, la) {
   if (layer && layer.length > 0) {
     // 下级收益
     for (let i = 0; i < layer.length; i++) {
-      mymill = 0;
+
       let myfundtemp = 0;
       let ret = await getMyDynamic(layer[i].mycode,fundvalue, laa);
       community.dailyproduction += ret.dailyproduction;

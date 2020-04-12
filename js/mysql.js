@@ -5,11 +5,19 @@ const async = require("async");
 var pool = mysql.createPool({
   connectionLimit: 50,
   host: '127.0.0.1',
-  user: 'root',
-  password: 'Root@123',
-  database: 'fund_sql',
+  user: 'tiger',
+  password: 'test123456!@',
+  database: 'test',
   multipleStatements: true //是否允许执行多条sql语句
 });
+// var pool = mysql.createPool({
+//   connectionLimit: 50,
+//   host: '111.229.168.108',
+//   user: 'fastroot',
+//   password: 'test123456',
+//   database: 'fastroot',
+//   multipleStatements: true //是否允许执行多条sql语句
+// });
 //将结果已对象数组返回
 var row = (sql, ...params) => {
   return new Promise(function (resolve, reject) {

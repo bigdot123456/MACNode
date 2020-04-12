@@ -80,13 +80,8 @@ L
 SQL/MACCreateResultTable.sql,a/1/a17f2fd5a193d1457bb0a11e8205eae7b7cf01f5
 D
 SQL/fund_sql0409.sql,a/0/a0601dcffe89348493afc423f3d0891659cb2d3d
-=
-errorlist.txt,2/0/20af2fe3363b5be6d0ce28a24153b594f8c6c10f
 @
 MACCheckMySQL.py,e/5/e5e9a13fc569ade2411cdd60c4e1de0be10fa6ae
-:
-
-oklist.txt,7/f/7f8fdd5a877323eaa698ea90843eb36dc23f44fc
 <
 js/tools3.js,6/8/68b5d09ce405d9e31246bf183dc3c51380704543
 ;
@@ -94,3 +89,25 @@ oklist.txt,7/f/7f8fdd5a877323eaa698ea90843eb36dc23f44fc
 :
 
 checkit.sh,9/b/9bee8ee0e445c5d614240c95957902e910ebb979
+h
+8js/node_modules/mysql/lib/protocol/sequences/Sequence.js,9/5/9533925c18a3abc8447ebeeb1e3876cf60fc7f84
+D
+js/package-lock.json,9/d/9d82e65c01ac22de8f195b3dd3b31b81172d1244
+W
+'js/node_modules/mysql/lib/Connection.js,1/c/1c47932bb8a48257ee56e5934ea6453e56eeb3ba
+]
+-js/node_modules/mysql/lib/ConnectionConfig.js,e/d/ed6cb9a4609d49bfc88e96c45338319584b54fc3
+Q
+!js/node_modules/mysql/lib/Pool.js,6/7/671b362472f743fc37d27432badae7f626253c4f
+W
+'js/node_modules/mysql/lib/PoolConfig.js,0/0/00afe4b9364e2e4a1809fc0ee1cfd02610868099
+P
+ js/node_modules/mysql/Changes.md,3/8/38926d43e7fd2e02dc390fd034550195a8980de1
+M
+js/node_modules/mysql/License,f/8/f820840e1b696abc32e3f5c57c71dbeadee85c38
+R
+"js/node_modules/mysql/package.json,b/9/b9b6d6a97587b467e8e10423782f7e9de28c54be
+>
+js/toolsvip.js,c/6/c68e6bc511d993db0db98f3467ac78d54d864c8a
+7
+test.py,a/3/a36e355ddb203d7d4133221f339dc406cb9f480f

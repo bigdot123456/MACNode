@@ -1,6 +1,7 @@
 import heapq
 import os
 import time
+from functools import reduce
 
 import pandas as pd
 import pymysql
@@ -9,7 +10,6 @@ from sqlalchemy.orm import sessionmaker
 
 from MACNodeSQL import *
 from include.const import *
-from functools import reduce
 
 Nums = Constants(
     VipStdBalance=30000,
@@ -29,9 +29,9 @@ Nums = Constants(
 class CheckSQLData():
     t0 = time.time()
     indexOfsubNodeListIndex = []
-    sortedMycodeListdict=[]
+    sortedMycodeListdict = []
     ListLen = 0
-    savetime=0
+    savetime = 0
 
     def __init__(self):
         self.IsMinerAwardCached = []
@@ -45,7 +45,9 @@ class CheckSQLData():
 
         self.IsvipLevelCached = []
         self.vipLevelCachedValue = []
-        self.savetime=time.time()
+        self.savetime = time.strftime('%Y%m%d_%H%M%S')
+        # self.savetime = time.time()
+        # print(time.strftime('%y/%m/%d %H:%M:%S %A'))
         print('Load SQL Data from MySQL....')
 
     def initDB(self):
@@ -71,7 +73,7 @@ class CheckSQLData():
 
     def build_dict(self, seq, key):
         return dict((d[key], dict(d, index=i)) for (i, d) in enumerate(seq))
-    
+
     def LoadSQLData(self):
 
         # self.nodeList = self.s.query(AssetLoadsqldatum).filter(text("ID < :value AND parentID = :pValue")).params(value=100, pValue=1)
@@ -104,7 +106,7 @@ class CheckSQLData():
 
         # 字典反转的例子 {v: k for k, v in m.items()}
 
-        UserList = self.s.query(User.phone,User.mycode,User.code).all()
+        UserList = self.s.query(User.phone, User.mycode, User.code).all()
 
         ## only useful column is selected
         # id = Column(INTEGER(8), primary_key=True)
@@ -116,8 +118,10 @@ class CheckSQLData():
         # userid = Column(String(32), nullable=False, comment='用户id')
         # starttime = Column(BIGINT(20), nullable=False, comment='购买矿机时间')
 
-        emptyFundItem = {"userid":"","fund":0,"static":0,"dynamic":0,"circle":0,"recommand":0,"starttime":time.time()}
-        FundList = self.s.query(AssetFund.userid, AssetFund.fund, AssetFund.static, AssetFund.dynamic, AssetFund.circle, AssetFund.recommend,
+        emptyFundItem = {"userid": "", "fund": 0, "static": 0, "dynamic": 0, "circle": 0, "recommand": 0,
+                         "starttime": time.time()}
+        FundList = self.s.query(AssetFund.userid, AssetFund.fund, AssetFund.static, AssetFund.dynamic, AssetFund.circle,
+                                AssetFund.recommend,
                                 AssetFund.starttime).all()
 
         BaseList = self.s.query(AssetBase).all()
@@ -146,13 +150,13 @@ class CheckSQLData():
         # 得到sortedMycodeListdict即可
         # self.sortedMycodeListdict = sorted(FundListdict1, key=lambda k: k['mycode'])  ## total 54
 
-        for x in self.IndexOfUser: # it convert to a list, list item is a dict, and contain index, x ='8613008104208'
-            y=self.IndexOfFund.get(x,emptyFundItem)
+        for x in self.IndexOfUser:  # it convert to a list, list item is a dict, and contain index, x ='8613008104208'
+            y = self.IndexOfFund.get(x, emptyFundItem)
             # dict combines, it equal
             # dictMerged1 = dict( dict1.items() + dict2.items() )
             # dictMerged2 = dict1.copy()
             # dictMerged2.update(dict2)
-            z = dict(self.IndexOfUser[x], **y)
+            z = dict(self.IndexOfUser[x], **y) #合并表格
 
             self.sortedMycodeListdict.append(z)
 
@@ -184,7 +188,7 @@ class CheckSQLData():
 
         self.IsNodeInfoCached = [False] * CacheLen
         self.NodeInfoCachedValue = [""] * CacheLen
-        
+
     def LoadSQLData1(self):
 
         FundList = self.s.query(AssetLoadsqldatum).all()
@@ -197,7 +201,6 @@ class CheckSQLData():
         # 根据 userid/phone/phone建立字典，方便快速查找
         self.indexOfMycode = self.build_dict(self.sortedMycodeListdict, key="mycode")
         # 考虑到层级关系，还需要建立mycode的字典，方便查找上下级关系，所以 mycode 是关键index
-
 
         print(f"sorted: Total time for {Nums.MaxRecords} records {(time.time() - self.t0)}  secs")
         # print(f"SQLAlchemy ORM query(): Total time for {len(self.nodeList)} records {(time.time() - self.t0)}  secs")
@@ -225,7 +228,6 @@ class CheckSQLData():
         df.to_excel(writer, sheet_name="origin data")
         writer.close()
 
-
     def saveData(self):
         path = os.path.dirname(os.path.abspath(__file__))
         output_file = os.path.join(path, 'fullresult.xlsx')
@@ -242,41 +244,41 @@ class CheckSQLData():
         i = 1
         for x in self.sortedMycodeListdict:
             node = AssetCheckresultpython()  # should in loop, otherwise it will overlap all record and only 1 in database
-            node.fund = x.get('fund',0)
-            node.static = x.get('static',0)
-            node.dynamic = x.get('dynamic',0)
-            node.status = x.get('status',0)
-            node.fundtype = x.get('fundtype',0)
-            node.userid = x.get('userid',0)
-            node.starttime = x.get('starttime',0)
-            node.stoptime = x.get('stoptime',0)
-            node.lastdayinterest = x.get('lastdayinterest',0)
-            node.gas = x.get('gas',0)
-            node.attribute = x.get('attribute',0)
-            node.production = x.get('production',0)
-            node.updatetime = x.get('updatetime',0)
+            node.fund = x.get('fund', 0)
+            node.static = x.get('static', 0)
+            node.dynamic = x.get('dynamic', 0)
+            node.status = x.get('status', 0)
+            node.fundtype = x.get('fundtype', 0)
+            node.userid = x.get('userid', 0)
+            node.starttime = x.get('starttime', 0)
+            node.stoptime = x.get('stoptime', 0)
+            node.lastdayinterest = x.get('lastdayinterest', 0)
+            node.gas = x.get('gas', 0)
+            node.attribute = x.get('attribute', 0)
+            node.production = x.get('production', 0)
+            node.updatetime = x.get('updatetime', 0)
 
-            node.name = x.get('name',0)
-            node.phone = x.get('phone',0)
-            node.email = x.get('email',0)
-            node.password = x.get('password',0)
-            node.code = x.get('code',0)
-            node.mycode = x.get('mycode',0)
+            node.name = x.get('name', 0)
+            node.phone = x.get('phone', 0)
+            node.email = x.get('email', 0)
+            node.password = x.get('password', 0)
+            node.code = x.get('code', 0)
+            node.mycode = x.get('mycode', 0)
 
-            node.paypassword = x.get('paypassword',0)
-            node.status = x.get('status',0)
-            node.registertime = x.get('registertime',0)
-            node.countryCode = x.get('countryCode',0)
-            node.signtime = x.get('signtime',0)
+            node.paypassword = x.get('paypassword', 0)
+            node.status = x.get('status', 0)
+            node.registertime = x.get('registertime', 0)
+            node.countryCode = x.get('countryCode', 0)
+            node.signtime = x.get('signtime', 0)
 
-            node.ethaddress = x.get('ethaddress',0)
-            node.tokenbalance = x.get('tokenbalance',0)
-            node.usdtbalance = x.get('usdtbalance',0)
-            node.lockbalance = x.get('lockbalance',0)
-            node.tokenaddress = x.get('tokenaddress',0)
-            node.macbalance = x.get('macbalance',0)
-            node.circle=x.get('circle',0) if x.get('circle',0) else 0
-            node.recommend=x.get('recommend',0) if x.get('recommend',0) else 0
+            node.ethaddress = x.get('ethaddress', 0)
+            node.tokenbalance = x.get('tokenbalance', 0)
+            node.usdtbalance = x.get('usdtbalance', 0)
+            node.lockbalance = x.get('lockbalance', 0)
+            node.tokenaddress = x.get('tokenaddress', 0)
+            node.macbalance = x.get('macbalance', 0)
+            node.circle = x.get('circle', 0) if x.get('circle', 0) else 0
+            node.recommend = x.get('recommend', 0) if x.get('recommend', 0) else 0
 
             z = self.indexOfMycode.get(node.mycode)
             Index = z['index']
@@ -285,11 +287,11 @@ class CheckSQLData():
             # node.mycodeIDGrandSonListIndex = ','.join(str(i) for i in self.indexOfGrandSonNodeListIndex[Index])
             # node.mycodeIDsubNodevipLevelIndex = ','.join(str(i) for i in self.indexOfsubNodevipLevelIndex[Index])
 
-            d= ' '.join(str(i) for i in self.indexOfsubNodeListIndex[Index])
-            node.mycodeIDSubListIndex=d if len(d) < 1024 else d[0:1023]
-            d= ','.join(str(i) for i in self.indexOfGrandSonNodeListIndex[Index])
+            d = ' '.join(str(i) for i in self.indexOfsubNodeListIndex[Index])
+            node.mycodeIDSubListIndex = d if len(d) < 1024 else d[0:1023]
+            d = ','.join(str(i) for i in self.indexOfGrandSonNodeListIndex[Index])
             node.mycodeIDGrandSonListIndex = d if len(d) < 1024 else d[0:1023]
-            d=','.join(str(i) for i in self.indexOfsubNodevipLevelIndex[Index])
+            d = ','.join(str(i) for i in self.indexOfsubNodevipLevelIndex[Index])
             node.mycodeIDsubNodevipLevelIndex = d if len(d) < 32 else d[0:32]
 
             node.NodeLevel = self.indexOfNodeLevel[Index]
@@ -312,20 +314,26 @@ class CheckSQLData():
             node.TotalAward = self.indexOfTotalAward[Index]
 
             d = self.getNodeTreeInfobyIndex(Index)
-            d1=d if len(d)<4096 else d[0:4095]
-            node.decription=d1
+            d1 = d if len(d) < 4096 else d[0:4095]
+            node.decription = d1
 
-            with open(f'./oklist{self.savetime}.txt', 'a') as w0,open(f'./errorlist{self.savetime}.txt', 'a') as w1:
+            i = i + 1
+            self.s.add(node)
+            if i % 1000 == 0:
+                self.s.flush()
+
+            # if i==1:
+            # df = pd.DataFrame({'id': 1, 'name': 'Alice'}, pd.Index(range(1)))
+            # df = df.append(node.__dict__, ignore_index=True) ## this ok
+            # # df = df.append(node.__dict__, pd.Index(range(1)))
+            with open(f'./oklist_{self.savetime}.txt', 'a') as w0, open(f'./errorlist_{self.savetime}.txt', 'a') as w1:
                 if int(node.TotalAward) == int(node.static + node.dynamic):
-                    w=w0
-                    w.write(
-                        f"\n\n=====================  流水单 {Index}：{node.phone} ====================================")
-
+                    w = w0
+                    w.write(f"\n\n=====================  正确：")
                 else:
-                    w=w1
-                    w.write(
-                        f"\n\n=====================  错误流水单 {Index}：{node.phone} ====================================")
-
+                    w = w1
+                    w.write(f"\n\n====================== 复杂：")
+                w.write(f"流水单号 {Index}：{node.phone} 投入资产:{int(node.fund)} 推荐码:{node.mycode} 上线:{node.code} ====================================")
                 w.write(f"\n{time.asctime()}\n")
                 w.write(
                     f"method1(yhw):静态:{node.static:5.1f} 矿圈:{node.circle if node.circle else 0} 推荐:{node.recommend:5.1f} 动态:{node.dynamic:5.1f}\n")
@@ -336,19 +344,9 @@ class CheckSQLData():
                 # desc = f"{i}\t{Node['phone']}\t{int(Node['fund'])}\tvip{self.indexOfvipLevel[i]}\tL{self.indexOfNodeLevel[i]}\t${self.indexOfvipTreeBalance[i]}\t${int(self.indexOfTreeBalance[i])}\t{Node['name']}\n"
                 # w.write(f"\n总子节点数量\t累加和\t累加和1：子节点列表及详细信息\n")
                 w.write(
-                    f"\n内部序号\t注册名\t\t余额\tVIP等级\t节点层级\tvip累计\t总业绩\t矿圈1\t老袁矿圈\t总推荐\t老袁推荐\t动态\t老袁动态\t静态\t老袁静态\t二代推荐\t推荐码\n")
+                    f"\n内部序号\t注册名\t\t本金\t\tV等级\t层级\tvip业绩\t总业绩\t矿圈1\tY矿圈\t总推荐\tY推荐\t动态\tY动态\t静态\tY静态\t二代推荐\t推荐码\t上级编码\n")
                 w.write("\n详情如下:\n--------------------------------------------------------------\n")
                 w.write(d)
-
-            # if i==1:
-            # df = pd.DataFrame({'id': 1, 'name': 'Alice'}, pd.Index(range(1)))
-            # df = df.append(node.__dict__, ignore_index=True) ## this ok
-            # # df = df.append(node.__dict__, pd.Index(range(1)))
-
-            i = i + 1
-            self.s.add(node)
-            if i % 1000 == 0:
-                self.s.flush()
 
         ## batch mode for speed
         try:
@@ -378,8 +376,8 @@ class CheckSQLData():
 
         print(f"SQLAlchemy ORM add(): Total time for all records {(time.time() - self.t0)}  secs")
 
-    def getsubNodeListIndexbyIndex(self, Index):
 
+    def getsubNodeListIndexbyIndex(self, Index):
         # subNodeListIndex = []
         # It contains more indice, so we must use index function, can't utilize dict function
         # subNodeIndex = self.indexOfparentID.index(ID)
@@ -392,12 +390,14 @@ class CheckSQLData():
 
         return subNodeListIndex
 
+
     def genIndexbysubNodeListIndex(self):
         self.indexOfsubNodeListIndex = []
         for x in range(self.ListLen):
             y = self.getsubNodeListIndexbyIndex(x)
             self.indexOfsubNodeListIndex.append(y)
         print(f"genIndexbysubNodeListIndex: Total time for all records {(time.time() - self.t0)}  secs")
+
 
     def genIndexbyGrandSonNodeListIndex(self):
         self.indexOfGrandSonNodeListIndex = []
@@ -415,25 +415,31 @@ class CheckSQLData():
 
         print(f"genIndexbyGrandSonNodeListIndex: Total time for all records {(time.time() - self.t0)}  secs")
 
+
     def getNodeInfobyIndex(self, i):
         if self.IsNodeInfoCached[i]:
             return self.NodeInfoCachedValue[i]
 
         Node = self.sortedMycodeListdict[i]
         d = f"{i}"
+        d = f"{i}"
         d = d + "\t" + f"{Node['phone']}"
-        d = d + "\t" + f"{int(Node['fund']):8.2f}"
+        d = d + "\t" + f"{int(Node['fund'])}"
         d = d + "\t" + f"{self.indexOfvipLevel[i]}"
         d = d + "\t" + f"{self.indexOfNodeLevel[i]}"
         d = d + "\t" + f"{self.indexOfvipTreeBalance[i]}"
         d = d + "\t" + f"{int(self.indexOfTreeBalance[i])}"
         d = d + "\t" + f"{self.FastMinerAwardCachedValue[i]:4.1f}"
+        circle = Node['circle'] if Node['circle'] else 0
+        d = d + "\t" + f"{circle:4.1f}"
         d = d + "\t" + f"{self.indexOfRecommendAward[i]:4.1f}"
-        d = d + "\t" + f"{self.indexOfRecommend2Award[i]:4.1f}"
+        d = d + "\t" + f"{Node['recommend']:4.1f}"
         d = d + "\t" + f"{self.indexOfDynamicAward[i]:4.1f}"
         d = d + "\t" + f"{Node['dynamic']:4.1f}"
         d = d + "\t" + f"{self.indexOfstaticIncome[i]:4.1f}"
         d = d + "\t" + f"{Node['static']:4.1f}"
+        d = d + "\t" + f"{self.indexOfRecommend2Award[i]:4.1f}"
+        d = d + "\t" + f"{Node['name']}"
         d = d + "\t" + f"{Node['code']}"
         d = d + "\n"
 
@@ -441,17 +447,19 @@ class CheckSQLData():
 
         return d
 
+
     def getNodeTreeInfobyIndex(self, i):
         subTreeList = self.getNodeTreeListbyIndex(i)
         fundSum0 = sum(self.sortedMycodeListdict[i]['fund'] for i in subTreeList)
         fundSum1 = sum(self.indexOfusedBalance[i] for i in subTreeList)
         # sum([i for i in l if isinstance(i, int) or isinstance(i, float)])
-        d = f"Info {i}:\n总业绩:{int(fundSum0)}\t{int(fundSum1)}\n下属数量:{len(subTreeList)}\n下属编号:\t{subTreeList}\n"
+        d = f"Info {i}:\n总业绩(含自身):{int(fundSum0)}\t{int(fundSum1)}\n下属贡献:{int(fundSum0-self.sortedMycodeListdict[i]['fund'])}\n下属数量:{len(subTreeList)}\n下属编号:\t{subTreeList}\n\n"
 
         for x in subTreeList:
             info = self.getNodeInfobyIndex(x)
             d = d + info
         return d
+
 
     def getNodeTreeListbyIndex(self, i):
         if self.IsNodeTreeListCached[i]:
@@ -469,13 +477,14 @@ class CheckSQLData():
 
         return TreeList
 
-    def genIndexbyNodeTreeList(self):
 
+    def genIndexbyNodeTreeList(self):
         self.indexOfNodeTreeList = []
         for x in range(self.ListLen):
             y = self.getNodeTreeListbyIndex(x)
             self.indexOfNodeTreeList.append(y)
         print(f"genIndexbyNodeTreeList: Total time for all records {(time.time() - self.t0)}  secs")
+
 
     def genIndexbysubNodevipLevelIndex(self):
         self.indexOfsubNodevipLevelIndex = []
@@ -492,8 +501,8 @@ class CheckSQLData():
 
         print(f"genIndexbysubNodevipLevelIndex: Total time for all records {(time.time() - self.t0)}  secs")
 
-    def getsubNodeListbyNode(self, Node):
 
+    def getsubNodeListbyNode(self, Node):
         subNodeList = []
         # It contains more indice, so we must use index function, can't utilize dict function
         # subNodeIndex = self.indexOfparentID.index(ID)
@@ -510,6 +519,7 @@ class CheckSQLData():
             subNodeList.append(self.sortedMycodeListdict[x])
 
         return subNodeList
+
 
     def getNodeLevelbyMycode(self, Mycode):
         # prime key should start with 1
@@ -528,6 +538,7 @@ class CheckSQLData():
         else:
             return 0
 
+
     def genIndexbyNodeLevel(self):
         self.indexOfNodeLevel = []
         self.IDNodeLeveldict = {}
@@ -539,15 +550,19 @@ class CheckSQLData():
 
         print(f"genIndexbyNodeLevel: Total time for all records {(time.time() - self.t0)}  secs")
 
+
     def getMultiIndex(self, List, value):
         return [i for i, x in enumerate(List) if x == value]
+
 
     def getDictMultiIndex(self, List, key, value):
         return [i for i, x in enumerate(List) if x[key] == value]
 
+
     def getListHit(self, List, posList):
         # return [x for i,x in enumerate(List) if i in posList]
         return [List[x] for x in posList]
+
 
     def getTreeBalancebyMycode(self, Mycode):
         TreeBalance = 0
@@ -572,6 +587,7 @@ class CheckSQLData():
 
         return TreeBalance + z['fund']
 
+
     def getTreeBalancebyNode(self, Node):
         TreeBalance = 0
         # It contains more indice, so we must use index function, can't utilize dict function
@@ -593,8 +609,8 @@ class CheckSQLData():
 
         return TreeBalance + Node['fund']
 
-    def getTreeBalancebyIndex(self, Index):
 
+    def getTreeBalancebyIndex(self, Index):
         if self.IsTreeBalanceCached[Index]:
             return self.TreeBalanceCachedValue[Index]
 
@@ -627,6 +643,7 @@ class CheckSQLData():
 
         return TreeBalance
 
+
     # def genIndexbyTreeBalanceOld(self):
     #     self.indexOfTreeBalance = []
     #
@@ -651,6 +668,7 @@ class CheckSQLData():
 
         print(f"genIndexbyTreeBalance: Total time for all records {(time.time() - self.t0)}  secs")
 
+
     def genIndexbyvipTreeBalance(self):
         self.indexOfvipTreeBalance = []
         self.IDvipTreeBalancedict = {}
@@ -664,6 +682,7 @@ class CheckSQLData():
             self.indexOfvipTag.append(vipTag)
 
         print(f"genIndexbyvipTreeBalance: Total time for all records {(time.time() - self.t0)}  secs")
+
 
     def getvipTreeBalancebyIndex(self, i):
         vipBalance = 0
@@ -680,6 +699,7 @@ class CheckSQLData():
             vipBalance = 0
 
         return vipBalance
+
 
     def getvipLevelbyIndex(self, i):
         if self.IsvipLevelCached[i]:
@@ -712,6 +732,7 @@ class CheckSQLData():
 
         return vipLevel
 
+
     def genIndexbyvipLevel(self):
         self.indexOfvipLevel = []
         self.IDvipLeveldict = {}
@@ -720,6 +741,7 @@ class CheckSQLData():
             self.indexOfvipLevel.append(vipLevel)
             self.IDvipLeveldict[self.sortedMycodeListdict[x]['mycode']] = vipLevel
         print(f"genIndexbyvipLevel: Total time for all records {(time.time() - self.t0)}  secs")
+
 
     def getstaticIncomebyBalance(self, orginBalance):
         # usedBalance = 0
@@ -743,12 +765,13 @@ class CheckSQLData():
 
         return usedBalance, minerProductive, staticIncome
 
+
     def getstaticIncomebyIndex(self, Index):
         balance, minerProductive, staticIncome = self.getstaticIncomebyBalance(self.sortedMycodeListdict[Index]['fund'])
         return balance, minerProductive, staticIncome
 
-    def genIndexbystaticIncome(self):
 
+    def genIndexbystaticIncome(self):
         self.indexOfusedBalance = []
         self.indexOfminerProductive = []
         self.indexOfstaticIncome = []
@@ -763,8 +786,8 @@ class CheckSQLData():
             self.IDstaticIncomedict[self.sortedMycodeListdict[x]['mycode']] = staticIncome
         print(f"genIndexbystaticIncome: Total time for all records {(time.time() - self.t0)}  secs")
 
-    def getstaticIncomeTreebyIndex(self, Index):
 
+    def getstaticIncomeTreebyIndex(self, Index):
         if self.IsstaticIncomeTreeCached[Index]:
             return self.staticIncomeTreeCachedValue[Index]
 
@@ -780,6 +803,7 @@ class CheckSQLData():
         self.staticIncomeTreeCachedValue[Index] = staticIncomeTree
         self.IsstaticIncomeTreeCached[Index] = True
         return staticIncomeTree
+
 
     def getMinerCoeffbyvipLevel(self, vipLevel):
         if (vipLevel == 0):
@@ -800,6 +824,7 @@ class CheckSQLData():
 
         return minerCoeff
 
+
     def genIndexbystaticIncomeTree(self):
         self.indexOfstaticIncomeTree = []
         self.IDstaticIncomeTreedict = {}
@@ -809,6 +834,7 @@ class CheckSQLData():
             self.IDstaticIncomeTreedict[self.sortedMycodeListdict[x]['mycode']] = staticIncomeTree
         print(f"genIndexbystaticIncomeTree: Total time for all records {(time.time() - self.t0)}  secs")
 
+
     def genIndexbystaticIncomeTreevip(self):
         self.indexOfstaticIncomeTreevip = []
         for x in range(self.ListLen):
@@ -817,8 +843,8 @@ class CheckSQLData():
             self.indexOfstaticIncomeTreevip.append(staticIncomeTreevip)
         print(f"genIndexbystaticIncomeTreevip: Total time for all records {(time.time() - self.t0)}  secs")
 
-    def genFastMinerAward(self):
 
+    def genFastMinerAward(self):
         FullList = list(range(self.ListLen))
 
         while FullList:
@@ -901,8 +927,8 @@ class CheckSQLData():
                     self.IsFastMinerAwardCached[x] = True
                     self.FastMinerAwardCachedValue[x] = 0
 
-    def getMinerAwardbyIndex(self, Index):
 
+    def getMinerAwardbyIndex(self, Index):
         vipLevel = self.indexOfvipLevel[Index]
         if vipLevel == 0:
             return 0
@@ -989,8 +1015,8 @@ class CheckSQLData():
 
         return MinerAward
 
-    def getRecommendAwardbyIndex(self, Index):
 
+    def getRecommendAwardbyIndex(self, Index):
         subNodeIndex = self.indexOfsubNodeListIndex[Index]
 
         # validMinerList=[self.indexOfusedBalance[x] for x in subNodeIndex if self.indexOfusedBalance[x]>0]
@@ -1033,11 +1059,12 @@ class CheckSQLData():
 
         return r1, r2, (r1 + r2)
 
-    def getTotalAwardbyIndex(self, Index):
 
+    def getTotalAwardbyIndex(self, Index):
         DynamicAward = self.indexOfRecommendAward[Index] + self.indexOfMinerAward[Index]
         TotalAward = self.indexOfstaticIncome[Index] + DynamicAward
         return DynamicAward, TotalAward
+
 
     def genIndexbyTotalAward(self):
         self.indexOfTotalAward = []
@@ -1052,6 +1079,7 @@ class CheckSQLData():
             self.IDDynamicAwarddict[self.sortedMycodeListdict[x]['mycode']] = DynamicAward
         print(f"genIndexbyTotalAward: Total time for all records {(time.time() - self.t0)}  secs")
 
+
     def genIndexbyMinerAward(self):
         self.indexOfMinerAward = []
         self.IDMinerAwarddict = {}
@@ -1060,6 +1088,7 @@ class CheckSQLData():
             self.indexOfMinerAward.append(MinerAward)
             self.IDMinerAwarddict[self.sortedMycodeListdict[x]['mycode']] = MinerAward
         print(f"genIndexbyMinerAward: Total time for all records {(time.time() - self.t0)}  secs")
+
 
     def genIndexbyRecommendAward(self):
         self.indexOfRecommendAward = []
@@ -1073,6 +1102,7 @@ class CheckSQLData():
             self.indexOfRecommend2Award.append(r2)
             self.IDRecommendAwarddict[self.sortedMycodeListdict[x]['mycode']] = r
         print(f"genIndexbyRecommendAward: Total time for all records {(time.time() - self.t0)}  secs")
+
 
     def genAllIndex(self):
         self.InitCacheList()
