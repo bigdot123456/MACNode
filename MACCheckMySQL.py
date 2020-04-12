@@ -118,7 +118,7 @@ class CheckSQLData():
         # userid = Column(String(32), nullable=False, comment='用户id')
         # starttime = Column(BIGINT(20), nullable=False, comment='购买矿机时间')
 
-        emptyFundItem = {"userid": "", "fund": 0, "static": 0, "dynamic": 0, "circle": 0, "recommand": 0,
+        emptyFundItem = {"userid": "", "fund": 0, "static": 0, "dynamic": 0, "circle": 0, "recommend": 0,
                          "starttime": time.time()}
         FundList = self.s.query(AssetFund.userid, AssetFund.fund, AssetFund.static, AssetFund.dynamic, AssetFund.circle,
                                 AssetFund.recommend,
@@ -338,13 +338,13 @@ class CheckSQLData():
                 w.write(
                     f"method1(yhw):静态:{node.static:5.1f} 矿圈:{node.circle if node.circle else 0} 推荐:{node.recommend:5.1f} 动态:{node.dynamic:5.1f}\n")
                 w.write(
-                    f"method2(lqh):静态:{node.staticIncome} 矿圈:{node.MinerAward} 推荐:{node.RecommendAward} 动态:{node.DynamicAward:5.1f}新矿圈：{self.FastMinerAwardCachedValue[Index]}\n")
+                    f"method2(lqh):静态:{node.staticIncome:5.1f} 矿圈:{node.MinerAward:5.1f} 推荐:{node.RecommendAward:5.1f} 动态:{node.DynamicAward:5.1f}新矿圈：{self.FastMinerAwardCachedValue[Index]:5.1f}\n")
                 msg = f"理论最大矿圈收益:v1:{(node.staticIncomeTree - node.staticIncome) * 0.1}\tv2:{(node.staticIncomeTree - node.staticIncome) * 0.15}\tv3:{(node.staticIncomeTree - node.staticIncome) * 0.2}"
                 w.write(msg)
                 # desc = f"{i}\t{Node['phone']}\t{int(Node['fund'])}\tvip{self.indexOfvipLevel[i]}\tL{self.indexOfNodeLevel[i]}\t${self.indexOfvipTreeBalance[i]}\t${int(self.indexOfTreeBalance[i])}\t{Node['name']}\n"
                 # w.write(f"\n总子节点数量\t累加和\t累加和1：子节点列表及详细信息\n")
                 w.write(
-                    f"\n内部序号\t注册名\t\t本金\t\tV等级\t层级\tvip业绩\t总业绩\t矿圈1\tY矿圈\t总推荐\tY推荐\t动态\tY动态\t静态\tY静态\t二代推荐\t推荐码\t上级编码\n")
+                    f"\n内部序号\t注册名\tt本金\t\tV等级\t层级\tvip业绩\t总业绩\t矿圈1\tY矿圈\t总推荐\tY推荐\t动态\tY动态\t静态\tY静态\t二代推荐\t推荐码\t上级编码\n")
                 w.write("\n详情如下:\n--------------------------------------------------------------\n")
                 w.write(d)
 
@@ -433,13 +433,14 @@ class CheckSQLData():
         circle = Node['circle'] if Node['circle'] else 0
         d = d + "\t" + f"{circle:4.1f}"
         d = d + "\t" + f"{self.indexOfRecommendAward[i]:4.1f}"
-        d = d + "\t" + f"{Node['recommend']:4.1f}"
+        recommend = Node['recommend'] if Node['recommend'] else 0
+        d = d + "\t" + f"{recommend:4.1f}"
         d = d + "\t" + f"{self.indexOfDynamicAward[i]:4.1f}"
         d = d + "\t" + f"{Node['dynamic']:4.1f}"
         d = d + "\t" + f"{self.indexOfstaticIncome[i]:4.1f}"
         d = d + "\t" + f"{Node['static']:4.1f}"
         d = d + "\t" + f"{self.indexOfRecommend2Award[i]:4.1f}"
-        d = d + "\t" + f"{Node['name']}"
+        d = d + "\t" + f"{Node['mycode']}"
         d = d + "\t" + f"{Node['code']}"
         d = d + "\n"
 
