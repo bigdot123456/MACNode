@@ -1,0 +1,3226 @@
+[
+  {
+    "mycode": "FXV059138",
+    "code": "OTI309606",
+    "phone": "8613140053163",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585380782090
+  },
+  {
+    "mycode": "BJO886097",
+    "code": "MTN705424",
+    "phone": "8618864286367",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585382942256
+  },
+  {
+    "mycode": "ROS156663",
+    "code": "YGX847744",
+    "phone": "8618428132572",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585382979962
+  },
+  {
+    "mycode": "KSY376644",
+    "code": "BJO886097",
+    "phone": "8613723088743",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585383166693
+  },
+  {
+    "mycode": "JXJ028332",
+    "code": "ROS156663",
+    "phone": "8613458615362",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585383295161
+  },
+  {
+    "mycode": "BWG925767",
+    "code": "KSY376644",
+    "phone": "8614738962743",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585386073010
+  },
+  {
+    "mycode": "WOE259525",
+    "code": "YFC159196",
+    "phone": "8613594429380",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586359517000
+  },
+  {
+    "mycode": "DSU243559",
+    "code": "KSY376644",
+    "phone": "8618685168764",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586423283745
+  },
+  {
+    "mycode": "LCP644573",
+    "code": "ROS156663",
+    "phone": "8615361643318",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585389980198
+  },
+  {
+    "mycode": "IWY400491",
+    "code": "BJO886097",
+    "phone": "8617896886062",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1585390562855
+  },
+  {
+    "mycode": "OYN815916",
+    "code": "BJO886097",
+    "phone": "8617896886082",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1585390588585
+  },
+  {
+    "mycode": "YIW962413",
+    "code": "KQJ184239",
+    "phone": "8618464601218",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586359606216
+  },
+  {
+    "mycode": "PEV635809",
+    "code": "BWG925767",
+    "phone": "8617633896230",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586592573234
+  },
+  {
+    "mycode": "YGX847744",
+    "code": "ZZQ075791",
+    "phone": "8618729573406",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585462884773
+  },
+  {
+    "mycode": "TNB503947",
+    "code": "JCD407107",
+    "phone": "8618710626161",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585467674299
+  },
+  {
+    "mycode": "PMD566803",
+    "code": "YGX847744",
+    "phone": "8618629609998",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585467706604
+  },
+  {
+    "mycode": "ZZQ075791",
+    "code": "PTG596411",
+    "phone": "8615771973131",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585467737578
+  },
+  {
+    "mycode": "PTG596411",
+    "code": "IZY921840",
+    "phone": "8615922541777",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585467802166
+  },
+  {
+    "mycode": "LYJ170881",
+    "code": "MGS048944",
+    "phone": "8618806469973",
+    "rootfund": 1000,
+    "fundType": 2,
+    "starttime": 1586422634184
+  },
+  {
+    "mycode": "KEM362917",
+    "code": "KVH412175",
+    "phone": "8613474687576",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585478423541
+  },
+  {
+    "mycode": "MDB114115",
+    "code": "YGX847744",
+    "phone": "8618149365022",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585478676371
+  },
+  {
+    "mycode": "JCD407107",
+    "code": "TDD824072",
+    "phone": "8615070730678",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585481490990
+  },
+  {
+    "mycode": "IZY921840",
+    "code": "VKP340587",
+    "phone": "8613730607188",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585527796945
+  },
+  {
+    "mycode": "MGS048944",
+    "code": "ZVR989883",
+    "phone": "8617896362909",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586358993869
+  },
+  {
+    "mycode": "YFC159196",
+    "code": "QJZ731356",
+    "phone": "8618690737470",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586358885367
+  },
+  {
+    "mycode": "ZVR989883",
+    "code": "KQJ184239",
+    "phone": "8617895364218",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586358769200
+  },
+  {
+    "mycode": "HFO628364",
+    "code": "FIZ046564",
+    "phone": "8615223873233",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585642602424
+  },
+  {
+    "mycode": "UNN741411",
+    "code": "HFO628364",
+    "phone": "8618723842188",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585642923892
+  },
+  {
+    "mycode": "DDU213990",
+    "code": "UNN741411",
+    "phone": "8618716439337",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585642953391
+  },
+  {
+    "mycode": "QFS857784",
+    "code": "QQZ456975",
+    "phone": "8613455660218",
+    "rootfund": 1000,
+    "fundType": 2,
+    "starttime": 1585644101621
+  },
+  {
+    "mycode": "BVC270027",
+    "code": "GIE371281",
+    "phone": "8613732268550",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586153958816
+  },
+  {
+    "mycode": "BSO706454",
+    "code": "KQJ184239",
+    "phone": "8614754474552",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586359696288
+  },
+  {
+    "mycode": "NWV637878",
+    "code": "ZCB612967",
+    "phone": "8615608885772",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585720775797
+  },
+  {
+    "mycode": "ZCB612967",
+    "code": "DJU834394",
+    "phone": "8615102844002",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1585722377156
+  },
+  {
+    "mycode": "SFL046454",
+    "code": "ZCB612967",
+    "phone": "8617761292691",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1585724576292
+  },
+  {
+    "mycode": "ZBN092945",
+    "code": "QJZ731356",
+    "phone": "8615854883485",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586359865743
+  },
+  {
+    "mycode": "PPY707589",
+    "code": "QJZ731356",
+    "phone": "8618372172656",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586359789124
+  },
+  {
+    "mycode": "OSD257507",
+    "code": "YGX847744",
+    "phone": "8618502948129",
+    "rootfund": 2000,
+    "fundType": 3,
+    "starttime": 1585791510916
+  },
+  {
+    "mycode": "IWF723318",
+    "code": "",
+    "phone": "8618401464128",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585804787272
+  },
+  {
+    "mycode": "PLX949631",
+    "code": "MZT056331",
+    "phone": "8613908077773",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585806197043
+  },
+  {
+    "mycode": "ROQ247624",
+    "code": "PLX949631",
+    "phone": "8619983156984",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585806331052
+  },
+  {
+    "mycode": "MZT056331",
+    "code": "DJU834394",
+    "phone": "8618208196827",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585807044652
+  },
+  {
+    "mycode": "PLB514299",
+    "code": "ZZQ075791",
+    "phone": "8613205334598",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1585808156238
+  },
+  {
+    "mycode": "IGM921391",
+    "code": "ZZQ075791",
+    "phone": "8618991161130",
+    "rootfund": 1000,
+    "fundType": 2,
+    "starttime": 1585808338476
+  },
+  {
+    "mycode": "MRQ403213",
+    "code": "MZT056331",
+    "phone": "8613908091660",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585810394781
+  },
+  {
+    "mycode": "RWZ004594",
+    "code": "JWB920789",
+    "phone": "8618946760921",
+    "rootfund": 1000,
+    "fundType": 2,
+    "starttime": 1585814966590
+  },
+  {
+    "mycode": "BDH171491",
+    "code": "KVH412175",
+    "phone": "8618610188081",
+    "rootfund": 2000,
+    "fundType": 2,
+    "starttime": 1585815135309
+  },
+  {
+    "mycode": "VQD105821",
+    "code": "BWG925767",
+    "phone": "8613122233850",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585819778476
+  },
+  {
+    "mycode": "ODI669848",
+    "code": "SPB498452",
+    "phone": "8618946594456",
+    "rootfund": 1000,
+    "fundType": 2,
+    "starttime": 1585821580523
+  },
+  {
+    "mycode": "WLV742965",
+    "code": "IZY921840",
+    "phone": "8615984799998",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1585827969150
+  },
+  {
+    "mycode": "WUY684475",
+    "code": "YKO206370",
+    "phone": "8613578876711",
+    "rootfund": 1000,
+    "fundType": 2,
+    "starttime": 1585829333935
+  },
+  {
+    "mycode": "BVL353491",
+    "code": "PLX949631",
+    "phone": "8617313119688",
+    "rootfund": 1000,
+    "fundType": 2,
+    "starttime": 1585836585921
+  },
+  {
+    "mycode": "JPJ583879",
+    "code": "ODI669848",
+    "phone": "8613179130799",
+    "rootfund": 1000,
+    "fundType": 2,
+    "starttime": 1585838365823
+  },
+  {
+    "mycode": "VKP340587",
+    "code": "HCC246660",
+    "phone": "8613389670970",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585878187783
+  },
+  {
+    "mycode": "HGM493796",
+    "code": "CQX327622",
+    "phone": "8613925090536",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585895541292
+  },
+  {
+    "mycode": "CQX327622",
+    "code": "HFO628364",
+    "phone": "8618685299922",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585896528829
+  },
+  {
+    "mycode": "NXT447503",
+    "code": "ROS156663",
+    "phone": "8618681373866",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1585898142059
+  },
+  {
+    "mycode": "VED130862",
+    "code": "JXJ028332",
+    "phone": "8618284531187",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585899895882
+  },
+  {
+    "mycode": "DJU834394",
+    "code": "CPK283124",
+    "phone": "8613628061207",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585907206390
+  },
+  {
+    "mycode": "HCC246660",
+    "code": "INT219790",
+    "phone": "8615923582339",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585916473690
+  },
+  {
+    "mycode": "JXH632323",
+    "code": "KSY376644",
+    "phone": "8614738961230",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1585919389945
+  },
+  {
+    "mycode": "YKO206370",
+    "code": "NFY139619",
+    "phone": "8618943627692",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585926155314
+  },
+  {
+    "mycode": "INT219790",
+    "code": "WIM019004",
+    "phone": "8618883172778",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585921899949
+  },
+  {
+    "mycode": "NFY139619",
+    "code": "FXV059138",
+    "phone": "8613354308921",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585925596907
+  },
+  {
+    "mycode": "JWB920789",
+    "code": "NFY139619",
+    "phone": "8618943609121",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585925443965
+  },
+  {
+    "mycode": "SPB498452",
+    "code": "NFY139619",
+    "phone": "8613159520700",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585925596273
+  },
+  {
+    "mycode": "STJ172221",
+    "code": "WUY684475",
+    "phone": "8615506013567",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586407588377
+  },
+  {
+    "mycode": "WDF258420",
+    "code": "",
+    "phone": "8613550047205",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585929805279
+  },
+  {
+    "mycode": "WIM019004",
+    "code": "WDF258420",
+    "phone": "8615923266625",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1585952852230
+  },
+  {
+    "mycode": "TBF443551",
+    "code": "KSY376644",
+    "phone": "8615519066690",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1585972562430
+  },
+  {
+    "mycode": "GIE371281",
+    "code": "JXJ028332",
+    "phone": "8619995437059",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586162813198
+  },
+  {
+    "mycode": "KQJ184239",
+    "code": "GIE371281",
+    "phone": "8615384944135",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586162890127
+  },
+  {
+    "mycode": "GJE613222",
+    "code": "HCC246660",
+    "phone": "8613436128653",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586246798167
+  },
+  {
+    "mycode": "JUH601330",
+    "code": "GJE613222",
+    "phone": "8618623000312",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586247317885
+  },
+  {
+    "mycode": "JXF789024",
+    "code": "GJE613222",
+    "phone": "8613140207678",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586247417332
+  },
+  {
+    "mycode": "SJW865929",
+    "code": "JUH601330",
+    "phone": "8618166435099",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586247525756
+  },
+  {
+    "mycode": "VOE981883",
+    "code": "JXF789024",
+    "phone": "8618523389644",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586247546361
+  },
+  {
+    "mycode": "NRW084979",
+    "code": "SJW865929",
+    "phone": "8613668082733",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586247567422
+  },
+  {
+    "mycode": "JIF228248",
+    "code": "SJW865929",
+    "phone": "8618225296268",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586247583486
+  },
+  {
+    "mycode": "PVY960713",
+    "code": "SJW865929",
+    "phone": "8619923410905",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586247642180
+  },
+  {
+    "mycode": "MUZ097260",
+    "code": "SJW865929",
+    "phone": "8615823117565",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586247664183
+  },
+  {
+    "mycode": "WZK929465",
+    "code": "JXF789024",
+    "phone": "8618602338597",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586247851996
+  },
+  {
+    "mycode": "OUM705468",
+    "code": "JPJ583879",
+    "phone": "8613331760076",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586323331952
+  },
+  {
+    "mycode": "TKY323728",
+    "code": "JUH601330",
+    "phone": "8613594321993",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586274692254
+  },
+  {
+    "mycode": "SRO041312",
+    "code": "GJE613222",
+    "phone": "8613594646852",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586274719224
+  },
+  {
+    "mycode": "BYS004049",
+    "code": "JUH601330",
+    "phone": "8613594368937",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586274736574
+  },
+  {
+    "mycode": "EYW390360",
+    "code": "JXF789024",
+    "phone": "8613594600487",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586274751670
+  },
+  {
+    "mycode": "XWU452568",
+    "code": "KSL866668",
+    "phone": "8618996123538",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586340696955
+  },
+  {
+    "mycode": "YBU222334",
+    "code": "PLX949631",
+    "phone": "8618113097275",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586351724420
+  },
+  {
+    "mycode": "QJZ731356",
+    "code": "GIE371281",
+    "phone": "8618294117991",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586394993080
+  },
+  {
+    "mycode": "MTN705424",
+    "code": "ZZQ075791",
+    "phone": "8615523393777",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586404609708
+  },
+  {
+    "mycode": "YDN805386",
+    "code": "MTN705424",
+    "phone": "8617774907550",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586404668951
+  },
+  {
+    "mycode": "WHJ653950",
+    "code": "FJP227707",
+    "phone": "8618853757551",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586416426356
+  },
+  {
+    "mycode": "JYU625776",
+    "code": "FIZ046564",
+    "phone": "8618123222641",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586417899330
+  },
+  {
+    "mycode": "PSQ183152",
+    "code": "WNK825188",
+    "phone": "8613678081337",
+    "rootfund": 2000,
+    "fundType": 3,
+    "starttime": 1586421125528
+  },
+  {
+    "mycode": "WJT845578",
+    "code": "WBL803274",
+    "phone": "8618166319777",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586417022121
+  },
+  {
+    "mycode": "KSL866668",
+    "code": "WJT845578",
+    "phone": "8615223829113",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586418939449
+  },
+  {
+    "mycode": "MLO262967",
+    "code": "IZY921840",
+    "phone": "8618190998487",
+    "rootfund": 2000,
+    "fundType": 3,
+    "starttime": 1586420216060
+  },
+  {
+    "mycode": "FIZ046564",
+    "code": "ZEG940521",
+    "phone": "8618583995265",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586424446976
+  },
+  {
+    "mycode": "CSZ127921",
+    "code": "RIB073327",
+    "phone": "8615322489116",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586456159278
+  },
+  {
+    "mycode": "BKX048781",
+    "code": "CSZ127921",
+    "phone": "8613433668689",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586456305602
+  },
+  {
+    "mycode": "RIB073327",
+    "code": "JYU625776",
+    "phone": "8613251253231",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586500555474
+  },
+  {
+    "mycode": "YHZ540027",
+    "code": "SSY833714",
+    "phone": "8615730258608",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586493184998
+  },
+  {
+    "mycode": "ZBJ162645",
+    "code": "TYE139545",
+    "phone": "8613823268871",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586489461558
+  },
+  {
+    "mycode": "VTD027544",
+    "code": "WSO127566",
+    "phone": "8618861744083",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586492958146
+  },
+  {
+    "mycode": "RGY605125",
+    "code": "IDC721548",
+    "phone": "8613206226000",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586491093367
+  },
+  {
+    "mycode": "WSO127566",
+    "code": "TYE139545",
+    "phone": "8613913090407",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586492332513
+  },
+  {
+    "mycode": "HPS081382",
+    "code": "ZZI592784",
+    "phone": "8618581188889",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586492554378
+  },
+  {
+    "mycode": "SSY833714",
+    "code": "XYW426464",
+    "phone": "8617602323221",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586493481969
+  },
+  {
+    "mycode": "CXL074556",
+    "code": "IDC721548",
+    "phone": "8613896710713",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586493809815
+  },
+  {
+    "mycode": "WXW128308",
+    "code": "WSO127566",
+    "phone": "8613117667921",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586496694036
+  },
+  {
+    "mycode": "VVX812289",
+    "code": "WSO127566",
+    "phone": "8613751539123",
+    "rootfund": 1000,
+    "fundType": 2,
+    "starttime": 1586495779300
+  },
+  {
+    "mycode": "IDC721548",
+    "code": "TCE601266",
+    "phone": "8613658469082",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586505317915
+  },
+  {
+    "mycode": "ZJT290146",
+    "code": "BKX048781",
+    "phone": "8613889388630",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586508249153
+  },
+  {
+    "mycode": "WBL803274",
+    "code": "DDU213990",
+    "phone": "8613888791852",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586508866901
+  },
+  {
+    "mycode": "BVP716993",
+    "code": "WSO127566",
+    "phone": "8618394467189",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586509790552
+  },
+  {
+    "mycode": "JDY693525",
+    "code": "DJU834394",
+    "phone": "8613671102617",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586510988541
+  },
+  {
+    "mycode": "DVB845978",
+    "code": "PPV644734",
+    "phone": "8618354299492",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586512775825
+  },
+  {
+    "mycode": "JSC260045",
+    "code": "IDC721548",
+    "phone": "8615923129800",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586514704451
+  },
+  {
+    "mycode": "QVN733078",
+    "code": "RIB073327",
+    "phone": "8615502372558",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586516614327
+  },
+  {
+    "mycode": "TFT881279",
+    "code": "FIZ046564",
+    "phone": "8615803612741",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586514910549
+  },
+  {
+    "mycode": "UGF266578",
+    "code": "TYE139545",
+    "phone": "8615183891897",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586520829068
+  },
+  {
+    "mycode": "ZMM470073",
+    "code": "WSO127566",
+    "phone": "8615095888780",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586528487174
+  },
+  {
+    "mycode": "JWB078066",
+    "code": "UGF266578",
+    "phone": "8617738205096",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586525075793
+  },
+  {
+    "mycode": "WNW209350",
+    "code": "IDC721548",
+    "phone": "8618595078615",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586525118121
+  },
+  {
+    "mycode": "XVW486955",
+    "code": "UGF266578",
+    "phone": "8613032800989",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586528888180
+  },
+  {
+    "mycode": "SDG012558",
+    "code": "NRJ110156",
+    "phone": "8613251253168",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586529946864
+  },
+  {
+    "mycode": "JYJ197391",
+    "code": "WHJ653950",
+    "phone": "8618563777583",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586529236739
+  },
+  {
+    "mycode": "NRJ110156",
+    "code": "RIB073327",
+    "phone": "8613251253073",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586529990441
+  },
+  {
+    "mycode": "ONQ659505",
+    "code": "UGF266578",
+    "phone": "8618081967009",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586529336254
+  },
+  {
+    "mycode": "PPV644734",
+    "code": "IZY921840",
+    "phone": "8615615625309",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586533908541
+  },
+  {
+    "mycode": "BUF923225",
+    "code": "ICH425515",
+    "phone": "8613283880317",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586534038411
+  },
+  {
+    "mycode": "GJD507051",
+    "code": "WSO127566",
+    "phone": "8613028698126",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586575417046
+  },
+  {
+    "mycode": "IKJ923078",
+    "code": "JYJ197391",
+    "phone": "8615275681112",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586579567201
+  },
+  {
+    "mycode": "ICH425515",
+    "code": "JYJ197391",
+    "phone": "8615965251109",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586574628977
+  },
+  {
+    "mycode": "FJP227707",
+    "code": "OLI516885",
+    "phone": "8619176927772",
+    "rootfund": 1000,
+    "fundType": 2,
+    "starttime": 1586588147360
+  },
+  {
+    "mycode": "RBC246143",
+    "code": "XYW426464",
+    "phone": "8617823503297",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586592838628
+  },
+  {
+    "mycode": "TYE139545",
+    "code": "PPV644734",
+    "phone": "8615521563456",
+    "rootfund": 4000,
+    "fundType": 4,
+    "starttime": 1586591274429
+  },
+  {
+    "mycode": "RFW663736",
+    "code": "HPS081382",
+    "phone": "8618716677089",
+    "rootfund": 1000,
+    "fundType": 2,
+    "starttime": 1586592891102
+  },
+  {
+    "mycode": "DCR195124",
+    "code": "JYJ197391",
+    "phone": "8617763516320",
+    "rootfund": 300,
+    "fundType": 1,
+    "starttime": 1586598203040
+  },
+  {
+    "mycode": "KVH412175",
+    "code": "",
+    "phone": "8613474687577",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "JYZ563826",
+    "code": "ZCU826939",
+    "phone": "8615523424030",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "OBJ688940",
+    "code": "JYZ563826",
+    "phone": "8619112725252",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DRQ735957",
+    "code": "WDF258420",
+    "phone": "8618608604686",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "PPL349375",
+    "code": "INT219790",
+    "phone": "8613996352453",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "YJO198034",
+    "code": "IZY921840",
+    "phone": "8615037377093",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "OTI309606",
+    "code": "IZY921840",
+    "phone": "8618881873075",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZNV599175",
+    "code": "FXV059138",
+    "phone": "8613738495060",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "FLZ162719",
+    "code": "FXV059138",
+    "phone": "8619969583617",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "VKB393194",
+    "code": "MLO262967",
+    "phone": "8613987687833",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "CPK283124",
+    "code": "VKB393194",
+    "phone": "8615228905480",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "TYK547392",
+    "code": "ROS156663",
+    "phone": "8618690737490",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "LZY662594",
+    "code": "TYK547392",
+    "phone": "8617338318880",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "RNH645063",
+    "code": "LCP644573",
+    "phone": "8618706743156",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "WRV037849",
+    "code": "BWG925767",
+    "phone": "8613710814552",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "LEK349171",
+    "code": "WRV037849",
+    "phone": "8615519066670",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "TQP450886",
+    "code": "NWV637878",
+    "phone": "8615208277240",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "HVG427385",
+    "code": "NWV637878",
+    "phone": "8618982549929",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "JSB357301",
+    "code": "NWV637878",
+    "phone": "8613008104208",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DBZ448532",
+    "code": "LEK349171",
+    "phone": "8617816866621",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DMP056832",
+    "code": "LEK349171",
+    "phone": "8618875291181",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "GXO370909",
+    "code": "LEK349171",
+    "phone": "8614756801743",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZEG940521",
+    "code": "VKP340587",
+    "phone": "8615086788778",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZCR962182",
+    "code": "LEK349171",
+    "phone": "8613986075537",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "EDZ119972",
+    "code": "LEK349171",
+    "phone": "8619991206625",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "TWY594583",
+    "code": "LEK349171",
+    "phone": "8618182366225",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ICN581425",
+    "code": "JXJ028332",
+    "phone": "8615198274672",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "GUI597156",
+    "code": "123123",
+    "phone": "8613732268579",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "TDD824072",
+    "code": "MDB114115",
+    "phone": "8618942591687",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "MXP255912",
+    "code": "GXO370909",
+    "phone": "8615825912765",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "KXS967145",
+    "code": "WRV037849",
+    "phone": "8613436251181",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZTZ727736",
+    "code": "WRV037849",
+    "phone": "8613452671181",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "MGZ308110",
+    "code": "GXO370909",
+    "phone": "8617265407111",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XBL033046",
+    "code": "GXO370909",
+    "phone": "8615827147472",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "VDT446026",
+    "code": "GXO370909",
+    "phone": "8617896887190",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "RGX070696",
+    "code": "GXO370909",
+    "phone": "8613720280787",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "NFE296848",
+    "code": "GXO370909",
+    "phone": "8615323841938",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "SNK069573",
+    "code": "NWV637878",
+    "phone": "8615196605633",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "QQZ456975",
+    "code": "TNB503947",
+    "phone": "8613606366585",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "VIL269526",
+    "code": "VKB393194",
+    "phone": "8613926019869",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "URD023157",
+    "code": "VIL269526",
+    "phone": "8615340702026",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "KST876448",
+    "code": "WBL803274",
+    "phone": "8618375627455",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "VCH672458",
+    "code": "WDF258420",
+    "phone": "8618223276552",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "YHC651845",
+    "code": "KST876448",
+    "phone": "8613368163603",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "NCM699179",
+    "code": "KXS967145",
+    "phone": "8615728413552",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "GWH329899",
+    "code": "KXS967145",
+    "phone": "8614716984552",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "PKL243090",
+    "code": "KXS967145",
+    "phone": "8613452991181",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DHE182051",
+    "code": "YHC651845",
+    "phone": "8613388999888",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "QYD959806",
+    "code": "JYU625776",
+    "phone": "8618123222642",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "CMH516722",
+    "code": "QYD959806",
+    "phone": "8618583995249",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "CVL862894",
+    "code": "CMH516722",
+    "phone": "8613636590953",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DIV853663",
+    "code": "CMH516722",
+    "phone": "8615223781119",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XLV825102",
+    "code": "CVL862894",
+    "phone": "8618008354387",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "GKR884461",
+    "code": "YJO198034",
+    "phone": "8613733173002",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "FJH579704",
+    "code": "JXJ028332",
+    "phone": "8613806248096",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "OKY966915",
+    "code": "YHC651845",
+    "phone": "8615555178658",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "HHK787798",
+    "code": "BHB887564",
+    "phone": "8615310630583",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "OWE178557",
+    "code": "HHK787798",
+    "phone": "8617323841360",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "IRZ254913",
+    "code": "YBU222334",
+    "phone": "8615308017177",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "VFF704625",
+    "code": "ESN193602",
+    "phone": "8618776700867",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "GKP662537",
+    "code": "TDD824072",
+    "phone": "8618932167565",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "BGM557464",
+    "code": "ESN193602",
+    "phone": "8615923345730",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "LCZ127113",
+    "code": "NWV637878",
+    "phone": "8613980650960",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "PXN627593",
+    "code": "MLO262967",
+    "phone": "8617723286362",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "PGM369846",
+    "code": "ROQ247624",
+    "phone": "8613896331933",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XQF487757",
+    "code": "ZCB612967",
+    "phone": "8613516396579",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "BSR456491",
+    "code": "WLV742965",
+    "phone": "8618011391262",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "UCC349096",
+    "code": "STJ172221",
+    "phone": "8617549669431",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "WQY904064",
+    "code": "IZY921840",
+    "phone": "8615047703409",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZZI592784",
+    "code": "QYD959806",
+    "phone": "8618696578048",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "KBI561950",
+    "code": "SFL046454",
+    "phone": "8615208276263",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DJX816239",
+    "code": "CMH516722",
+    "phone": "8618583995248",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "TCE601266",
+    "code": "DJX816239",
+    "phone": "8618123222084",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DJI028200",
+    "code": "TCE601266",
+    "phone": "8618583995243",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DLS136088",
+    "code": "HPS081382",
+    "phone": "8615310238997",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "GMU493647",
+    "code": "HPS081382",
+    "phone": "8613508318633",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "OYJ140455",
+    "code": "HPS081382",
+    "phone": "8619923136672",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "BTU375678",
+    "code": "GXO370909",
+    "phone": "8615851661002",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "FNU881346",
+    "code": "DJI028200",
+    "phone": "8618123222064",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZQD045522",
+    "code": "JPJ583879",
+    "phone": "8618318874997",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "MHS040805",
+    "code": "MZT056331",
+    "phone": "8618981999102",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ICX796458",
+    "code": "YBU222334",
+    "phone": "8618380343157",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DRR947674",
+    "code": "IDC721548",
+    "phone": "8618375759660",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "QZW105699",
+    "code": "ROQ247624",
+    "phone": "8613408453982",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ORW905008",
+    "code": "PMD566803",
+    "phone": "8615398030682",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "KIZ481215",
+    "code": "IZY921840",
+    "phone": "8615682027555",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "LZV731629",
+    "code": "BVL353491",
+    "phone": "8613165775558",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "WZS552734",
+    "code": "LZV731629",
+    "phone": "8613609255448",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "HNQ461543",
+    "code": "HGM493796",
+    "phone": "8618818805896",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "RHM684879",
+    "code": "GXO370909",
+    "phone": "8618999990902",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "YHQ655614",
+    "code": "NWV637878",
+    "phone": "8615208271528",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "LKR007211",
+    "code": "GXO370909",
+    "phone": "8613423500324",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "WNK825188",
+    "code": "NWV637878",
+    "phone": "8615196631957",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DSK687571",
+    "code": "YBU222334",
+    "phone": "8618030898800",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "FRJ543296",
+    "code": "DSK687571",
+    "phone": "8617313072887",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XYW426464",
+    "code": "WDF258420",
+    "phone": "8619923576474",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "NIL956481",
+    "code": "XYW426464",
+    "phone": "8618183031283",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "GZS044167",
+    "code": "MTN705424",
+    "phone": "8613721443992",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "VPU200042",
+    "code": "HGM493796",
+    "phone": "8613303899611",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZNL577877",
+    "code": "KSL866668",
+    "phone": "8618368779506",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "GKH500638",
+    "code": "DJI028200",
+    "phone": "8618598539111",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "LLE563301",
+    "code": "SSY833714",
+    "phone": "8613452791264",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "KRJ759923",
+    "code": "CSZ127921",
+    "phone": "8615551197766",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ESP995725",
+    "code": "CSZ127921",
+    "phone": "8615052418636",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "HXR966759",
+    "code": "CSZ127921",
+    "phone": "8618927603889",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "LRH428360",
+    "code": "GXO370909",
+    "phone": "8615890072666",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "QOR321736",
+    "code": "WOE259525",
+    "phone": "8617612383979",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DSS625130",
+    "code": "WOE259525",
+    "phone": "8617895080407",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "OLI516885",
+    "code": "DVB845978",
+    "phone": "8615519199999",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "OJT200580",
+    "code": "WZK929465",
+    "phone": "8613883532319",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "YKV398514",
+    "code": "QFS857784",
+    "phone": "8619912401004",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "PIJ256993",
+    "code": "DVB845978",
+    "phone": "8618716295319",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XDB981908",
+    "code": "WOE259525",
+    "phone": "8615225351451",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "PSB818996",
+    "code": "GKH500638",
+    "phone": "8615683188333",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "RWL913393",
+    "code": "TYE139545",
+    "phone": "8618550289888",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ODU380321",
+    "code": "TYE139545",
+    "phone": "8613094509813",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "BLB214543",
+    "code": "OLI516885",
+    "phone": "8613627628578",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "UON358192",
+    "code": "BLB214543",
+    "phone": "8617726496569",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "UFH464051",
+    "code": "MGS048944",
+    "phone": "8615666880345",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "MDS300991",
+    "code": "LYJ170881",
+    "phone": "8618906328755",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "SRJ377995",
+    "code": "UON358192",
+    "phone": "8618989172005",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "EMP894457",
+    "code": "SSY833714",
+    "phone": "8615682500715",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "GQE473511",
+    "code": "SRJ377995",
+    "phone": "8617748486569",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XMD177944",
+    "code": "SRJ377995",
+    "phone": "8613657694413",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "YGN868221",
+    "code": "GQE473511",
+    "phone": "8618968886569",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "FXO489902",
+    "code": "DVB845978",
+    "phone": "8618979547370",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "NFJ311997",
+    "code": "SSY833714",
+    "phone": "8617782001101",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZJP611957",
+    "code": "IDC721548",
+    "phone": "8618623324868",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "LOI285627",
+    "code": "WSO127566",
+    "phone": "8613814867789",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "RQT896297",
+    "code": "WOE259525",
+    "phone": "8618945269468",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "UFC287715",
+    "code": "GQE473511",
+    "phone": "8618848462319",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "RQZ201336",
+    "code": "WSO127566",
+    "phone": "8615861151492",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "LVG727933",
+    "code": "UFC287715",
+    "phone": "8618160047309",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "WKW762624",
+    "code": "WSO127566",
+    "phone": "8613789883109",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "SUK205421",
+    "code": "WSO127566",
+    "phone": "8613144986131",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "EXI341266",
+    "code": "WSO127566",
+    "phone": "8617361677775",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "CXH973497",
+    "code": "WSO127566",
+    "phone": "8615064461860",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "FKX222989",
+    "code": "WSO127566",
+    "phone": "8618908292546",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "CDR408890",
+    "code": "WSO127566",
+    "phone": "8618953639069",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "VTL699873",
+    "code": "WSO127566",
+    "phone": "8615609318412",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "YPN554472",
+    "code": "WSO127566",
+    "phone": "8615165615377",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "SIX198232",
+    "code": "WSO127566",
+    "phone": "8613629751229",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "UUV243665",
+    "code": "WSO127566",
+    "phone": "8618578798143",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "INQ054133",
+    "code": "WSO127566",
+    "phone": "8615960508350",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XTS900170",
+    "code": "WSO127566",
+    "phone": "8613767528171",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "OYE625456",
+    "code": "WSO127566",
+    "phone": "8615736823259",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "OCD844772",
+    "code": "WSO127566",
+    "phone": "8615017929379",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "MHH964471",
+    "code": "WSO127566",
+    "phone": "8613635799736",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZXK680556",
+    "code": "WSO127566",
+    "phone": "8615107720398",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XEN649615",
+    "code": "GKH500638",
+    "phone": "8613883459890",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "BYF015646",
+    "code": "WSO127566",
+    "phone": "8613118881865",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "BPZ769408",
+    "code": "WSO127566",
+    "phone": "8618678755668",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "JVE589051",
+    "code": "GQE473511",
+    "phone": "8617623692701",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "NQQ453499",
+    "code": "WSO127566",
+    "phone": "8613191139131",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "TLK544313",
+    "code": "UGF266578",
+    "phone": "8615111747349",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZKH426620",
+    "code": "WSO127566",
+    "phone": "8613280870510",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "VFD722973",
+    "code": "JSB357301",
+    "phone": "8613033370885",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZOI535785",
+    "code": "WOE259525",
+    "phone": "8617623551341",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "FZV187489",
+    "code": "WSO127566",
+    "phone": "8618737384593",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "NNT213007",
+    "code": "FZV187489",
+    "phone": "8615336994606",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "HVQ433119",
+    "code": "WSO127566",
+    "phone": "8613962014499",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "BII014823",
+    "code": "BPZ769408",
+    "phone": "8618254355525",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "MWF190254",
+    "code": "WSO127566",
+    "phone": "8618473337111",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "QRW660432",
+    "code": "IDC721548",
+    "phone": "8615827962675",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "WQM953356",
+    "code": "WSO127566",
+    "phone": "8613468684891",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "FXI627279",
+    "code": "WSO127566",
+    "phone": "8613563359365",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XSB289875",
+    "code": "ROQ247624",
+    "phone": "8618000540896",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "IKU804619",
+    "code": "WSO127566",
+    "phone": "8615908045999",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "SRJ814909",
+    "code": "WSO127566",
+    "phone": "8617622720224",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "OWV589990",
+    "code": "WSO127566",
+    "phone": "8613573569931",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "NSR350599",
+    "code": "WOE259525",
+    "phone": "8615839972108",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "OPO395119",
+    "code": "WSO127566",
+    "phone": "8613407143491",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "SUG075636",
+    "code": "FJP227707",
+    "phone": "8617731119696",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "YCN792392",
+    "code": "WSO127566",
+    "phone": "8615823720076",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "RSX993953",
+    "code": "WIM019004",
+    "phone": "8618166323703",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "EJV338712",
+    "code": "SUG075636",
+    "phone": "8613874014777",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "OHU357136",
+    "code": "WSO127566",
+    "phone": "8618353052222",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "UVM697767",
+    "code": "WSO127566",
+    "phone": "8613867920861",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "MJX692644",
+    "code": "WSO127566",
+    "phone": "8613947659184",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "JUI153898",
+    "code": "WSO127566",
+    "phone": "8615836777250",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "RJL342749",
+    "code": "GQE473511",
+    "phone": "8615281837783",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XIB307126",
+    "code": "WSO127566",
+    "phone": "8613192759504",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "VTR023834",
+    "code": "WSO127566",
+    "phone": "8613283828730",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DKM973647",
+    "code": "WSO127566",
+    "phone": "8615321038071",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "IDY960998",
+    "code": "WSO127566",
+    "phone": "8615821779199",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DOI348549",
+    "code": "WHJ653950",
+    "phone": "8613610674288",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "EGR857818",
+    "code": "WSO127566",
+    "phone": "8618974450222",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DTL874845",
+    "code": "WSO127566",
+    "phone": "8617744216781",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DWK796681",
+    "code": "WSO127566",
+    "phone": "8618263864345",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "UBX188307",
+    "code": "WSO127566",
+    "phone": "8613349311449",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "NRV039630",
+    "code": "WSO127566",
+    "phone": "8618176700630",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XLT647607",
+    "code": "WSO127566",
+    "phone": "8617757289897",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "LQB408448",
+    "code": "WSO127566",
+    "phone": "8615117166888",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZSY475694",
+    "code": "WSO127566",
+    "phone": "8613810061488",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZDQ005720",
+    "code": "WSO127566",
+    "phone": "8618781189148",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "YGO398202",
+    "code": "ZSY475694",
+    "phone": "8615311257655",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "TLN947654",
+    "code": "WSO127566",
+    "phone": "8615825849789",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZMG425215",
+    "code": "WSO127566",
+    "phone": "8613583793785",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "YNW336922",
+    "code": "WSO127566",
+    "phone": "8613186247531",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "COI328176",
+    "code": "WSO127566",
+    "phone": "8615003495505",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XTC679793",
+    "code": "WLV742965",
+    "phone": "8615213082842",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "EVF336085",
+    "code": "WSO127566",
+    "phone": "8613790400800",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "QDL921040",
+    "code": "KSY376644",
+    "phone": "8619839631367",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XVY816867",
+    "code": "WSO127566",
+    "phone": "8613934053591",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "IVZ200913",
+    "code": "WSO127566",
+    "phone": "8617138895537",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "WDU968455",
+    "code": "WSO127566",
+    "phone": "8613710725701",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ZHY846667",
+    "code": "WSO127566",
+    "phone": "8615773927392",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "PKJ734785",
+    "code": "WSO127566",
+    "phone": "8613686646824",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "TMF024416",
+    "code": "WSO127566",
+    "phone": "8618313880157",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DUB140371",
+    "code": "UGF266578",
+    "phone": "8618227343863",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "KFX742329",
+    "code": "ICH425515",
+    "phone": "8613306359158",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "VEK683976",
+    "code": "ICH425515",
+    "phone": "8613356355750",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "TUZ947712",
+    "code": "GKH500638",
+    "phone": "8615002911029",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "MKP434752",
+    "code": "WZK929465",
+    "phone": "8613102319713",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "RVY326585",
+    "code": "WSO127566",
+    "phone": "8613585873018",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "IFC920810",
+    "code": "WOE259525",
+    "phone": "8618503009296",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "UGD739789",
+    "code": "WSO127566",
+    "phone": "8613833704099",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "FTP428887",
+    "code": "WSO127566",
+    "phone": "8618666494133",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "IKZ601382",
+    "code": "DDU213990",
+    "phone": "8613752918573",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "UGY671279",
+    "code": "IKZ601382",
+    "phone": "8618580270648",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "GDV363297",
+    "code": "UGY671279",
+    "phone": "8613667637877",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "CVQ248866",
+    "code": "IWF723318",
+    "phone": "8617610809129",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "SGZ778107",
+    "code": "WSO127566",
+    "phone": "8615054718355",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "JWL978996",
+    "code": "WSO127566",
+    "phone": "8615571808885",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "VOJ601670",
+    "code": "ZJT290146",
+    "phone": "8613528613032",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "KVD644800",
+    "code": "WSO127566",
+    "phone": "8613922834154",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "LUH713818",
+    "code": "WSO127566",
+    "phone": "8618772264202",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "GOG041709",
+    "code": "LVG727933",
+    "phone": "8619949466818",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "GPL756982",
+    "code": "WSO127566",
+    "phone": "8618075688716",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "JPD848325",
+    "code": "WSO127566",
+    "phone": "8613387334135",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "ULQ023912",
+    "code": "FJP227707",
+    "phone": "8617324231101",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "NVT168774",
+    "code": "WSO127566",
+    "phone": "8613871571830",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "PKY717725",
+    "code": "WSO127566",
+    "phone": "8618523504413",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "PFJ619375",
+    "code": "KSY376644",
+    "phone": "8615236316394",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "OOQ589893",
+    "code": "XYW426464",
+    "phone": "8618207041690",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "VIG867613",
+    "code": "WOE259525",
+    "phone": "8615015392689",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "GNZ890939",
+    "code": "IWF723318",
+    "phone": "8613601111244",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "IDO508251",
+    "code": "WSO127566",
+    "phone": "8613651497440",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "YUG789071",
+    "code": "WSO127566",
+    "phone": "8618653649788",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "QCL129578",
+    "code": "WSO127566",
+    "phone": "8613682418943",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "LXV370716",
+    "code": "WSO127566",
+    "phone": "8613893687370",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DKU518600",
+    "code": "BUF923225",
+    "phone": "8615836502176",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "YEQ954276",
+    "code": "WSO127566",
+    "phone": "8618177220590",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "CXC331095",
+    "code": "YEQ954276",
+    "phone": "8618177220246",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "EXJ549421",
+    "code": "WSO127566",
+    "phone": "8618577871494",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "WDB994632",
+    "code": "WSO127566",
+    "phone": "8613537619431",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "NJN112435",
+    "code": "WHJ653950",
+    "phone": "8618678241913",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "QHJ512483",
+    "code": "WSO127566",
+    "phone": "8617177319711",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "DCX041684",
+    "code": "WSO127566",
+    "phone": "8617666531933",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "JDU037649",
+    "code": "WSO127566",
+    "phone": "8617797658129",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "FUS105482",
+    "code": "WSO127566",
+    "phone": "8618927462945",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "KGH390372",
+    "code": "BKX048781",
+    "phone": "8613316383767",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "NEF869811",
+    "code": "WOE259525",
+    "phone": "8615617569980",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XSL628653",
+    "code": "WSO127566",
+    "phone": "8618652702256",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "MID949109",
+    "code": "EXI341266",
+    "phone": "8615609392527",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "YJT449759",
+    "code": "WSO127566",
+    "phone": "8613632685667",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "VML584573",
+    "code": "XMD177944",
+    "phone": "8617327903162",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "FQX251566",
+    "code": "IDC721548",
+    "phone": "8613212470605",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "BKZ936557",
+    "code": "WHJ653950",
+    "phone": "8618337073709",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "XBW800649",
+    "code": "WSO127566",
+    "phone": "8613736766635",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "GMK591747",
+    "code": "WSO127566",
+    "phone": "8618088180668",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "IUI170347",
+    "code": "WSO127566",
+    "phone": "8615685511274",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  },
+  {
+    "mycode": "PEB088661",
+    "code": "WSO127566",
+    "phone": "8618815059631",
+    "rootfund": 0,
+    "fundType": 0,
+    "starttime": null
+  }
+]

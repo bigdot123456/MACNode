@@ -129,3 +129,9 @@ B
 SQL/createuser.sql,f/b/fb5732900da1f6d9aa2b123face88380c35dcd15
 J
 SQL/smartchain04111750.sql,5/0/509164182c296f5ba653d444102eb195f1516687
+?
+js/testMysql.js,4/2/4200395e9a80f198a4b3d8ab33c9fd96b1ddfe9b
+C
+js/testMysqlFull.js,e/4/e4fc3d434baf3c3ded68eade00329d4601f2e79d
+?
+js/filewrite.js,d/2/d294dfe4629f3d4402481494c2b23c2addde29d8

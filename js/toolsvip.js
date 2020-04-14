@@ -48,6 +48,7 @@ const vipquota = 3000; //vip 限额
 
 const Services = {};
 
+const SQLSelect = "SELECT user.mycode, user.code ,user.phone,IFNULL(asset_fund.fund,0) as rootfund,IFNULL(asset_fund.fundtype,0) as fundType,asset_fund.starttime FROM  user left join asset_fund on (asset_fund.userid=user.phone) "
 //先计算所有 下线的vip等级 及日产量
 //至上而下遍历，所有下级，v大于自己的，跳过所有子节点计算，v
 
@@ -100,31 +101,35 @@ async function getSingleNodeInfo(mycode) {
     //let fundinfo = await mysql.ROW("select * from asset_fund where userid= '" + phone + "' ;");
     // valid sql as following:
     // select asset_fund.* ,user.mycode, user.code from asset_fund right join user on (asset_fund.userid=user.phone);
-    let fundinfo = await mysql.ROW("select asset_fund.*  ,user.mycode, user.code from asset_fund right join user on (asset_fund.userid=user.phone) where mycode= '" + mycode + "' ;");
     //SELECT user.mycode, user.code ,user.phone,IFNULL(asset_fund.fund,0),
     // asset_fund.starttime FROM  user left join asset_fund on (asset_fund.userid=user.phone)
     // where mycode="OHU357136";
 
     // SELECT user.*,IFNULL(asset_fund.fund,0),asset_fund.starttime FROM  user left join asset_fund on (asset_fund.userid=user.phone);
     //"SELECT user.mycode, user.code ,user.phone,IFNULL(asset_fund.fund,0),asset_fund.starttime FROM  user left join asset_fund on (asset_fund.userid=user.phone);"
+    // let fundinfo = await mysql.ROW("select asset_fund.*  ,user.mycode, user.code from asset_fund right join user on (asset_fund.userid=user.phone) where mycode= '" + mycode + "' ;");
+
+    let SQLStatement = SQLSelect + " where mycode= '" + mycode + "' ;"
+    console.log(SQLStatement)
+    let fundinfo = await mysql.ROW(SQLStatement);
 
     NodeInfo.fundinfo = fundinfo
-    NodeInfo.mymill = 0
-    NodeInfo.mycode=fundinfo.mycode
-    NodeInfo.phone =fundinfo.phone
+    // NodeInfo.mymill = 0
+    NodeInfo.mycode = fundinfo[0].mycode
+    NodeInfo.phone = fundinfo[0].phone
 
     let mymill = 0
     let subfund = 0
     if (fundinfo && fundinfo.length > 0) {
         for (let j = 0; j < fundinfo.length; j++) {
-            subfund += fundinfo[j].fund;
-            if (fundinfo[j].fundtype == 1) {
+            subfund += fundinfo[j].rootfund;
+            if (fundinfo[j].fundType == 1) {
                 mymill += mill1;
-            } else if (fundinfo[j].fundtype == 2) {
+            } else if (fundinfo[j].fundType == 2) {
                 mymill += mill2;
-            } else if (fundinfo[j].fundtype == 3) {
+            } else if (fundinfo[j].fundType == 3) {
                 mymill += mill3;
-            } else if (fundinfo[j].fundtype == 4) {
+            } else if (fundinfo[j].fundType == 4) {
                 mymill += mill4;
             }
         }
@@ -173,11 +178,10 @@ function getRecommendValue(a, b) {
 
 async function getSubNodeInfoList(mycode) {
     let SubNodeInfoList = {}
-    SubNodeInfoList.usrInfoL1 = []
     SubNodeInfoList.rootInfo = []
     SubNodeInfoList.subNodeL1Info = []
-    SubNodeInfoList.mycodeSubListL1 = []
-    SubNodeInfoList.subNodeL1mill = 0
+    SubNodeInfoList.mycodeSubNodeListL1 = []
+
     SubNodeInfoList.subNodeL1Fund = 0
     SubNodeInfoList.subNodeL1Num = 0
 
@@ -186,7 +190,6 @@ async function getSubNodeInfoList(mycode) {
     SubNodeInfoList.recomend = 0
     SubNodeInfoList.mycode = mycode
 
-
     // if (typeof usrInfo=="null" || usrInfo.length == 0 ){
     //     staticIncomeTree=0
     //     staticIncomeTreevip=0
@@ -194,55 +197,47 @@ async function getSubNodeInfoList(mycode) {
     SubNodeInfoList.rootInfo = await getSingleNodeInfo(mycode)
     SubNodeInfoList.rootfund = SubNodeInfoList.rootInfo.rootfund
     SubNodeInfoList.rootmill = SubNodeInfoList.rootInfo.rootmill
+    SubNodeInfoList.phone = SubNodeInfoList.rootInfo.phone
 
-    let usrInfoL1 = await mysql.ROW("select * from user where code ='" + mycode + "';");
-    SubNodeInfoList.usrInfoL1 = usrInfoL1
+    // let usrInfoL1 = await mysql.ROW("select * from user where code ='" + mycode + "';");
+    let SQLStatement = SQLSelect + " where code= '" + mycode + "' ;"
+    console.log(SQLStatement)
+    let usrInfoL1 = await mysql.ROW(SQLStatement);
+    SubNodeInfoList.subNodeL1Info = usrInfoL1
+    SubNodeInfoList.subNodeL1Num = usrInfoL1.length
 
     let validsubNodeL1Num = 0
     let r1 = 0
     let r2 = 0
 
-    if (usrInfoL1 && usrInfoL1.length > 0) {
-        SubNodeInfoList.subNodeL1Num = usrInfoL1.length
-        for (let i = 0; i < SubNodeInfoList.subNodeL1Num; i++) {
-            let mycodesubNodeL1 = usrInfoL1[i].mycode
-            SubNodeInfoList.mycodeSubListL1.push(mycodesubNodeL1)
-
-            let subNodeL1Info = await getSingleNodeInfo(mycodesubNodeL1)
-            SubNodeInfoList.subNodeL1Info.push(subNodeL1Info)
-
-            if (subNodeL1Info.rootfund > 0) {
-                // r1 += getRecommendValue(SubNodeInfoList.rootInfo.fund, subNodeL1Info.fund)
-                r1 += getRecommendValue(SubNodeInfoList.rootfund, subNodeL1Info.rootfund)
-                validsubNodeL1Num++
-            }
-
-            SubNodeInfoList.subNodeL1mill += (subNodeL1Info.rootmill)
-            SubNodeInfoList.subNodeL1Fund += (subNodeL1Info.rootfund)
-        }
-        // only use for recommend award
-        if (validsubNodeL1Num >= 3) {
-            for (let i = 0; i < SubNodeInfoList.mycodeSubListL1.length; i++) {
-
-                let subL2userInfo = await mysql.ROW("select * from user where code ='" + SubNodeInfoList.mycodeSubListL1[i] + "';");
-                if (subL2userInfo && subL2userInfo.length() > 0) {
-                    for (let j = 0; j < subL2userInfo.length(); j++) {
-                        let mycodeSubL2 = subL2userInfo[j].mycode
-
-                        let subNodeL2Info = getSingleNodeInfo(mycodeSubL2)
-
-                        if (subNodeL2Info.rootfund > 0) {
-                            // r2 += getRecommendValue(SubNodeInfoList.rootInfo.fund, infoL2.fund)
-                            r2 += getRecommendValue(SubNodeInfoList.rootfund, subNodeL2Info.rootfund)
-                        }
-                    }
-                }
-            }
-            SubNodeInfoList.recomend1 = r1 * 0.5
-            SubNodeInfoList.recomend2 = r2 * 0.2 // if error, we replace it with eval(r2.join("+")); or use sumfun
-            SubNodeInfoList.recomend = SubNodeInfoList.recomend1 + SubNodeInfoList.recomend2
+    for (let x of usrInfoL1) {
+        SubNodeInfoList.mycodeSubNodeListL1.push(x.mycode)
+        if (x.rootfund) {
+            r1 += getRecommendValue(SubNodeInfoList.rootfund, x.rootfund)
+            SubNodeInfoList.subNodeL1Fund += (x.rootfund)
+            validsubNodeL1Num++
         }
     }
+    if (validsubNodeL1Num >= 3) {
+        let multiusr = ""
+        for (let y of usrInfoL1) {
+            multiusr += " code='" + y.mycode + "' or"
+        }
+        multiusr = multiusr.slice(0, -3)
+
+        let SQLStatement1 = SQLSelect + " where " + multiusr + " ;"
+        console.log(SQLStatement1)
+        let usrInfoL2 = await mysql.ROW(SQLStatement1);
+        for (let z of usrInfoL2) {
+            r2 += getRecommendValue(SubNodeInfoList.rootfund, z.rootfund)
+            SubNodeInfoList.subNodeL1Fund += (z.rootfund)
+        }
+    }
+
+    SubNodeInfoList.recomend1 = r1 * 0.5
+    SubNodeInfoList.recomend2 = r2 * 0.2 // if error, we replace it with eval(r2.join("+")); or use sumfun
+    SubNodeInfoList.recomend = SubNodeInfoList.recomend1 + SubNodeInfoList.recomend2
+
     return SubNodeInfoList
 }
 
@@ -253,51 +248,102 @@ async function getTreeBalanceInfo(mycode) {
         return root.rootfund
 
     let balance = root.rootfund
-    for (let i = 0; i < root.mycodeSubListL1.length; i++) {
-        let x = await getTreeBalanceInfo(root.mycodeSubListL1[i])
+    for (let i of root.mycodeSubNodeListL1) {
+        let x = await getTreeBalanceInfo(i)
         balance += x
     }
     return balance
 }
 
+async function getTreeBalanceInfowfs(mycode) {
+    let treeNodeInfoList={}
+
+    let SQLStatement = SQLSelect + " where mycode= '" + mycode + "' ;"
+    console.log(SQLStatement)
+    let rootInfo = await mysql.ROW(SQLStatement);
+    treeNodeInfoList.rootInfo = rootInfo
+    treeNodeInfoList.rootfund = rootInfo[0].rootfund
+    treeNodeInfoList.totalTreefund= treeNodeInfoList.rootfund
+
+    SQLStatement = SQLSelect + " where code= '" + mycode + "' ;"
+    console.log(SQLStatement)
+    let usrInfoL1 = await mysql.ROW(SQLStatement);
+    treeNodeInfoList.subNodeL1Info = usrInfoL1
+    treeNodeInfoList.subNodeL1Num = usrInfoL1.length
+    treeNodeInfoList.layFund = [treeNodeInfoList.rootfund]
+    treeNodeInfoList.TreeInfo = [rootInfo]
+
+    while (usrInfoL1 && usrInfoL1.length>0) {
+        let multiusr = ""
+        let subfund = 0
+        for (let y of usrInfoL1) {
+            multiusr += " code='" + y.mycode + "' or"
+            subfund += y.rootfund
+        }
+        treeNodeInfoList.totalTreefund+=subfund
+        treeNodeInfoList.layFund.push(subfund)
+        treeNodeInfoList.layFund.push(usrInfoL1)
+
+
+        multiusr = multiusr.slice(0, -3)
+        let SQLStatement1 = SQLSelect + " where " + multiusr + " ;"
+        console.log(SQLStatement1)
+        usrInfoL1 = await mysql.ROW(SQLStatement1);
+    }
+
+    return treeNodeInfoList
+}
+
 async function getvipTag(mycode) {
     let vip = {}
     vip.subTreeBalanceList = []
-    vip.subTreeBalancesum = 0
+    vip.subTreeBalanceInfoList=[]
+    vip.totalTreefund=0
 
     vip.RootSubNodeInfoList = await getSubNodeInfoList(mycode)
+    vip.rootInfo = vip.RootSubNodeInfoList.rootInfo
+    vip.subNodeL1Info = vip.RootSubNodeInfoList.subNodeL1Info
+    vip.mycodeSubNodeListL1 = vip.RootSubNodeInfoList.mycodeSubNodeListL1
 
-    vip.recomend=vip.RootSubNodeInfoList.recomend
-    vip.recomend1=vip.RootSubNodeInfoList.recomend1
-    vip.recomend2=vip.RootSubNodeInfoList.recomend2
-    vip.mycodeSubListL1=vip.RootSubNodeInfoList.mycodeSubListL1
-    vip.subNodeL1Info=vip.RootSubNodeInfoList.subNodeL1Info
+    vip.subNodeL1Fund = vip.RootSubNodeInfoList.subNodeL1Fund
+    vip.subNodeL1Num = vip.RootSubNodeInfoList.subNodeL1Num
+
+    vip.recomend1 = vip.RootSubNodeInfoList.recomend1
+    vip.recomend2 = vip.RootSubNodeInfoList.recomend2
+    vip.recomend = vip.RootSubNodeInfoList.recomend
+    vip.mycode = vip.RootSubNodeInfoList.mycode
+
+    vip.rootInfo = vip.RootSubNodeInfoList.rootInfo
     vip.rootfund = vip.RootSubNodeInfoList.rootfund
     vip.rootmill = vip.RootSubNodeInfoList.rootmill
-    vip.rootInfo = vip.RootSubNodeInfoList.rootInfo
-    vip.mycode = mycode
+    vip.phone = vip.RootSubNodeInfoList.phone
 
     if (vip.RootSubNodeInfoList.subNodeL1Num === 0) {
         vip.balancevip = 0
         vip.vipTag = 0
+        vip.subTreeBalancesum = 0
     } else {
         let max = 0
         let sum = 0
-        // for (let i = 0; i < vip.RootSubNodeInfoList.mycodeSubListL1.length; i++) {
-        for (let i = 0; i < vip.mycodeSubListL1.length; i++) {
-            let x = await getTreeBalanceInfo(vip.mycodeSubListL1[i])
-            vip.subTreeBalanceList.push(x)
-            sum += x
-            max = x > max ? x : max
+        // for (let i = 0; i < vip.RootSubNodeInfoList.mycodeSubNodeListL1.length; i++) {
+        for (let L1 of vip.mycodeSubNodeListL1) {
+
+            let x=await getTreeBalanceInfowfs(L1)
+            vip.subTreeBalanceInfoList.push(x)
+            let y=x.totalTreefund
+            vip.subTreeBalanceList.push(y)
+            sum += y
+            max = y > max ? y : max
         }
         vip.balancevip = (sum - max)
         vip.subTreeBalancesum = sum
         vip.vipTag = vip.balancevip >= vipquota ? 1 : 0
     }
 
+    vip.totalTreefund=vip.subTreeBalancesum+vip.rootfund
+
     return vip
 }
-
 
 async function getvipLevel(mycode) {
     let vip = {}
@@ -305,57 +351,68 @@ async function getvipLevel(mycode) {
     vip.minerCoeff = 0
     vip.subvipLevel = []
     vip.subvipLevelCallResult = []
-    //vip.vipTagRoot=[]
 
     vip.vipTagRoot = await getvipTag(mycode)
-    vip.RootSubNodeInfoList=vip.vipTagRoot.RootSubNodeInfoList
-    vip.recomend=vip.vipTagRoot.recomend
-    vip.recomend1=vip.vipTagRoot.recomend1
-    vip.recomend2=vip.vipTagRoot.recomend2
-    vip.mycodeSubListL1=vip.vipTagRoot.mycodeSubListL1
-    vip.subNodeL1Info=vip.vipTagRoot.subNodeL1Info
-    vip.rootfund = vip.vipTagRoot.rootfund
-    vip.rootmill = vip.vipTagRoot.rootmill
-    vip.rootInfo = vip.vipTagRoot.rootInfo
-    vip.mycode = mycode
 
-    vip.balancevip = vip.vipTagRoot.balancevip
-    vip.subTreeBalancesum = vip.vipTagRoot.subTreeBalancesum
-    vip.vipTag = vip.vipTagRoot.vipTag
+    vip.subTreeBalanceList       =vip.vipTagRoot.subTreeBalanceList
+    vip.subTreeBalanceInfoList   =vip.vipTagRoot.subTreeBalanceInfoList
+    vip.totalTreefund            =vip.vipTagRoot.totalTreefund
+
+    vip.RootSubNodeInfoList      =vip.vipTagRoot.RootSubNodeInfoList
+    vip.rootInfo                 =vip.vipTagRoot.rootInfo
+    vip.subNodeL1Info            =vip.vipTagRoot.subNodeL1Info
+    vip.mycodeSubNodeListL1      =vip.vipTagRoot.mycodeSubNodeListL1
+
+    vip.subNodeL1Fund            =vip.vipTagRoot.subNodeL1Fund
+    vip.subNodeL1Num             =vip.vipTagRoot.subNodeL1Num
+
+    vip.recomend1                =vip.vipTagRoot.recomend1
+    vip.recomend2                =vip.vipTagRoot.recomend2
+    vip.recomend                 =vip.vipTagRoot.recomend
+    vip.mycode                   =vip.vipTagRoot.mycode
+
+    vip.rootInfo                 =vip.vipTagRoot.rootInfo
+    vip.rootfund                 =vip.vipTagRoot.rootfund
+    vip.rootmill                 =vip.vipTagRoot.rootmill
+    vip.phone                    =vip.vipTagRoot.phone
+
+    vip.balancevip               =vip.vipTagRoot.balancevip
+    vip.vipTag                   =vip.vipTagRoot.vipTag
+    vip.subTreeBalancesum        =vip.vipTagRoot.subTreeBalancesum
 
     if (vip.vipTag === 1) {
         let no1 = 0
         let no2 = 0
 
-        // for (let x of vip.vipTagRoot.RootSubNodeInfoList.mycodeSubListL1){
-        for (let i = 0; i < vip.mycodeSubListL1.length; i++) {
-            let x = vip.mycodeSubListL1[i]
-            let vipLevel = await getvipLevel(x)
-            let y = vipLevel.vipLevel
+        // for (let x of vip.vipTagRoot.RootSubNodeInfoList.mycodeSubNodeListL1){
+        for (let x of vip.mycodeSubNodeListL1) {
+            let L1 = await getvipLevel(x)
+            let y = L1.vipLevel
             if (y >= no1) {
                 no2 = no1
                 no1 = y
             } else if (y >= no2) {
                 no2 = y
             }
-            vip.subvipLevelCallResult.push(vipLevel)
+            vip.subvipLevelCallResult.push(L1)
             vip.subvipLevel.push(y)
         }
 
-        vip.Level = no2 === 0 ? 1 : (no2 + 1)
+        vip.vipLevel = no2 === 0 ? 1 : (no2 + 1)
     }
-    if (vip.Level === 0) vip.minerCoeff = 0
-    else if (vip.Level === 1) vip.minerCoeff = 0.1
-    else if (vip.Level === 2) vip.minerCoeff = 0.15
-    else if (vip.Level === 3) vip.minerCoeff = 0.20
-    else if (vip.Level === 4) vip.minerCoeff = 0.25
-    else if (vip.Level === 5) vip.minerCoeff = 0.30
-    else if (vip.Level === 6) vip.minerCoeff = 0.35
-    else if (vip.Level === 7) vip.minerCoeff = 0.40
+    if (vip.vipLevel === 0) vip.minerCoeff = 0
+    else if (vip.vipLevel === 1) vip.minerCoeff = 0.1
+    else if (vip.vipLevel === 2) vip.minerCoeff = 0.15
+    else if (vip.vipLevel === 3) vip.minerCoeff = 0.20
+    else if (vip.vipLevel === 4) vip.minerCoeff = 0.25
+    else if (vip.vipLevel === 5) vip.minerCoeff = 0.30
+    else if (vip.vipLevel === 6) vip.minerCoeff = 0.35
+    else if (vip.vipLevel === 7) vip.minerCoeff = 0.40
     else console.log("error in vip level")
 
     return vip
 }
+
 // vip.Award = 0
 // vip.mycode = mycode
 //
@@ -369,7 +426,7 @@ async function getvipLevel(mycode) {
 // vip.recomend=vip.vipLevelCallResult.recomend
 // vip.recomend1=vip.vipLevelCallResult.recomend1
 // vip.recomend2=vip.vipLevelCallResult.recomend2
-// vip.mycodeSubListL1=vip.vipLevelCallResult.mycodeSubListL1
+// vip.mycodeSubNodeListL1=vip.vipLevelCallResult.mycodeSubNodeListL1
 //
 // vip.minerCoeff=vip.vipLevelCallResult.minerCoeff
 //
@@ -383,45 +440,58 @@ async function getvipLevel(mycode) {
 async function getFastMinerAward(mycode) {
     let vip = {}
     vip.Award = 0 //矿圈奖励
-    vip.mycode = mycode
 
-    vip.vipLevelCallResult = await getvipLevel(mycode) // 得到VIP等级的结果信息
+    vip.RootvipLevel = await getvipLevel(mycode) // 得到VIP等级的结果信息
 
-    vip.RootSubNodeInfoList=vip.vipLevelCallResult.RootSubNodeInfoList // 子节点信息，包含全部查询结果
-    vip.rootfund = vip.vipLevelCallResult.rootfund //本节点的原始货币数量
-    vip.rootInfo = vip.vipLevelCallResult.rootInfo //本节点的查询信息
-    vip.rootmill = vip.vipLevelCallResult.rootmill //本节点静态收益
-    // vip.mycode = vip.vipLevelCallResult.mycode  //本节点名称
-    vip.recomend=vip.vipLevelCallResult.recomend // 总推荐奖
-    vip.recomend1=vip.vipLevelCallResult.recomend1 // 一级推荐
-    vip.recomend2=vip.vipLevelCallResult.recomend2 // 二级推荐
-    vip.mycodeSubListL1=vip.vipLevelCallResult.mycodeSubListL1 // 字节的mycode列表
+    vip.vipLevel               =     vip.RootvipLevel.vipLevel
+    vip.minerCoeff             =     vip.RootvipLevel.minerCoeff
+    vip.subvipLevel            =     vip.RootvipLevel.subvipLevel
+    vip.subvipLevelCallResult  =     vip.RootvipLevel.subvipLevelCallResult
 
-    vip.minerCoeff=vip.vipLevelCallResult.minerCoeff //本节点挖矿系数
+    vip.vipTagRoot             =     vip.RootvipLevel.vipTagRoot
 
-    vip.level = vip.vipLevelCallResult.vipLevel // 本节点VIP等级
-    vip.subvipLevel = vip.vipLevelCallResult.subvipLevel // 本节点的子节点vip等级
-    vip.subvipLevelCallResult = vip.vipLevelCallResult.subvipLevelCallResult // 全部等级计算结果信息
+    vip.subTreeBalanceList     =     vip.RootvipLevel.subTreeBalanceList
+    vip.TreeBalanceInfo        =     vip.RootvipLevel.TreeBalanceInfo
 
-    vip.subNodeL1Info=vip.RootSubNodeInfoList.subNodeL1Info // 子节点调用信息集合
-    vip.AwardContribute=[] // 下属节点的贡献度
+    vip.RootSubNodeInfoList    =     vip.RootvipLevel.RootSubNodeInfoList
+    vip.rootInfo               =     vip.RootvipLevel.rootInfo
+    vip.subNodeL1Info          =     vip.RootvipLevel.subNodeL1Info
+    vip.mycodeSubNodeListL1    =     vip.RootvipLevel.mycodeSubNodeListL1
 
-    let vipLevel = vip.level
+    vip.subNodeL1Fund          =     vip.RootvipLevel.subNodeL1Fund
+    vip.subNodeL1Num           =     vip.RootvipLevel.subNodeL1Num
+
+    vip.recomend1              =     vip.RootvipLevel.recomend1
+    vip.recomend2              =     vip.RootvipLevel.recomend2
+    vip.recomend               =     vip.RootvipLevel.recomend
+    vip.mycode                 =     vip.RootvipLevel.mycode
+
+    vip.rootInfo               =     vip.RootvipLevel.rootInfo
+    vip.rootfund               =     vip.RootvipLevel.rootfund
+    vip.rootmill               =     vip.RootvipLevel.rootmill
+    vip.phone                  =     vip.RootvipLevel.phone
+
+    vip.balancevip             =     vip.RootvipLevel.balancevip
+    vip.vipTag                 =     vip.RootvipLevel.vipTag
+    vip.subTreeBalancesum      =     vip.RootvipLevel.subTreeBalancesum
+
+    vip.AwardContribute = [] // 下属节点的贡献度
+
     let revenue = 0
 
     let minerCoeff = vip.minerCoeff
     let vipgrandsonNodeList = []
-    let subAwardict={}
-    if (vipLevel > 0) {
+    let subAwardict = {}
+    if (vip.vipLevel > 0) {
         if (vip.subvipLevel) {
             let subNodeIndex = vip.subNodeL1Info.slice(0)
             while (subNodeIndex) {
                 // let y=subNodeIndex.slice(-1)
                 let y = subNodeIndex.pop()
                 revenue = minerCoeff * y.rootfund
-                if (vipLevel >= y.vipLevel) {
+                if (vip.vipLevel  >= y.vipLevel) {
                     let subFastMinerAward = await getFastMinerAward(y.mycode)
-                    if (vipLevel > y.vipLevel) {
+                    if (vip.vipLevel  > y.vipLevel) {
                         revenue -= subFastMinerAward.Award
 
                         if (subFastMinerAward.subNodeL1Info) {
@@ -432,8 +502,8 @@ async function getFastMinerAward(mycode) {
                         revenue += subFastMinerAward.Award * 0.15
                     }
                 }
-                vip.Award=vip.Award+revenue
-                subAwardict[y.mycode]=revenue
+                vip.Award = vip.Award + revenue
+                subAwardict[y.mycode] = revenue
             }
             subNodeIndex = vipgrandsonNodeList
             while (subNodeIndex) {
@@ -450,33 +520,31 @@ async function getFastMinerAward(mycode) {
                         }
 
                     }
-
                 }
 
-                vip.Award=vip.Award+revenue
-                subAwardict[y.mycode]=revenue
-           }
-        }
-        else{
-            vip.Award=0
+                vip.Award = vip.Award + revenue
+                subAwardict[y.mycode] = revenue
+            }
+        } else {
+            vip.Award = 0
             console.log("error with vip level >0, but no subsidy")
         }
 
     }
-    vip.AwardContribute=subAwardict
-    return  vip
+    vip.AwardContribute = subAwardict
+    return vip
 }
 
 //获取动态收益
 
-async function getMyDynamic(mycode,fund, la) {
+async function getMyDynamic(mycode, fund, la) {
     let community = {};
 
     //直推收益，一比一燃烧
     let fundvalue = fund;
 
     //日产量
-    community.dailyproduction= 0;
+    community.dailyproduction = 0;
     //总投入
     community.totalfund = 0;
     //最大下线金额
@@ -500,7 +568,7 @@ async function getMyDynamic(mycode,fund, la) {
     community.vip = 0;
 
     community.vip11 = 0;
-    community.vip22= 0;
+    community.vip22 = 0;
     community.vip33 = 0;
     community.vip44 = 0;
     community.vip55 = 0;
@@ -520,141 +588,141 @@ async function getMyDynamic(mycode,fund, la) {
         for (let i = 0; i < layer.length; i++) {
 
             let myfundtemp = 0;
-            let ret = await getMyDynamic(layer[i].mycode,fundvalue, laa);
+            let ret = await getMyDynamic(layer[i].mycode, fundvalue, laa);
             community.dailyproduction += ret.dailyproduction;
             community.totalfund += ret.totalfund;
             community.community2.push.apply(community.community2, ret.community2);
-            community.vip55+= ret.vip55;
-            community.vip44+= ret.vip44;
-            community.vip33+= ret.vip33;
-            community.vip22+= ret.vip22;
-            community.vip11+= ret.vip11;
+            community.vip55 += ret.vip55;
+            community.vip44 += ret.vip44;
+            community.vip33 += ret.vip33;
+            community.vip22 += ret.vip22;
+            community.vip11 += ret.vip11;
             community.totalchild += ret.totalchild;
 
-            community.totalchild ++;
+            community.totalchild++;
             // community.totaldynamic += ret.totaldynamic;
             community.child1 += ret.child1;
             community.child2 += ret.child2;
 
-            if(ret.vip4 +ret.vip5 >= 2 ){
+            if (ret.vip4 + ret.vip5 >= 2) {
                 community.vip5++;
                 community.vip55++;
                 community.vip = 5;
-            }else if(ret.vip3 + ret.vip4+ret.vip5 >=2){
+            } else if (ret.vip3 + ret.vip4 + ret.vip5 >= 2) {
                 community.vip4++;
                 community.vip44++;
                 community.vip = 4;
-            }else if(ret.vip2+ret.vip3+ret.vip4+ret.vip5 >= 2){
+            } else if (ret.vip2 + ret.vip3 + ret.vip4 + ret.vip5 >= 2) {
                 community.vip3++;
                 community.vip33++;
                 community.vip = 3;
-            }else if(ret.vip1+ret.vip2+ret.vip3+ret.vip4+ret.vip5 >=2){
+            } else if (ret.vip1 + ret.vip2 + ret.vip3 + ret.vip4 + ret.vip5 >= 2) {
                 community.vip2++;
                 community.vip22++;
                 community.vip = 2;
-            }else if(ret.totalfund - ret.biggestline >vipquota){
+            } else if (ret.totalfund - ret.biggestline > vipquota) {
                 community.vip1++;
                 community.vip11++;
                 community.vip = 1;
-            }else{
+            } else {
                 community.vip = 0;
             }
 
             // community.mill4 += ret.mill4;
             let fundinfo = await mysql.ROW("select * from asset_fund where userid= '" + layer[i].phone + "' ;");
             if (fundinfo && fundinfo.length > 0) {
-                for(let  j=0;j<fundinfo.length;j++){
+                for (let j = 0; j < fundinfo.length; j++) {
                     community.totalfund += fundinfo[j].fund;
                     ret.totalfund += fundinfo[j].fund;
-                    myfundtemp +=fundinfo[j].fund;
-                    if(fundinfo[j].fundtype == 1){
+                    myfundtemp += fundinfo[j].fund;
+                    if (fundinfo[j].fundtype == 1) {
                         mymill += mill1;
-                    }else if(fundinfo[j].fundtype == 2){
+                    } else if (fundinfo[j].fundtype == 2) {
                         mymill += mill2;
-                    }else if(fundinfo[j].fundtype == 3){
+                    } else if (fundinfo[j].fundtype == 3) {
                         mymill += mill3;
-                    }else if(fundinfo[j].fundtype == 4){
+                    } else if (fundinfo[j].fundtype == 4) {
                         mymill += mill4;
                     }
                 }
                 community.dailyproduction += mymill;
-                community.validchild ++;
+                community.validchild++;
             }
             //抛除最多一条线
-            if(ret.totalfund > community.biggestline)
+            if (ret.totalfund > community.biggestline)
                 community.biggestline = ret.totalfund;
 
-            if(community.vip ==1){
-                let myret = dynamic1(ret.community,community.vip);
-                let sameaward = dynamic2(ret,community.vip);
-                community.mydynamic = (myret.dailyproduction +sameaward.sameaward*0.15)*0.1 -  myret.dynamic;
-                if(community.mydynamic < 0){
+            if (community.vip == 1) {
+                let myret = dynamic1(ret.community, community.vip);
+                let sameaward = dynamic2(ret, community.vip);
+                community.mydynamic = (myret.dailyproduction + sameaward.sameaward * 0.15) * 0.1 - myret.dynamic;
+                if (community.mydynamic < 0) {
                     community.mydynamic = 0;
                 }
-            }else if(community.vip ==2){
+            } else if (community.vip == 2) {
                 // community.mydynamic = ret.dailyproduction * 0.15 -  ret.totaldynamic;
-                let myret = dynamic1(ret.community,community.vip);
-                let sameaward = dynamic2(ret.community,community.vip);
+                let myret = dynamic1(ret.community, community.vip);
+                let sameaward = dynamic2(ret.community, community.vip);
 
-                community.mydynamic = (myret.dailyproduction +sameaward.sameaward*0.15)*0.15 -  myret.dynamic;
-                if(community.mydynamic < 0){
+                community.mydynamic = (myret.dailyproduction + sameaward.sameaward * 0.15) * 0.15 - myret.dynamic;
+                if (community.mydynamic < 0) {
                     community.mydynamic = 0;
                 }
-            }else if(community.vip ==3){
-                let myret = dynamic1(ret.community,community.vip);
-                let sameaward = dynamic2(ret.community,community.vip);
+            } else if (community.vip == 3) {
+                let myret = dynamic1(ret.community, community.vip);
+                let sameaward = dynamic2(ret.community, community.vip);
 
-                community.mydynamic = (myret.dailyproduction +sameaward.sameaward*0.15)*0.2 -  myret.dynamic;
-                if(community.mydynamic < 0){
+                community.mydynamic = (myret.dailyproduction + sameaward.sameaward * 0.15) * 0.2 - myret.dynamic;
+                if (community.mydynamic < 0) {
                     community.mydynamic = 0;
                 }
-            }else if(community.vip ==4){
-                let myret = dynamic1(ret.community,community.vip);
-                let sameaward = dynamic2(ret.community,community.vip);
+            } else if (community.vip == 4) {
+                let myret = dynamic1(ret.community, community.vip);
+                let sameaward = dynamic2(ret.community, community.vip);
 
-                community.mydynamic = (myret.dailyproduction +sameaward.sameaward*0.15)*0.25 -  myret.dynamic;
-                if(community.mydynamic < 0){
+                community.mydynamic = (myret.dailyproduction + sameaward.sameaward * 0.15) * 0.25 - myret.dynamic;
+                if (community.mydynamic < 0) {
                     community.mydynamic = 0;
                 }
-            }else if(community.vip ==5){
-                let myret = dynamic1(ret.community,community.vip);
-                let sameaward = dynamic2(ret.community,community.vip);
-                community.mydynamic = (myret.dailyproduction +sameaward.sameaward*0.15)*0.3 -  myret.dynamic;
-                if(community.mydynamic < 0){
+            } else if (community.vip == 5) {
+                let myret = dynamic1(ret.community, community.vip);
+                let sameaward = dynamic2(ret.community, community.vip);
+                community.mydynamic = (myret.dailyproduction + sameaward.sameaward * 0.15) * 0.3 - myret.dynamic;
+                if (community.mydynamic < 0) {
                     community.mydynamic = 0;
                 }
-            }else{
+            } else {
                 community.mydynamic = 0;
             }
-            community.totaldynamic+=community.mydynamic;
+            community.totaldynamic += community.mydynamic;
             community.community.push({
-                vip:community.vip,
-                childfund:ret.totalfund,
-                dailyproduction:ret.dailyproduction,
-                mydynamic:community.mydynamic,
-                mydaily:mymill,
-                myfund:myfundtemp,
-                phone:layer[i].phone,
-                community:ret.community
+                vip: community.vip,
+                childfund: ret.totalfund,
+                dailyproduction: ret.dailyproduction,
+                mydynamic: community.mydynamic,
+                mydaily: mymill,
+                myfund: myfundtemp,
+                phone: layer[i].phone,
+                community: ret.community
             });
 
             community.community2.push({
-                vip:community.vip,
-                myfund:myfundtemp,
-                phone:layer[i].phone,
+                vip: community.vip,
+                myfund: myfundtemp,
+                phone: layer[i].phone,
             })
 
             //推广奖励 1：1 燃烧
-            if(laa == 1 ){
-                if(mymill > fundvalue)
-                    community.child1 += fundvalue*0.5;
+            if (laa == 1) {
+                if (mymill > fundvalue)
+                    community.child1 += fundvalue * 0.5;
                 else
-                    community.child1 += mymill*0.5
-            }else if(laa == 2){
-                if(mymill > fundvalue)
-                    community.child2 += fundvalue*0.2;
+                    community.child1 += mymill * 0.5
+            } else if (laa == 2) {
+                if (mymill > fundvalue)
+                    community.child2 += fundvalue * 0.2;
                 else
-                    community.child2 += mymill*0.2;
+                    community.child2 += mymill * 0.2;
             }
         }
 
@@ -710,7 +778,7 @@ Services.calculateEarnings = async function () {
                 console.log("mytotalfund" + mytotalfund);
                 // 获取动态收益
                 let community = await getMyDynamic(users[i].mycode, mymill, 0);
-                 //
+                //
                 // community.totalfund = community.totalfund;
                 console.log('totalfund', community.totalfund)
                 // 矿圈奖励
@@ -743,7 +811,7 @@ Services.calculateEarnings = async function () {
                     }
                 }
                 let win = await getFastMinerAward(users[i].mycode)
-                console.log(win.mycode,win.rootfund,win.vipLevel,win.Award,win.recomend,win.mill)
+                console.log(win.mycode, win.rootfund, win.vipLevel, win.Award, win.recomend, win.mill)
 
                 console.log(community.community2)
                 // let tt = 0;

@@ -2,7 +2,7 @@ const mysql = require('mysql');
 const async = require("async");
 
 // localhost
-var pool = mysql.createPool({
+const pool0 = mysql.createPool({
   connectionLimit: 50,
   host: '127.0.0.1',
   user: 'tiger',
@@ -10,14 +10,16 @@ var pool = mysql.createPool({
   database: 'test',
   multipleStatements: true //是否允许执行多条sql语句
 });
-// var pool = mysql.createPool({
-//   connectionLimit: 50,
-//   host: '111.229.168.108',
-//   user: 'fastroot',
-//   password: 'test123456',
-//   database: 'fastroot',
-//   multipleStatements: true //是否允许执行多条sql语句
-// });
+const pool1 = mysql.createPool({
+   connectionLimit: 50,
+   host: '111.229.168.108',
+   user: 'fastroot',
+   password: 'test123456',
+   database: 'fastroot',
+   multipleStatements: true //是否允许执行多条sql语句
+ });
+
+let pool=pool0
 //将结果已对象数组返回
 var row = (sql, ...params) => {
   return new Promise(function (resolve, reject) {

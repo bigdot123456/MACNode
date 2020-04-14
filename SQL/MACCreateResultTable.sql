@@ -1,3 +1,5 @@
+use test;
+
 DROP TABLE IF EXISTS `asset_loadsqldata`;
 CREATE TABLE `asset_loadsqldata`
 (
@@ -38,7 +40,7 @@ CREATE TABLE `asset_loadsqldata`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-use fastroot;
+
 DROP TABLE IF EXISTS `asset_checkresultPython`;
 CREATE TABLE `asset_checkresultPython`
 (

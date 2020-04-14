@@ -226,7 +226,7 @@ select * from MyMACNodeResult;
 * 注意不要将ID设置为 autoincrement
 2. 输入链接密码和Ip地址如下：
 ```bash
-用户名/密码: "fastroot:test123456@"
+用户名/密码: "fastroot:test123456"
 IP: 111.229.168.108
 数据库名称: fastroot
 ```
