@@ -1,4 +1,3 @@
-import heapq
 import os
 import time
 from functools import reduce
@@ -10,7 +9,6 @@ from sqlalchemy.orm import sessionmaker
 
 from MACNodeSQL import *
 from include.const import *
-from operator import itemgetter
 
 # SQLCODE="mysql+pymysql://fastroot:test123456@111.229.168.108/fastroot?charset=utf8"
 SQLCODE = "mysql+pymysql://tiger:test123456!@@127.0.0.1/test?charset=utf8"
@@ -173,8 +171,8 @@ class CheckSQLData():
         # self.IndexOfUser1 =[{k,self.IndexOfUser[k]} for k in sorted(self.IndexOfUser, reverse=False)]
 
         self.IndexOfUser1 = sorted(self.IndexOfUser, reverse=False)
-        self.IndexOfUser2 = [{key:self.IndexOfUser[key]} for key in self.IndexOfUser1]
-        self.IndexOfUser = dict((key,self.IndexOfUser[key]) for key in self.IndexOfUser1)
+        self.IndexOfUser2 = [{key: self.IndexOfUser[key]} for key in self.IndexOfUser1]
+        self.IndexOfUser = dict((key, self.IndexOfUser[key]) for key in self.IndexOfUser1)
 
         for x in self.IndexOfUser:  # it convert to a list, list item is a dict, and contain index, x ='8613008104208'
             y = self.IndexOfFund.get(x, emptyFundItem)
@@ -679,11 +677,11 @@ class CheckSQLData():
         self.saveList("IDTreeBalancedict", self.IDTreeBalancedict)
         print(f"genIndexbyTreeBalance: Total time for all records {(time.time() - self.t0)}  secs")
 
-    def saveList(self,IDName,List):
-        filename=f"{IDName}{self.savetime}.txt"
+    def saveList(self, IDName, List):
+        filename = f"{IDName}{self.savetime}.txt"
         with open(filename, 'a') as w:
-            a=f"{List}"
-            b=a.replace(",",",\n")
+            a = f"{List}"
+            b = a.replace(",", ",\n")
             w.write(b)
             # for key, value in subAwardict.items():
             #     w.write('{key}:\t{value}\n'.format(key=key, value=value))
@@ -701,6 +699,7 @@ class CheckSQLData():
             self.indexOfvipTag.append(vipTag)
 
         # self.saveList("IDvipTreeBalancedict",self.IDvipTreeBalancedict)
+        self.saveList("IDvipTreeBalancedict", self.IDvipTreeBalancedict)
         print(f"genIndexbyvipTreeBalance: Total time for all records {(time.time() - self.t0)}  secs")
 
     def getvipTreeBalancebyIndex(self, i):
@@ -726,22 +725,30 @@ class CheckSQLData():
         subvipLevelList = []
         subNodeIndex = self.indexOfsubNodeListIndex[i]
 
-        vipbase = self.indexOfvipTag[i]  # + 0  # use it to convert boolean to int
+        vipLevel = self.indexOfvipTag[i]
+        if (vipLevel == 0 or len(subNodeIndex) < 2):
+            return vipLevel
 
-        if subNodeIndex:
-            # subNodeList = self.getListHit(self.indexOfID, subNodeIndex)
-
+        no1 = 0
+        no2 = 0
+        if (vipLevel > 0):
             for y in subNodeIndex:
                 subvipLevel = self.getvipLevelbyIndex(y)
                 subvipLevelList.append(subvipLevel)
+                if (subvipLevel >= no1):
+                    no2 = no1
+                    no1 = subvipLevel
+                elif (subvipLevel >= no2):
+                    no2 = subvipLevel
 
-            subvipTop2 = heapq.nlargest(2, subvipLevelList)
-
-            subvipLevel = min(subvipTop2)
-            if (subvipLevel == 0):
-                vipLevel = vipbase
-            else:
-                vipLevel = subvipLevel + 1
+            vipLevel = no2 + 1
+            # subvipTop2 = heapq.nlargest(2, subvipLevelList)
+            #
+            # subvipLevel = min(subvipTop2)
+            # if (subvipLevel == 0):
+            #     vipLevel = vipbase
+            # else:
+            #     vipLevel = subvipLevel + 1
         else:
             vipLevel = 0
 
@@ -757,6 +764,9 @@ class CheckSQLData():
             vipLevel = self.getvipLevelbyIndex(x)
             self.indexOfvipLevel.append(vipLevel)
             self.IDvipLeveldict[self.sortedMycodeListdict[x]['mycode']] = vipLevel
+
+        self.saveList("IDvipLeveldict", self.IDvipLeveldict)
+
         print(f"genIndexbyvipLevel: Total time for all records {(time.time() - self.t0)}  secs")
 
     def getstaticIncomebyBalance(self, orginBalance):
@@ -832,7 +842,7 @@ class CheckSQLData():
             minerCoeff = 0.3
         else:
             minerCoeff = 0
-            raise Exception("Invalid level!", minerCoeff)
+            raise Exception("Invalid level!", vipLevel)
 
         return minerCoeff
 

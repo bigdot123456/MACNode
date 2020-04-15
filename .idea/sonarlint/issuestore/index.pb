@@ -48,8 +48,6 @@ E
 tools/testSQLTable.py,5/c/5c0aa17a1b0a002bf4554699b51ec15c594f7357
 @
 tools/userSql.py,2/9/294082925511dac620d0123cd1fa78bb4899e462
-7
-HCC.csv,4/1/41e945452faf36b6d499467d3baa7a18744e9fd4
 C
 tools/MACSQLCtrl.py,5/6/563fb64c600428f7b4cd6d0b773511daa07dd1fb
 @
