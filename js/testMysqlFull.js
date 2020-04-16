@@ -1,4 +1,7 @@
 const mysql = require('./mysql');
+var sprintf = require('sprintf-js').sprintf,
+    vsprintf = require('sprintf-js').vsprintf
+
 let fs = require("fs");
 const SQLSelect = "SELECT user.mycode, user.code ,user.phone,IFNULL(asset_fund.fund,0) as rootfund,IFNULL(asset_fund.fundtype,0) as fundType,asset_fund.starttime FROM  user left join asset_fund on (asset_fund.userid=user.phone) "
 // 白金矿机每天的实际产量为：1040MAC/天
@@ -37,9 +40,9 @@ async function getSqLFullResult() {
     allNodeInfo = await mysql.ROW(SQLSelect)
     ListLen = allNodeInfo.length
     // 对phone字段进行排序
-    allNodeInfo.sort(function (a0,a1) {
+    allNodeInfo.sort(function (a0, a1) {
         return a0.phone.localeCompare(a1.phone) // must offer correct key
-    //    can't use a0-a1 for non digital
+        //    can't use a0-a1 for non digital
     })
     console.log(s++, "Get full Result with ", ListLen)
     return allNodeInfo
@@ -62,9 +65,9 @@ function sumFn() {
     return sum;
 }
 
-function writeFile(filename,strbuf) {
-    if(strbuf && strbuf.length>0){
-        console.log("写入文件：",filename);
+function writeFile(filename, strbuf) {
+    if (strbuf && strbuf.length > 0) {
+        console.log("写入文件：", filename);
         // 同步读取
         // var data = fs.writeFileSync('write1.txt', '我是被写入的内容1！');
         // var writeData1 = fs.readFileSync('write1.txt', 'utf-8');
@@ -72,7 +75,7 @@ function writeFile(filename,strbuf) {
         // 异步读取
         fs.writeFile(filename, strbuf, function (err) {
             if (err) {
-                console.log("写入数据错误"+err);
+                console.log("写入数据错误" + err);
                 return console.error(err);
             }
         });
@@ -80,21 +83,22 @@ function writeFile(filename,strbuf) {
         console("No content with file write!")
     }
 }
-function saveList(filename,List) {
-    let strJSON = JSON.stringify(List);
-    let txt0=""
-    let dim=strJSON.match('},')
-    if( dim !== null){
-        txt0=strJSON.replace(/},/g,'},\n')
-    }else{
-        txt0=strJSON.replace(/,/g,',\n')
-    }
 
-    let myDate=new Date()
-    let jsonDate = myDate.toISOString().replace(/:/g,'')
+function saveList(filename, List) {
+    let strJSON = JSON.stringify(List,null,'\t');
+    let txt0 = strJSON
+    // let dim = strJSON.match('},')
+    // if (dim !== null) {
+    //     txt0 = strJSON.replace(/},/g, '},\n')
+    // } else {
+    //     txt0 = strJSON.replace(/,/g, ',\n')
+    // }
 
-    filename=filename+jsonDate+".txt"
-    writeFile(filename,txt0)
+    let myDate = new Date()
+    let jsonDate = myDate.toISOString().replace(/:/g, '')
+
+    filename = filename + jsonDate + ".json"
+    writeFile(filename, txt0)
 }
 
 // moneyInput=[300, 1000, 2000, 4000],
@@ -117,6 +121,22 @@ function getRecommendValue(a, b) {
     return y
 }
 
+function getmill(x) {
+    let y = 0
+    if (x < 300) {
+        y = 0
+    } else if (x < 1000) {
+        y = 3//300 * 0.010
+    } else if (x < 2000) {
+        y = 11//1000 * 0.011
+    } else if (x < 4000) {
+        y = 26//2000 * 0.013
+    } else {
+        y = 60//4000 * 0.015
+    }
+    return y
+}
+
 var Timer = {
     data: {},
     start: function (key) {
@@ -126,7 +146,7 @@ var Timer = {
         var time = Timer.data[key];
         if (time) {
             Timer.data[key] = new Date() - time;
-            console.log( s++, key + " time usage: " + Timer.getTime(key)+" ms");
+            console.log(s++, key + " time usage: " + Timer.getTime(key) + " ms");
         }
     },
     getTime: function (key) {
@@ -243,33 +263,34 @@ function genIndexbyTreeBalance() {
         IDTreeBalancedict[x] = TreeBalance
     }
 
-    saveList("TreeBalance",IDTreeBalancedict)
+    saveList("TreeBalance", IDTreeBalancedict)
     Timer.stop("genIndexbyTreeBalance")
     return indexOfTreeBalance
 }
 
-let indexOfRecommendAward=[]
-let IDRecommendAwarddict={}
+let indexOfRecommendAward = []
+let IDRecommendAwarddict = {}
+
 function genIndexbyRecommend() {
     Timer.start("genIndexbyRecommend")
     for (let i = 0; i < ListLen; i++) {
         let validsubNodeL1Num = 0
         let r1 = 0
         let r2 = 0
-        let rootfund=allNodeInfo[i].rootfund
-        let grandSonNodeListIndex=[]
+        let rootfund = allNodeInfo[i].rootfund
+        let grandSonNodeListIndex = []
         // for (let j = 0; j < indexOfsubNodeListIndex[i].length; j++) {
         //     let subrootfund = allNodeInfo[indexOfsubNodeListIndex[i][j]].rootfund
         for (let j of indexOfsubNodeListIndex[i]) {
             let subrootfund = allNodeInfo[j].rootfund
 
-            if (subrootfund>0) {
+            if (subrootfund > 0) {
                 r1 += getRecommendValue(subrootfund, rootfund)
 
                 validsubNodeL1Num++
             }
             //grandSonNodeListIndex.push.apply(grandSonNodeListIndex,indexOfsubNodeListIndex[j])
-            grandSonNodeListIndex=[...grandSonNodeListIndex,...indexOfsubNodeListIndex[j]]
+            grandSonNodeListIndex = [...grandSonNodeListIndex, ...indexOfsubNodeListIndex[j]]
             // reference:
             // let subTreeList = getNodeTreeListbyIndex(y)
             // // TreeList.push.apply(TreeList,subTreeList)
@@ -284,17 +305,17 @@ function genIndexbyRecommend() {
                 }
             }
         }
-        let R={}
+        let R = {}
         R.recomend1 = r1 * 0.5
         R.recomend2 = r2 * 0.2 // if error, we replace it with eval(r2.join("+")); or use sumfun
-        R.recomend = R.recomend1+R.recomend2
-        indexOfRecommendAward[i]=R
+        R.recomend = R.recomend1 + R.recomend2
+        indexOfRecommendAward[i] = R
         let x = allNodeInfo[i].mycode
         IDRecommendAwarddict[x] = R
 
     }
 
-    saveList("Recommend",IDRecommendAwarddict)
+    saveList("Recommend", IDRecommendAwarddict)
     Timer.stop("genIndexbyRecommend")
     return indexOfRecommendAward
 }
@@ -314,40 +335,40 @@ function genIndexbyvipTag() {
 
         // vip tree doesn't contain itself
         for (j = 0; j < indexOfsubNodeListIndex[i].length; j++) {
-            let x=indexOfsubNodeListIndex[i][j]
+            let x = indexOfsubNodeListIndex[i][j]
             let y = indexOfTreeBalance[x]
             sum += y
             max = y > max ? y : max
         }
-        z=sum-max
-        if(z>=vipquota){
-            indexOfvipTag[i]=1
-        }else{
-            indexOfvipTag[i]=0
+        z = sum - max
+        if (z >= vipquota) {
+            indexOfvipTag[i] = 1
+        } else {
+            indexOfvipTag[i] = 0
         }
         indexOfvipTreeBalance[i] = z
         let x = allNodeInfo[i].mycode
         IDvipTreeBalancedict[x] = z
     }
 
-    saveList("vipTreeBalance",IDvipTreeBalancedict)
+    saveList("vipTreeBalance", IDvipTreeBalancedict)
     Timer.stop("genIndexbyvipTag")
     return indexOfvipTreeBalance
 }
 
-let IsvipLevelCached=[]
-let vipLevelCachedValue=[]
+let IsvipLevelCached = []
+let vipLevelCachedValue = []
 
 function getvipLevelbyIndex(i) {
-    if(IsvipLevelCached[i]){
-        return vipLevelCachedValue[i]  
+    if (IsvipLevelCached[i]) {
+        return vipLevelCachedValue[i]
     }
 
-    let vip={}
+    let vip = {}
 
     let vipLevel = indexOfvipTag[i]
-    let minerCoeff=0
-    if(vipLevel>0) {
+    let minerCoeff = 0
+    if (vipLevel > 0) {
 
         let no1 = 0
         let no2 = 0
@@ -355,17 +376,17 @@ function getvipLevelbyIndex(i) {
         for (let j of indexOfsubNodeListIndex[i]) {
 
             let x = getvipLevelbyIndex(j)
-            let y=x.vipLevel
+            let y = x.vipLevel
             if (y >= no1) {
                 no2 = no1
                 no1 = y
             } else if (y >= no2) {
                 no2 = y
             }
-         }
+        }
 
         // vipLevel = no2 === 0 ? 1 : (no2 + 1)
-        vipLevel =  no2 + 1
+        vipLevel = no2 + 1
         if (vipLevel === 1) minerCoeff = 0.1
         else if (vipLevel === 2) minerCoeff = 0.15
         else if (vipLevel === 3) minerCoeff = 0.20
@@ -379,10 +400,10 @@ function getvipLevelbyIndex(i) {
         }
     }
 
-    vip.minerCoeff=minerCoeff
-    vip.vipLevel=vipLevel
-    IsvipLevelCached[i]=1
-    vipLevelCachedValue[i]=vip
+    vip.minerCoeff = minerCoeff
+    vip.vipLevel = vipLevel
+    IsvipLevelCached[i] = 1
+    vipLevelCachedValue[i] = vip
 
     return vip
 }
@@ -397,16 +418,145 @@ function genIndexbyvipLevel() {
     vipLevelCachedValue = (new Array(ListLen)).fill(0)
 
     for (let i = 0; i < ListLen; i++) {
-         z=getvipLevelbyIndex(i)
+        z = getvipLevelbyIndex(i)
 
         indexOfvipLevel[i] = z
         let x = allNodeInfo[i].mycode
         IDvipLevel[x] = z
     }
 
-    saveList("vipLevel",indexOfvipLevel)
+    saveList("vipLevel", indexOfvipLevel)
     Timer.stop("genIndexbyvipLevel")
     return indexOfvipTreeBalance
+}
+
+let IsMinerAwardCached = []
+let MinerAwardCachedValue = []
+
+function getMinerAwardbyIndex(i) {
+    if (IsMinerAwardCached[i])
+        return MinerAwardCachedValue[i]
+
+    let vip = {}
+    vip.vipLevel = indexOfvipLevel[i].vipLevel
+    vip.Award = 0
+
+    let revenue = 0
+    let minerCoeff = indexOfvipLevel[i].minerCoeff
+    let GrandSonNodeList = []
+    let subAwardict = {}
+
+    if (vip.vipLevel > 0) {
+
+        let subNodeList = indexOfsubNodeListIndex[i].slice(0)
+        while (subNodeList && subNodeList.length > 0) {
+            // let y=subNodeIndex.slice(-1)
+            let y = subNodeList.pop()
+
+            let z = getMinerAwardbyIndex(y)
+            revenue = minerCoeff * getmill(allNodeInfo[y].rootfund)
+            if (vip.vipLevel >= indexOfvipLevel[y].vipLevel) {
+                if (vip.vipLevel > indexOfvipLevel[y].vipLevel) {
+                    revenue -= z.Award
+
+                    if (indexOfsubNodeListIndex[y] && indexOfsubNodeListIndex[y].length > 0) {
+                        GrandSonNodeList.push.apply(GrandSonNodeList, indexOfsubNodeListIndex[y])
+                    }
+
+                } else {
+                    revenue += z.Award * 0.15
+                }
+            }
+
+            vip.Award = vip.Award + revenue
+            subAwardict[allNodeInfo[y].mycode] = revenue
+        }
+        subNodeList = GrandSonNodeList
+        while (subNodeList && subNodeList.length > 0) {
+            // let y=subNodeIndex.slice(-1)
+            let y = subNodeList.pop()
+
+            let z = getMinerAwardbyIndex(y)
+            revenue = minerCoeff * getmill(allNodeInfo[y].rootfund)
+
+            if (vip.vipLevel > indexOfvipLevel[y].vipLevel) {
+                revenue -= z.Award
+
+                if (indexOfsubNodeListIndex[y] && indexOfsubNodeListIndex[y].length > 0) {
+                    subNodeList.push.apply(subNodeList, indexOfsubNodeListIndex[y])
+                }
+
+            }
+
+            vip.Award = vip.Award + revenue
+            subAwardict[allNodeInfo[y].mycode] = revenue
+        }
+
+    } else {
+        vip.Award = 0
+    }
+
+    vip.AwardContribute = subAwardict
+    IsMinerAwardCached[i] = 1
+    MinerAwardCachedValue[i] = vip
+
+    return vip
+}
+
+let indexOfMinerAward = []
+let IDMinerAward = {}
+
+function genIndexbyMinerAward() {
+    Timer.start("genIndexbyMinerAward")
+    IsMinerAwardCached = (new Array(ListLen)).fill(0)
+    MinerAwardCachedValue = (new Array(ListLen)).fill(0)
+
+    for (let i = 0; i < ListLen; i++) {
+        z = getMinerAwardbyIndex(i)
+
+        indexOfMinerAward[i] = z
+        let x = allNodeInfo[i].mycode
+        IDMinerAward[x] = z
+    }
+
+    saveList("MinerAward", IDMinerAward)
+    Timer.stop("genIndexbyMinerAward")
+    return indexOfMinerAward
+}
+
+function getNodeInfo(i) {
+    let info={}
+    info.index=i
+    info.allNodeInfo = allNodeInfo[i]
+    info.subNodeListIndex = indexOfsubNodeListIndex [i]
+    info.NodeTreeList = indexOfNodeTreeList     [i]
+    info.TreeBalance = indexOfTreeBalance      [i]
+    info.RecommendAward = indexOfRecommendAward   [i]
+    info.vipTreeBalance = indexOfvipTreeBalance   [i]
+    info.vipTag = indexOfvipTag           [i]
+    info.vipLevel = indexOfvipLevel         [i]
+    info.MinerAward = indexOfMinerAward       [i]
+    let strcaclinfo = JSON.stringify(info)
+    return info
+}
+
+let indexOfNodeInfo = []
+let IDNodeInfo = {}
+
+function genNodeInfo() {
+    Timer.start("genNodeInfo")
+
+    for (let i = 0; i < ListLen; i++) {
+        z = getNodeInfo(i)
+
+        indexOfNodeInfo[i] = z
+        let x = allNodeInfo[i].mycode
+        IDNodeInfo[x] = z
+    }
+
+    saveList("NodeInfo", IDNodeInfo)
+    Timer.stop("genNodeInfo")
+    return indexOfNodeInfo
 }
 
 async function testAllItem() {
@@ -426,6 +576,9 @@ async function testAllItem() {
 
     let t8 = genIndexbyRecommend()
 
+    let t9 = genIndexbyMinerAward()
+
+    let t10 = genNodeInfo()
     console.log(s++, "Finish test!")
     return 0
 }

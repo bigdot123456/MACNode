@@ -89,8 +89,6 @@ D
 checkit.sh,9/b/9bee8ee0e445c5d614240c95957902e910ebb979
 h
 8js/node_modules/mysql/lib/protocol/sequences/Sequence.js,9/5/9533925c18a3abc8447ebeeb1e3876cf60fc7f84
-D
-js/package-lock.json,9/d/9d82e65c01ac22de8f195b3dd3b31b81172d1244
 W
 'js/node_modules/mysql/lib/Connection.js,1/c/1c47932bb8a48257ee56e5934ea6453e56eeb3ba
 ]
@@ -133,3 +131,11 @@ C
 js/testMysqlFull.js,e/4/e4fc3d434baf3c3ded68eade00329d4601f2e79d
 ?
 js/filewrite.js,d/2/d294dfe4629f3d4402481494c2b23c2addde29d8
+Y
+)js/node_modules/sprintf-js/src/sprintf.js,0/d/0d820615cb737493121052756cbe0c350238a053
+8
+Timer.py,e/b/eb7f7f18736fdbd93191d01789021357c8ee24dc
+;
+jsontype.py,a/c/acdc4760b9c4de0c22a02eea6f1ede2608a5310e
+<
+MyEncoder.py,3/1/312e238778ea633e3a6d1833284b400a23e7221e

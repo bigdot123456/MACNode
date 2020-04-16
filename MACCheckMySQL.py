@@ -1,4 +1,4 @@
-import os
+# -*- coding:utf-8 -*-
 import time
 from functools import reduce
 
@@ -7,7 +7,9 @@ import pymysql
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+import Timer
 from MACNodeSQL import *
+from MyEncoder import *
 from include.const import *
 
 # SQLCODE="mysql+pymysql://fastroot:test123456@111.229.168.108/fastroot?charset=utf8"
@@ -21,6 +23,8 @@ SQLCODE = "mysql+pymysql://tiger:test123456!@@127.0.0.1/test?charset=utf8"
 #   database: 'test',
 #   multipleStatements: true //是否允许执行多条sql语句
 # });
+
+ti = Timer.Timer()
 
 Nums = Constants(
     VipStdBalance=30000,
@@ -194,6 +198,7 @@ class CheckSQLData():
 
         self.IsMinerAwardCached = [False] * CacheLen
         self.MinerAwardCachedValue = [0] * CacheLen
+        self.indexOfsubAwardict = [{} for _ in range(CacheLen)]
 
         self.IsFastMinerAwardCached = [False] * CacheLen
         self.FastMinerAwardCachedValue = [0] * CacheLen
@@ -264,7 +269,7 @@ class CheckSQLData():
 
         # copy data from fund, and integrate userlist
         # FundNum = len(self.sortedMycodeListdict)
-        print(f"sorted: Total time for FundNum:{self.ListLen} records {(time.time() - self.t0)}  secs")
+        # print(f"sorted: Total time for FundNum:{self.ListLen} records {(time.time() - self.t0)}  secs")
         i = 1
         for x in self.sortedMycodeListdict:
             node = AssetCheckresultpython()  # should in loop, otherwise it will overlap all record and only 1 in database
@@ -399,7 +404,20 @@ class CheckSQLData():
         # df.to_excel(writer, sheet_name="origin data")
         # writer.close()
 
-        print(f"SQLAlchemy ORM add(): Total time for all records {(time.time() - self.t0)}  secs")
+        # print(f"SQLAlchemy ORM add(): Total time for all records {(time.time() - self.t0)}  secs")
+
+    def saveList(self, filename, List):
+
+        wname = f"{filename}{self.savetime}.json"
+        # x = json.dumps(List)
+        # x =json.dumps(List,sort_keys=True, indent=2,separators=(',', ':'))
+        x = json.dumps(List, sort_keys=False, indent=4, separators=(',', ':'), cls=MyEncoder, ensure_ascii=False)
+
+        # y = json.loads(x)
+
+        with open(wname, 'a') as w:
+            w.write(x)
+            w.write(f"{List}")
 
     def getsubNodeListIndexbyIndex(self, Index):
         # subNodeListIndex = []
@@ -415,13 +433,16 @@ class CheckSQLData():
         return subNodeListIndex
 
     def genIndexbysubNodeListIndex(self):
+        ti.start("genIndexbysubNodeListIndex")
         self.indexOfsubNodeListIndex = []
         for x in range(self.ListLen):
             y = self.getsubNodeListIndexbyIndex(x)
             self.indexOfsubNodeListIndex.append(y)
-        print(f"genIndexbysubNodeListIndex: Total time for all records {(time.time() - self.t0)}  secs")
+
+        ti.stop("genIndexbysubNodeListIndex")
 
     def genIndexbyGrandSonNodeListIndex(self):
+        ti.start("genIndexbyGrandSonNodeListIndex")
         self.indexOfGrandSonNodeListIndex = []
         # 创建空list的方法：
         # features = [[] for _ in range(6)]
@@ -435,14 +456,14 @@ class CheckSQLData():
 
             self.indexOfGrandSonNodeListIndex.append(u)
 
-        print(f"genIndexbyGrandSonNodeListIndex: Total time for all records {(time.time() - self.t0)}  secs")
+        # print(f"genIndexbyGrandSonNodeListIndex: Total time for all records {(time.time() - self.t0)}  secs")
+        ti.stop("genIndexbyGrandSonNodeListIndex")
 
     def getNodeInfobyIndex(self, i):
         if self.IsNodeInfoCached[i]:
             return self.NodeInfoCachedValue[i]
 
         Node = self.sortedMycodeListdict[i]
-        d = f"{i}"
         d = f"{i}"
         d = d + "\t" + f"{Node['phone']}"
         d = d + "\t" + f"{int(Node['fund'])}"
@@ -465,9 +486,66 @@ class CheckSQLData():
         d = d + "\t" + f"{Node['code']}"
         d = d + "\n"
 
-        # desc = f"{i}\t{Node['phone']}\t{int(Node['fund'])}\tvip{self.indexOfvipLevel[i]}\tL{self.indexOfNodeLevel[i]}\t{self.indexOfvipTreeBalance[i]}\t{int(self.indexOfTreeBalance[i])}\t{self.FastMinerAwardCachedValue[i]}\t{Node['name']}\n"
-
         return d
+
+    def getNodeInfoJsonbyIndex(self, i):
+        mycode = self.sortedMycodeListdict[i]['mycode']
+        Node = {}
+        Node['用户推荐码'] = mycode
+        Node['VIP等级'] = self.indexOfvipLevel[i]
+        Node['当前用户属于第几代'] = self.indexOfNodeLevel[i]
+        Node['下属VIP计算的业绩'] = self.indexOfvipTreeBalance[i]
+        Node['全部业绩'] = int(self.indexOfTreeBalance[i])
+        Node['矿圈奖励情况'] = self.FastMinerAwardCachedValue[i]
+        Node['推荐总奖励'] = self.indexOfRecommendAward[i]
+        Node['总动态收益'] = self.indexOfDynamicAward[i]
+        Node['静态收益'] = self.indexOfstaticIncome[i]
+        Node['第一级推荐奖励'] = self.indexOfRecommend1Award[i]
+        Node['第二级推荐奖励'] = self.indexOfRecommend2Award[i]
+        Node['内部登记信息'] = self.sortedMycodeListdict[i]
+
+        return Node
+
+    def getNodeTreeInfoJsonbyIndex(self, i):
+        subTreeList = self.getNodeTreeListbyIndex(i)
+        # fundSum0 = sum(self.sortedMycodeListdict[i]['fund'] for i in subTreeList)
+        fundSum = sum(self.indexOfusedBalance[x] for x in subTreeList)
+
+        mycode = self.sortedMycodeListdict[i]['mycode']
+        treeinfo = {}
+
+        treeinfo['用户推荐码'] = mycode
+        treeinfo[f'内部编号'] = i
+        treeinfo['VIP等级'] = self.indexOfvipLevel[i]
+        treeinfo['投入本金'] = self.sortedMycodeListdict[i]['fund']
+        treeinfo[f'电话'] = self.sortedMycodeListdict[i]['phone']
+        treeinfo[f'全部业绩'] = fundSum
+        treeinfo['直属用户编号列表'] = self.indexOfsubNodeListIndex[i]
+        treeinfo['全部下属编号'] = subTreeList
+        treeinfo['矿圈奖子用户贡献列表'] = self.indexOfsubAwardict[i]
+        treeinfo[f'详细信息'] = self.getNodeInfoJsonbyIndex(i)
+
+        for x in subTreeList:
+            # submycode = self.sortedMycodeListdict[x]['mycode']
+            if x == i:
+                continue
+            else:
+                treeinfo[f"内部信息{x}"] = self.getNodeInfoJsonbyIndex(x)
+
+        return treeinfo
+
+    def genAllNodeTreeInfoJson(self):
+        ti.start("genAllNodeTreeInfoJson")
+
+        self.indexOfNodeTreeInfoJson = []
+        # 创建空list的方法：
+        # features = [[] for _ in range(6)]
+        for x in range(self.ListLen):
+            y = self.getNodeTreeInfoJsonbyIndex(x)
+            self.indexOfNodeTreeInfoJson.append(y)
+
+        self.saveList("nodeTreeInfo", self.indexOfNodeTreeInfoJson)
+        ti.stop("genAllNodeTreeInfoJson")
 
     def getNodeTreeInfobyIndex(self, i):
         subTreeList = self.getNodeTreeListbyIndex(i)
@@ -502,7 +580,6 @@ class CheckSQLData():
         for x in range(self.ListLen):
             y = self.getNodeTreeListbyIndex(x)
             self.indexOfNodeTreeList.append(y)
-        print(f"genIndexbyNodeTreeList: Total time for all records {(time.time() - self.t0)}  secs")
 
     def genIndexbysubNodevipLevelIndex(self):
         self.indexOfsubNodevipLevelIndex = []
@@ -516,8 +593,6 @@ class CheckSQLData():
                     u.append(v)
 
             self.indexOfsubNodevipLevelIndex.append(u)
-
-        print(f"genIndexbysubNodevipLevelIndex: Total time for all records {(time.time() - self.t0)}  secs")
 
     def getsubNodeListbyNode(self, Node):
         subNodeList = []
@@ -555,6 +630,7 @@ class CheckSQLData():
             return 0
 
     def genIndexbyNodeLevel(self):
+        ti.start("genIndexbyNodeLevel")
         self.indexOfNodeLevel = []
         self.IDNodeLeveldict = {}
         for x in self.sortedMycodeListdict:
@@ -563,7 +639,7 @@ class CheckSQLData():
             self.indexOfNodeLevel.append(level)
             self.IDNodeLeveldict[y] = level
 
-        print(f"genIndexbyNodeLevel: Total time for all records {(time.time() - self.t0)}  secs")
+        ti.stop("genIndexbyNodeLevel")
 
     def getMultiIndex(self, List, value):
         return [i for i, x in enumerate(List) if x == value]
@@ -665,6 +741,7 @@ class CheckSQLData():
     #     print(f"genIndexbyTreeBalance: Total time for all records {(time.time() - self.t0)}  secs")
 
     def genIndexbyTreeBalance(self):
+        ti.start("genIndexbyTreeBalance")
         self.indexOfTreeBalance = []
 
         self.IDTreeBalancedict = {}
@@ -675,18 +752,10 @@ class CheckSQLData():
             self.IDTreeBalancedict[self.sortedMycodeListdict[x]['mycode']] = TreeBalance
 
         self.saveList("IDTreeBalancedict", self.IDTreeBalancedict)
-        print(f"genIndexbyTreeBalance: Total time for all records {(time.time() - self.t0)}  secs")
-
-    def saveList(self, IDName, List):
-        filename = f"{IDName}{self.savetime}.txt"
-        with open(filename, 'a') as w:
-            a = f"{List}"
-            b = a.replace(",", ",\n")
-            w.write(b)
-            # for key, value in subAwardict.items():
-            #     w.write('{key}:\t{value}\n'.format(key=key, value=value))
+        ti.stop("genIndexbyTreeBalance")
 
     def genIndexbyvipTreeBalance(self):
+        ti.start("genIndexbyvipTreeBalance")
         self.indexOfvipTreeBalance = []
         self.IDvipTreeBalancedict = {}
         self.indexOfvipTag = []
@@ -700,7 +769,8 @@ class CheckSQLData():
 
         # self.saveList("IDvipTreeBalancedict",self.IDvipTreeBalancedict)
         self.saveList("IDvipTreeBalancedict", self.IDvipTreeBalancedict)
-        print(f"genIndexbyvipTreeBalance: Total time for all records {(time.time() - self.t0)}  secs")
+
+        ti.stop("genIndexbyvipTreeBalance")
 
     def getvipTreeBalancebyIndex(self, i):
         vipBalance = 0
@@ -767,8 +837,6 @@ class CheckSQLData():
 
         self.saveList("IDvipLeveldict", self.IDvipLeveldict)
 
-        print(f"genIndexbyvipLevel: Total time for all records {(time.time() - self.t0)}  secs")
-
     def getstaticIncomebyBalance(self, orginBalance):
         # usedBalance = 0
         # staticIncome = 0
@@ -808,7 +876,6 @@ class CheckSQLData():
             self.indexOfstaticIncome.append(staticIncome)
             self.IDminerProductivedict[self.sortedMycodeListdict[x]['mycode']] = minerProductive
             self.IDstaticIncomedict[self.sortedMycodeListdict[x]['mycode']] = staticIncome
-        print(f"genIndexbystaticIncome: Total time for all records {(time.time() - self.t0)}  secs")
 
     def getstaticIncomeTreebyIndex(self, Index):
         if self.IsstaticIncomeTreeCached[Index]:
@@ -853,7 +920,6 @@ class CheckSQLData():
             staticIncomeTree = self.getstaticIncomeTreebyIndex(x)
             self.indexOfstaticIncomeTree.append(staticIncomeTree)
             self.IDstaticIncomeTreedict[self.sortedMycodeListdict[x]['mycode']] = staticIncomeTree
-        print(f"genIndexbystaticIncomeTree: Total time for all records {(time.time() - self.t0)}  secs")
 
     def genIndexbystaticIncomeTreevip(self):
         self.indexOfstaticIncomeTreevip = []
@@ -861,9 +927,9 @@ class CheckSQLData():
             staticIncomeTreevip = self.indexOfstaticIncomeTree[x] * self.getMinerCoeffbyvipLevel(
                 self.indexOfvipLevel[x])
             self.indexOfstaticIncomeTreevip.append(staticIncomeTreevip)
-        print(f"genIndexbystaticIncomeTreevip: Total time for all records {(time.time() - self.t0)}  secs")
 
     def genFastMinerAward(self):
+        ti.start("genFastMinerAward")
         FullList = list(range(self.ListLen))
 
         while FullList:
@@ -945,6 +1011,8 @@ class CheckSQLData():
                 else:
                     self.IsFastMinerAwardCached[x] = True
                     self.FastMinerAwardCachedValue[x] = 0
+
+        ti.stop("genFastMinerAward")
 
     def getMinerAwardbyIndex(self, Index):
         vipLevel = self.indexOfvipLevel[Index]
@@ -1033,14 +1101,14 @@ class CheckSQLData():
         self.MinerAwardCachedValue[Index] = MinerAward
         self.IsMinerAwardCached[Index] = True
 
-        self.indexOfsubAwardict.append(subAwardict)
-        with open(f'./debug{self.savetime}.txt', 'a') as w:
-            w.write(f"\n{self.sortedMycodeListdict[Index]['mycode']}:\t{MinerAward}\n")
-            # for key, value in subAwardict.items():
-            #     w.write('{key}:\t{value}\n'.format(key=key, value=value))
-            for i, k in enumerate(subAwardict):
-                w.write(f'{i}:\t{k}\t{subAwardict[k]} \n')
-            # w.write(f"{subAwardict}\n")
+        self.indexOfsubAwardict[Index] = subAwardict
+        # with open(f'./debug{self.savetime}.txt', 'a') as w:
+        #     w.write(f"\n{self.sortedMycodeListdict[Index]['mycode']}:\t{MinerAward}\n")
+        #     # for key, value in subAwardict.items():
+        #     #     w.write('{key}:\t{value}\n'.format(key=key, value=value))
+        #     for i, k in enumerate(subAwardict):
+        #         w.write(f'{i}:\t{k}\t{subAwardict[k]} \n')
+        #     # w.write(f"{subAwardict}\n")
         return MinerAward
 
     def getRecommendAwardbyIndex(self, Index):
@@ -1103,17 +1171,18 @@ class CheckSQLData():
             self.IDTotalAwarddict[self.sortedMycodeListdict[x]['mycode']] = TotalAward
             self.indexOfDynamicAward.append(DynamicAward)
             self.IDDynamicAwarddict[self.sortedMycodeListdict[x]['mycode']] = DynamicAward
-        print(f"genIndexbyTotalAward: Total time for all records {(time.time() - self.t0)}  secs")
 
     def genIndexbyMinerAward(self):
+        ti.start("genIndexbyMinerAward")
+
         self.indexOfMinerAward = []
-        self.indexOfsubAwardict = []
         self.IDMinerAwarddict = {}
         for x in range(self.ListLen):
             MinerAward = self.getMinerAwardbyIndex(x)
             self.indexOfMinerAward.append(MinerAward)
             self.IDMinerAwarddict[self.sortedMycodeListdict[x]['mycode']] = MinerAward
-        print(f"genIndexbyMinerAward: Total time for all records {(time.time() - self.t0)}  secs")
+
+        ti.stop("genIndexbyMinerAward")
 
     def genIndexbyRecommendAward(self):
         self.indexOfRecommendAward = []
@@ -1126,9 +1195,9 @@ class CheckSQLData():
             self.indexOfRecommend1Award.append(r1)
             self.indexOfRecommend2Award.append(r2)
             self.IDRecommendAwarddict[self.sortedMycodeListdict[x]['mycode']] = r
-        print(f"genIndexbyRecommendAward: Total time for all records {(time.time() - self.t0)}  secs")
 
     def genAllIndex(self):
+        ti.start("total Index")
         self.InitCacheList()
         self.genIndexbysubNodeListIndex()
         self.genIndexbyGrandSonNodeListIndex()
@@ -1147,6 +1216,8 @@ class CheckSQLData():
         self.genIndexbyMinerAward()
         self.genIndexbyRecommendAward()
         self.genIndexbyTotalAward()
+        self.genAllNodeTreeInfoJson()
+        ti.stop("Total Index")
 
 
 if __name__ == "__main__":
