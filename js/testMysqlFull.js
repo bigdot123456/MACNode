@@ -164,6 +164,8 @@ var Timer = {
 
 let indexOfsubNodeListIndex = []
 let sortedMycodeListdict = {}
+let indexOfstaticIncome = []
+let IDstaticIncomedict = {}
 
 function genIndexofmycode() {
     if (allNodeInfo && ListLen == 0) {
@@ -173,7 +175,10 @@ function genIndexofmycode() {
     //for (let i in allNodeInfo) {
     for (let i = 0; i < ListLen; i++) {
         let x = allNodeInfo[i].mycode
+        let y=getmill(allNodeInfo[i].myfund)
         sortedMycodeListdict[x] = i
+        indexOfstaticIncome[i]=y
+        IDstaticIncomedict[x]=y
     }
 
     // for (let i in allNodeInfo) {
@@ -263,7 +268,7 @@ function genIndexbyTreeBalance() {
         IDTreeBalancedict[x] = TreeBalance
     }
 
-    saveList("TreeBalance", IDTreeBalancedict)
+    // saveList("TreeBalance", IDTreeBalancedict)
     Timer.stop("genIndexbyTreeBalance")
     return indexOfTreeBalance
 }
@@ -315,7 +320,7 @@ function genIndexbyRecommend() {
 
     }
 
-    saveList("Recommend", IDRecommendAwarddict)
+    // saveList("Recommend", IDRecommendAwarddict)
     Timer.stop("genIndexbyRecommend")
     return indexOfRecommendAward
 }
@@ -351,7 +356,7 @@ function genIndexbyvipTag() {
         IDvipTreeBalancedict[x] = z
     }
 
-    saveList("vipTreeBalance", IDvipTreeBalancedict)
+    // saveList("vipTreeBalance", IDvipTreeBalancedict)
     Timer.stop("genIndexbyvipTag")
     return indexOfvipTreeBalance
 }
@@ -425,7 +430,7 @@ function genIndexbyvipLevel() {
         IDvipLevel[x] = z
     }
 
-    saveList("vipLevel", indexOfvipLevel)
+    // saveList("vipLevel", indexOfvipLevel)
     Timer.stop("genIndexbyvipLevel")
     return indexOfvipTreeBalance
 }
@@ -519,7 +524,7 @@ function genIndexbyMinerAward() {
         IDMinerAward[x] = z
     }
 
-    saveList("MinerAward", IDMinerAward)
+    // saveList("MinerAward", IDMinerAward)
     Timer.stop("genIndexbyMinerAward")
     return indexOfMinerAward
 }
@@ -527,16 +532,21 @@ function genIndexbyMinerAward() {
 function getNodeInfo(i) {
     let info={}
     info.index=i
+    info.staticIncome = indexOfstaticIncome[i]
+    info.RecommendAward = indexOfRecommendAward[i].recomend
+    info.MinerAward = indexOfMinerAward[i].Award
+    info.DynamicAward = info.RecommendAward + info.MinerAward
+    info.TotalAward = info.DynamicAward + info.staticIncome
+    info.vipTag = indexOfvipTag[i]
+    info.vipLevel = indexOfvipLevel[i]
+    info.vipTreeBalance = indexOfvipTreeBalance[i]
+    info.TreeBalance = indexOfTreeBalance[i]
+    info.MinerAwardInfo = indexOfMinerAward[i]
+    info.RecommendAwardInfo=indexOfRecommendAward[i]
+    info.subNodeListIndex = indexOfsubNodeListIndex[i]
+    info.NodeTreeList = indexOfNodeTreeList[i]
     info.allNodeInfo = allNodeInfo[i]
-    info.subNodeListIndex = indexOfsubNodeListIndex [i]
-    info.NodeTreeList = indexOfNodeTreeList     [i]
-    info.TreeBalance = indexOfTreeBalance      [i]
-    info.RecommendAward = indexOfRecommendAward   [i]
-    info.vipTreeBalance = indexOfvipTreeBalance   [i]
-    info.vipTag = indexOfvipTag           [i]
-    info.vipLevel = indexOfvipLevel         [i]
-    info.MinerAward = indexOfMinerAward       [i]
-    let strcaclinfo = JSON.stringify(info)
+    // let strcaclinfo = JSON.stringify(info)
     return info
 }
 
