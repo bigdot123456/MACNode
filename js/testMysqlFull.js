@@ -16,7 +16,7 @@ const mill2 = 1000 * 0.011;//1000*0.011; //usdt，中型矿机
 const mill3 = 2000 * 0.013;//2000*0.013; //usdt，大型矿机
 const mill4 = 4000 * 0.015;//4000*0.015; //usdt，超级矿机
 
-const vipquota = 30000; //vip 限额
+const vipquota = 3000; //vip 限额
 
 
 let s = 0

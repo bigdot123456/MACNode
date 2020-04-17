@@ -27,7 +27,7 @@ SQLCODE = "mysql+pymysql://tiger:test123456!@@127.0.0.1/test?charset=utf8"
 ti = Timer.Timer()
 
 Nums = Constants(
-    VipStdBalance=30000,
+    VipStdBalance=3000,
     moneyInput=[300, 1000, 2000, 4000],
     dayLimited=[0.01, 0.011, 0.013, 0.015],
     totalUSDT=[600, 2500, 6000, 14000],
@@ -417,7 +417,7 @@ class CheckSQLData():
 
         with open(wname, 'a') as w:
             w.write(x)
-            w.write(f"{List}")
+            # w.write(f"{List}")
 
     def getsubNodeListIndexbyIndex(self, Index):
         # subNodeListIndex = []
@@ -515,13 +515,13 @@ class CheckSQLData():
         treeinfo = {}
 
         treeinfo['用户推荐码'] = mycode
-        treeinfo[f'内部编号'] = i
+        treeinfo['用户编号'] = i
         treeinfo['VIP等级'] = self.indexOfvipLevel[i]
         treeinfo['投入本金'] = self.sortedMycodeListdict[i]['fund']
-        treeinfo[f'电话'] = self.sortedMycodeListdict[i]['phone']
-        treeinfo[f'全部业绩'] = fundSum
+        treeinfo['电话'] = self.sortedMycodeListdict[i]['phone']
+        treeinfo['全部业绩'] = fundSum
         treeinfo['直属用户编号列表'] = self.indexOfsubNodeListIndex[i]
-        treeinfo['全部下属编号'] = subTreeList
+        treeinfo['全部下线编号'] = subTreeList
         treeinfo['矿圈奖子用户贡献列表'] = self.indexOfsubAwardict[i]
         treeinfo[f'详细信息'] = self.getNodeInfoJsonbyIndex(i)
 
@@ -530,7 +530,7 @@ class CheckSQLData():
             if x == i:
                 continue
             else:
-                treeinfo[f"内部信息{x}"] = self.getNodeInfoJsonbyIndex(x)
+                treeinfo[f"下线{x}的信息"] = self.getNodeInfoJsonbyIndex(x)
 
         return treeinfo
 
@@ -1182,6 +1182,7 @@ class CheckSQLData():
             self.indexOfMinerAward.append(MinerAward)
             self.IDMinerAwarddict[self.sortedMycodeListdict[x]['mycode']] = MinerAward
 
+        self.saveList("MinerAwarddict",self.IDMinerAwarddict)
         ti.stop("genIndexbyMinerAward")
 
     def genIndexbyRecommendAward(self):
