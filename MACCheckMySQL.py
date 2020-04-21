@@ -27,7 +27,7 @@ SQLCODE = "mysql+pymysql://tiger:test123456!@@127.0.0.1/test?charset=utf8"
 ti = Timer.Timer()
 
 Nums = Constants(
-    VipStdBalance=3000,
+    VipStdBalance=30000,
     moneyInput=[300, 1000, 2000, 4000],
     dayLimited=[0.01, 0.011, 0.013, 0.015],
     totalUSDT=[600, 2500, 6000, 14000],
