@@ -423,51 +423,68 @@ function genIndexbyTreeBalance() {
 let indexOfRecommendAward = []
 let IDRecommendAwarddict = {}
 
+function getRecommendbyIndex(i, status = 0) {
+    let validsubNodeL1Num = 0
+    let r1 = 0
+    let r2 = 0
+    // let myfund = allNodeInfo[i].myfund
+    let myfund = status ? TopFund : allNodeInfo[i].myfund
+    let grandSonNodeListIndex = []
+    // for (let j = 0; j < indexOfsubNodeListIndex[i].length; j++) {
+    //     let submyfund = allNodeInfo[indexOfsubNodeListIndex[i][j]].myfund
+    for (let j of indexOfsubNodeListIndex[i]) {
+        let submyfund = allNodeInfo[j].myfund
+
+        if (submyfund > 0) {
+            r1 += getRecommendValue(submyfund, myfund)
+
+            validsubNodeL1Num++
+        }
+        //grandSonNodeListIndex.push.apply(grandSonNodeListIndex,indexOfsubNodeListIndex[j])
+        grandSonNodeListIndex = [...grandSonNodeListIndex, ...indexOfsubNodeListIndex[j]]
+        // reference:
+        // let subTreeList = getNodeTreeListbyIndex(y)
+        // // TreeList.push.apply(TreeList,subTreeList)
+        // TreeList = [...TreeList, ...subTreeList]
+    }
+    if (validsubNodeL1Num >= 3) {
+        for (let k of grandSonNodeListIndex) {
+            let submyfund = allNodeInfo[k].myfund
+
+            if (submyfund > 0) {
+                r2 += getRecommendValue(submyfund, myfund)
+            }
+        }
+    }
+    let R = {}
+    R.recomend1 = r1 * 0.5
+    R.recomend2 = r2 * 0.2 // if error, we replace it with eval(r2.join("+")); or use sumfun
+    R.recomend = R.recomend1 + R.recomend2
+
+    return R
+}
+
 function genIndexbyRecommend() {
     Timer.start("genIndexbyRecommend")
     // let totalRecommendAward=0
+    let R = {}, R0 = {}, R1 = {}
     for (let i = 0; i < ListLen; i++) {
-        let validsubNodeL1Num = 0
-        let r1 = 0
-        let r2 = 0
-        // let myfund = allNodeInfo[i].myfund
-        let myfund = allNodeInfo[i].status ? TopFund : allNodeInfo[i].myfund
-        let grandSonNodeListIndex = []
-        // for (let j = 0; j < indexOfsubNodeListIndex[i].length; j++) {
-        //     let submyfund = allNodeInfo[indexOfsubNodeListIndex[i][j]].myfund
-        for (let j of indexOfsubNodeListIndex[i]) {
-            let submyfund = allNodeInfo[j].myfund
-
-            if (submyfund > 0) {
-                r1 += getRecommendValue(submyfund, myfund)
-
-                validsubNodeL1Num++
-            }
-            //grandSonNodeListIndex.push.apply(grandSonNodeListIndex,indexOfsubNodeListIndex[j])
-            grandSonNodeListIndex = [...grandSonNodeListIndex, ...indexOfsubNodeListIndex[j]]
-            // reference:
-            // let subTreeList = getNodeTreeListbyIndex(y)
-            // // TreeList.push.apply(TreeList,subTreeList)
-            // TreeList = [...TreeList, ...subTreeList]
+        let st = allNodeInfo[i].status
+        if (st) {
+            R0 = getRecommendbyIndex(i, 1)
+            R1 = getRecommendbyIndex(i, 0)
+            R = R0
+            R.recommendDefault = R1.recomend
+        } else {
+            R0 = getRecommendbyIndex(i, 0)
+            R = R0
+            R.recommendDefault = R0.recomend
         }
-        if (validsubNodeL1Num >= 3) {
-            for (let k of grandSonNodeListIndex) {
-                let submyfund = allNodeInfo[k].myfund
 
-                if (submyfund > 0) {
-                    r2 += getRecommendValue(submyfund, myfund)
-                }
-            }
-        }
-        let R = {}
-        R.recomend1 = r1 * 0.5
-        R.recomend2 = r2 * 0.2 // if error, we replace it with eval(r2.join("+")); or use sumfun
-        R.recomend = R.recomend1 + R.recomend2
         // totalRecommendAward+=R.recomend
         indexOfRecommendAward[i] = R
         let x = allNodeInfo[i].mycode
         IDRecommendAwarddict[x] = R
-
     }
 
     // saveList("Recommend", IDRecommendAwarddict)
@@ -713,6 +730,7 @@ function genNodeInfo() {
     Timer.start("genNodeInfo")
     let totalMinerAward = 0
     let totalRecommendAward = 0
+    let totalRecommendOrgAward = 0
     let totalStaticIncomeAward = 0
     let allinfo = ""
     for (let i = 0; i < ListLen; i++) {
@@ -720,7 +738,7 @@ function genNodeInfo() {
         totalMinerAward += z.MinerAward
         totalRecommendAward += z.RecommendAward
         totalStaticIncomeAward += z.staticIncome
-
+        totalRecommendOrgAward += z.RecommendAwardInfo.recommendDefault
         allinfo += z.description + "\n"
         indexOfNodeInfo[i] = z
         let x = allNodeInfo[i].mycode
@@ -728,6 +746,7 @@ function genNodeInfo() {
     }
     console.log("Total static Income:" + totalStaticIncomeAward)
     console.log("Total Recommend Income:" + totalRecommendAward)
+    console.log("Total orginal Recommend Income:" + totalRecommendOrgAward)
     console.log("Total MinerAward:" + totalMinerAward)
 
     writeFile("NodeInfo.txt", allinfo)
